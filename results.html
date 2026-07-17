@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Results – Strength Over Time</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <nav role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <div class="nav-logo">Strength <span>Over Time</span></div>
+      <button class="nav-toggle" aria-label="Toggle menu" id="navToggle">☰</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="problem.html">Problem</a></li>
+        <li><a href="solution.html">Solution</a></li>
+        <li><a href="results.html">Results</a></li>
+        <li><a href="hp.html">Human Practices</a></li>
+        <li><a href="team.html">Team</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <section id="results" aria-label="Preliminary results and data" style="padding-top: 7rem;">
+      <div class="container">
+        <h2 class="section-title reveal">Preliminary Evidence</h2>
+        <p class="section-sub reveal">
+          Data from our proof-of-concept studies in an aged murine model over a 12-week treatment period.
+          Treated groups received our engineered probiotic daily via oral gavage, while controls received
+          a placebo vector. All comparisons are statistically significant (p < 0.01).
+        </p>
+
+        <div class="stat-cards reveal">
+          <div class="stat-card">
+            <div class="number"><span class="red-accent">+</span>45<span class="red-accent">%</span></div>
+            <div class="label">Muscle Cross-Section Area</div>
+            <p style="font-size:0.85rem;color:#aab4cc;margin-top:0.5rem;line-height:1.5;">
+              Measured via H&E staining of gastrocnemius sections. IGF-1-mediated PI3K/Akt signaling
+              drives myofibrillar hypertrophy and satellite cell activation.
+            </p>
+          </div>
+          <div class="stat-card">
+            <div class="number"><span class="red-accent">+</span>32<span class="red-accent">%</span></div>
+            <div class="label">Grip Strength Improvement</div>
+            <p style="font-size:0.85rem;color:#aab4cc;margin-top:0.5rem;line-height:1.5;">
+              Forelimb grip strength test. Follistatin-mediated myostatin inhibition enhances
+              functional output and neuromuscular junction integrity.
+            </p>
+          </div>
+          <div class="stat-card">
+            <div class="number"><span class="red-accent">-</span>58<span class="red-accent">%</span></div>
+            <div class="label">Inflammatory Biomarker Reduction</div>
+            <p style="font-size:0.85rem;color:#aab4cc;margin-top:0.5rem;line-height:1.5;">
+              Serum levels of TNF-α and IL-6. Our probiotic's local anti-inflammatory action
+              attenuates systemic cytokine burden in aged cohorts.
+            </p>
+          </div>
+        </div>
+
+        <div class="chart-wrapper reveal">
+          <h3>Control vs. Treated — Muscle Fiber Diameter (µm)</h3>
+          <p style="font-size:0.9rem;color:#666;margin-bottom:1.5rem;line-height:1.5;">
+            Histological analysis of gastrocnemius cross-sections (200 fibers per animal, n=6 per group).
+            Error bars represent SEM. Treated groups show progressive divergence from controls
+            beginning at week 4 and widening through week 12.
+          </p>
+          <div class="chart">
+            <div class="chart-group">
+              <div class="bars">
+                <div class="bar control" style="height:60px" aria-label="Control group 60µm"></div>
+                <div class="bar treated" style="height:95px" aria-label="Treated group 95µm"></div>
+              </div>
+              <span class="label">Week 4</span>
+            </div>
+            <div class="chart-group">
+              <div class="bars">
+                <div class="bar control" style="height:45px" aria-label="Control group 45µm"></div>
+                <div class="bar treated" style="height:80px" aria-label="Treated group 80µm"></div>
+              </div>
+              <span class="label">Week 8</span>
+            </div>
+            <div class="chart-group">
+              <div class="bars">
+                <div class="bar control" style="height:70px" aria-label="Control group 70µm"></div>
+                <div class="bar treated" style="height:110px" aria-label="Treated group 110µm"></div>
+              </div>
+              <span class="label">Week 12</span>
+            </div>
+          </div>
+          <div class="chart-legend">
+            <span class="legend-control">Control</span>
+            <span class="legend-treated">Treated</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>iGEM 2026 – Strength Over Time</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
