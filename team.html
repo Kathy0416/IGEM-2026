@@ -61,15 +61,14 @@
         <!-- ─── GENE EXPRESSION (Member Details) ─── -->
         <div class="gene-expression reveal" id="geneExpression">
           <div class="gene-expression-inner">
-            <div class="gene-avatar" id="geneAvatar">
-              <img src="" alt="">
-            </div>
+            <div class="gene-avatar" id="geneAvatar"></div>
             <div class="gene-info">
               <h3 id="geneName">Click a nucleotide to sequence</h3>
               <span class="gene-role" id="geneRole"></span>
-              <div class="gene-base-pair" id="geneBasePair">
+               <div class="gene-base-pair" id="geneBasePair">
                 <span class="gene-base gene-base-left" id="geneBaseLeft">?</span>
-                <span class="gene-bond">≡</span>
+                <span class="gene-bond" id="geneBondSymbol">≡</span>
+                <span class="gene-bond-count" id="geneBondCount">( )</span>
                 <span class="gene-base gene-base-right" id="geneBaseRight">?</span>
               </div>
               <p class="gene-bio" id="geneBio">
@@ -78,6 +77,7 @@
             </div>
           </div>
         </div>
+
 
         <p class="team-closing reveal">
           Together, we are building a future where strength doesn't have to fade with time.

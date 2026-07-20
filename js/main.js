@@ -247,7 +247,7 @@
       initials: 'SM',
       role: 'Principal Investigator',
       bio: 'Dr. Mitchell brings 18 years of experience in molecular gerontology. She guides the team with deep expertise in muscle biology, protein homeostasis, and synthetic biology design.',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=SarahMitchell&backgroundColor=12295C'
+      base: 'A'
     },
     {
       id: 1,
@@ -255,7 +255,7 @@
       initials: 'JO',
       role: 'Wet Lab Lead',
       bio: 'James specializes in bacterial engineering and protein expression. He leads the construction and testing of our probiotic genetic circuits in the lab.',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=JamesOkafor&backgroundColor=12295C'
+      base: 'T'
     },
     {
       id: 2,
@@ -263,7 +263,7 @@
       initials: 'AP',
       role: 'Modeling & Dry Lab',
       bio: 'Aisha builds kinetic models of our genetic circuit and simulates gut-muscle axis signaling dynamics to predict therapeutic outcomes before wet-lab validation.',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=AishaPatel&backgroundColor=12295C'
+      base: 'C'
     },
     {
       id: 3,
@@ -271,7 +271,7 @@
       initials: 'CM',
       role: 'Human Practices Lead',
       bio: 'Carlos leads community engagement, interviewing clinicians, patients, and ethicists to ensure our project is socially responsible, inclusive, and responsive to real-world needs.',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=CarlosMendez&backgroundColor=12295C'
+      base: 'G'
     },
     {
       id: 4,
@@ -279,7 +279,7 @@
       initials: 'YT',
       role: 'Design & Wiki Lead',
       bio: 'Yuki crafts all visual materials, from presentation graphics to this very website. She ensures our science is communicated clearly and beautifully.',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=YukiTanaka&backgroundColor=12295C'
+      base: 'A'
     },
     {
       id: 5,
@@ -287,9 +287,10 @@
       initials: 'EC',
       role: 'Policy & Safety',
       bio: 'Emily navigates the regulatory landscape, biosafety protocols, and ethical frameworks, ensuring our living therapeutic meets the highest standards of responsible innovation.',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=EmilyChen&backgroundColor=12295C'
+      base: 'T'
     }
   ];
+
 
   // ── State ──
   let currentOrder = teamMembers.map(function(m) { return m.id; });
@@ -303,16 +304,19 @@
   const hBonds = { 'A': 2, 'T': 2, 'C': 3, 'G': 3 };
 
   // DOM refs
-  var dnaRungsEl     = document.getElementById('dnaRungs');
-  var shuffleBtn     = document.getElementById('shuffleBtn');
-  var drawBtn        = document.getElementById('drawBtn');
-  var geneName       = document.getElementById('geneName');
-  var geneRole       = document.getElementById('geneRole');
-  var geneBio        = document.getElementById('geneBio');
-  var geneAvatar     = document.getElementById('geneAvatar').querySelector('img');
-  var geneBaseLeft   = document.getElementById('geneBaseLeft');
-  var geneBaseRight  = document.getElementById('geneBaseRight');
-  var geneExpression = document.getElementById('geneExpression');
+  var dnaRungsEl        = document.getElementById('dnaRungs');
+  var shuffleBtn        = document.getElementById('shuffleBtn');
+  var drawBtn           = document.getElementById('drawBtn');
+  var geneName          = document.getElementById('geneName');
+  var geneRole          = document.getElementById('geneRole');
+  var geneBio           = document.getElementById('geneBio');
+  var geneAvatarEl      = document.getElementById('geneAvatar');
+  var geneBaseLeft      = document.getElementById('geneBaseLeft');
+  var geneBaseRight     = document.getElementById('geneBaseRight');
+  var geneBondCount     = document.getElementById('geneBondCount');
+  var geneBondSymbol    = document.getElementById('geneBondSymbol');
+  var geneExpression    = document.getElementById('geneExpression');
+
 
   // ── Fisher-Yates shuffle ──
   function shuffleArray(arr) {
@@ -325,6 +329,16 @@
     return arr;
   }
 
+  // ── Avatar color palette (based on member id) ──
+  const avatarColors = [
+    '#e63946', // red (A)
+    '#457b9d', // blue (T)
+    '#2a9d8f', // teal (C)
+    '#e9c46a', // gold (G)
+    '#e76f51', // coral
+    '#6a4c93'  // purple
+  ];
+
   // ── Render the DNA helix ──
   function renderHelix() {
     dnaRungsEl.innerHTML = '';
@@ -332,60 +346,52 @@
 
     currentOrder.forEach(function(id, idx) {
       var m = teamMembers[id];
-      var baseLetter = dnaBases[id % dnaBases.length];
+      var baseLetter = m.base;
       var compLetter = complement[baseLetter];
-      var bondCount = hBonds[baseLetter];
       var baseClass = 'base-' + baseLetter.toLowerCase();
+      // Determine if this rung is "front" or "back" of the helix (alternating)
+      var helixSide = idx % 2 === 0 ? 'helix-front' : 'helix-back';
 
       var rung = document.createElement('div');
-      rung.className = 'dna-rung ' + baseClass;
+      rung.className = 'dna-rung ' + baseClass + ' ' + helixSide;
       rung.dataset.id = id;
       if (id === activeId) {
         rung.classList.add('active');
       }
 
       // Staggered entrance animation
-      rung.style.animationDelay = (idx * 0.1) + 's';
+      rung.style.animationDelay = (idx * 0.12) + 's';
 
-      // ── Connecting line ──
-      var connector = document.createElement('div');
-      connector.className = 'rung-connector';
-      rung.appendChild(connector);
+      // ── Left connector line ──
+      var connectorLeft = document.createElement('div');
+      connectorLeft.className = 'rung-connector-left';
+      rung.appendChild(connectorLeft);
 
-      // ── Hydrogen bond dots ──
-      var bonds = document.createElement('div');
-      bonds.className = 'rung-h-bonds';
-      var bondDots = '';
+      // ── Right connector line ──
+      var connectorRight = document.createElement('div');
+      connectorRight.className = 'rung-connector-right';
+      rung.appendChild(connectorRight);
+
+      // ── Member card with DUAL base badges & hydrogen bonds ──
+      var bondCount = hBonds[baseLetter];
+      var bondHtml = '<div class="rung-h-bonds">';
       for (var b = 0; b < bondCount; b++) {
-        bondDots += '•';
+        bondHtml += '<span class="rung-h-bond-dot"></span>';
       }
-      bonds.textContent = bondDots;
-      rung.appendChild(bonds);
+      bondHtml += '</div>';
 
-      // ── Left base (nucleotide) ──
-      var leftBase = document.createElement('div');
-      leftBase.className = 'rung-base-left';
-      leftBase.innerHTML =
-        '<div class="rung-base-ball left-ball">' + baseLetter + '</div>' +
-        '<div class="rung-base-label">5\'</div>';
-      rung.appendChild(leftBase);
-
-      // ── Right base (complementary nucleotide) ──
-      var rightBase = document.createElement('div');
-      rightBase.className = 'rung-base-right';
-      rightBase.innerHTML =
-        '<div class="rung-base-ball right-ball">' + compLetter + '</div>' +
-        '<div class="rung-base-label">3\'</div>';
-      rung.appendChild(rightBase);
-
-      // ── Center member card ──
       var card = document.createElement('div');
       card.className = 'rung-member-card';
       card.innerHTML =
-        '<img class="rung-avatar" src="' + m.avatar + '" alt="' + m.name + '" loading="lazy">' +
+        '<div class="rung-avatar" style="background:' + avatarColors[id % avatarColors.length] + '">' + m.initials + '</div>' +
         '<div class="rung-info">' +
           '<div class="rung-name">' + m.name + '</div>' +
           '<span class="rung-role">' + m.role + '</span>' +
+        '</div>' +
+        '<div class="rung-base-pair-display">' +
+          '<span class="rung-base-badge rung-base-left">' + baseLetter + '</span>' +
+          bondHtml +
+          '<span class="rung-base-badge rung-base-right">' + compLetter + '</span>' +
         '</div>';
       rung.appendChild(card);
 
@@ -398,6 +404,7 @@
       dnaRungsEl.appendChild(rung);
     });
   }
+
 
   // ── Select a member (click on rung) ──
   function selectMember(id) {
@@ -427,7 +434,7 @@
     var m = teamMembers[id];
     if (!m) return;
 
-    var baseLetter = dnaBases[id % dnaBases.length];
+    var baseLetter = m.base;
     var compLetter = complement[baseLetter];
     var baseClass = 'base-' + baseLetter.toLowerCase();
 
@@ -442,13 +449,27 @@
     geneName.textContent = m.name;
     geneRole.textContent = m.role;
     geneBio.textContent  = m.bio;
-    geneAvatar.src       = m.avatar;
-    geneAvatar.alt       = m.name;
+
+    // Update initials avatar in gene panel
+    geneAvatarEl.innerHTML = '<div class="gene-avatar-circle" style="background:' + avatarColors[id % avatarColors.length] + '">' + m.initials + '</div>';
+    geneAvatarEl.querySelector('.gene-avatar-circle').style.background = avatarColors[id % avatarColors.length];
 
     geneBaseLeft.textContent = baseLetter;
     geneBaseLeft.className = 'gene-base gene-base-left ' + baseClass;
     geneBaseRight.textContent = compLetter;
     geneBaseRight.className = 'gene-base gene-base-right base-' + compLetter.toLowerCase();
+
+    // Show bond count and symbol
+    var bondCount = hBonds[baseLetter];
+    var bondsStr = '';
+    for (var i = 0; i < bondCount; i++) {
+      bondsStr += '•';
+    }
+    geneBondCount.textContent = bondCount + ' H-bonds [' + bondsStr + ']';
+    geneBondCount.className = 'gene-bond-count ' + (bondCount === 2 ? 'bond-count-2' : 'bond-count-3');
+    // Set symbol: = for 2 bonds, ≡ for 3 bonds
+    geneBondSymbol.textContent = bondCount === 2 ? '=' : '≡';
+    geneBondSymbol.style.color = bondCount === 2 ? 'rgba(230,57,70,0.6)' : 'rgba(42,157,143,0.6)';
 
     geneExpression.classList.add('gene-active');
 
@@ -470,6 +491,7 @@
     }, 350);
   }
 
+
   // ── Shuffle (mutate) the helix ──
   function mutateHelix() {
     shuffleArray(currentOrder);
@@ -490,10 +512,10 @@
       geneName.style.transform = 'translateY(0)';
       geneRole.textContent = '';
       geneBio.textContent  = 'Click on a base pair rung in the DNA helix above to learn about that team member.';
-      geneAvatar.src = '';
-      geneAvatar.alt = '';
+      geneAvatarEl.innerHTML = '';
     }, 300);
   }
+
 
   // ── Sequence (random pick) ──
   function sequenceRandom() {
