@@ -24,6 +24,13 @@
     }
   });
 
+  // ── Fix bfcache: force reload when navigating back via browser back button ──
+  window.addEventListener('pageshow', function(event) {
+    if (event.persisted) {
+      window.location.reload();
+    }
+  });
+
   // ── Page fade-in on load ──
   document.body.classList.add('page-fade');
 
