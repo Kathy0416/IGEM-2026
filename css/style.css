@@ -714,32 +714,6 @@ nav .container {
   padding: 5rem 0 2rem;
   color: var(--white);
   min-height: 100vh;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Animated mesh background */
-#team::before {
-  content: '';
-  position: absolute;
-  inset: -50%;
-  background:
-    radial-gradient(ellipse at 30% 20%, rgba(222,29,22,0.06) 0%, transparent 50%),
-    radial-gradient(ellipse at 70% 80%, rgba(69,123,157,0.08) 0%, transparent 50%);
-  animation: helixBgDrift 15s ease-in-out infinite alternate;
-  pointer-events: none;
-  z-index: 0;
-}
-
-@keyframes helixBgDrift {
-  0%   { transform: translate(0, 0) rotate(0deg); }
-  50%  { transform: translate(3%, -2%) rotate(2deg); }
-  100% { transform: translate(-2%, 3%) rotate(-1deg); }
-}
-
-#team .container {
-  position: relative;
-  z-index: 1;
 }
 
 #team .section-title {
@@ -790,7 +764,7 @@ nav .container {
 .dna-helix-container {
   position: relative;
   width: 100%;
-  min-height: 680px;
+  min-height: 650px;
   padding: 2.5rem 0;
   margin: 0 auto 2rem;
   overflow: visible;
@@ -801,13 +775,13 @@ nav .container {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 6px;
-  border-radius: 3px;
+  width: 8px;
+  border-radius: 4px;
   z-index: 0;
 }
 
 .dna-backbone-left {
-  left: 18%;
+  left: 10%;
   background: linear-gradient(180deg,
     var(--base-a) 0%,
     var(--base-c) 16%,
@@ -817,12 +791,12 @@ nav .container {
     var(--base-c) 83%,
     var(--base-g) 100%
   );
-  box-shadow: 0 0 15px rgba(233, 196, 106, 0.2),
-              0 0 30px rgba(42, 157, 143, 0.15);
+  box-shadow: 0 0 20px rgba(233, 196, 106, 0.3),
+              0 0 40px rgba(42, 157, 143, 0.2);
 }
 
 .dna-backbone-right {
-  right: 18%;
+  right: 10%;
   background: linear-gradient(180deg,
     var(--base-t) 0%,
     var(--base-g) 16%,
@@ -832,8 +806,8 @@ nav .container {
     var(--base-g) 83%,
     var(--base-c) 100%
   );
-  box-shadow: 0 0 15px rgba(69, 123, 157, 0.2),
-              0 0 30px rgba(42, 157, 143, 0.15);
+  box-shadow: 0 0 20px rgba(69, 123, 157, 0.3),
+              0 0 40px rgba(42, 157, 143, 0.2);
 }
 
 /* ─── 5' / 3' END LABELS ─── */
@@ -841,15 +815,15 @@ nav .container {
   position: absolute;
   font-family: 'Courier New', monospace;
   font-weight: 900;
-  font-size: 0.9rem;
-  color: rgba(255,255,255,0.35);
+  font-size: 1rem;
+  color: rgba(255,255,255,0.5);
   z-index: 1;
   letter-spacing: 0.05em;
 }
-.dna-end-top-left { top: 0; left: 14%; }
-.dna-end-top-right { top: 0; right: 14%; }
-.dna-end-bottom-left { bottom: 0; left: 14%; }
-.dna-end-bottom-right { bottom: 0; right: 14%; }
+.dna-end-top-left { top: 0; left: 6%; }
+.dna-end-top-right { top: 0; right: 6%; }
+.dna-end-bottom-left { bottom: 0; left: 6%; }
+.dna-end-bottom-right { bottom: 0; right: 6%; }
 
 /* ─── CENTRAL AXIS GLOW ─── */
 .dna-axis-glow {
@@ -859,7 +833,7 @@ nav .container {
   transform: translateX(-50%);
   width: 2px;
   height: 100%;
-  background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.04) 20%, rgba(255,255,255,0.04) 80%, transparent 100%);
+  background: rgba(255,255,255,0.03);
   z-index: 0;
 }
 
@@ -870,7 +844,7 @@ nav .container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1rem;
   width: 100%;
 }
 
@@ -882,7 +856,7 @@ nav .container {
   width: 100%;
   position: relative;
   cursor: pointer;
-  padding: 0.4rem 0;
+  padding: 0.5rem 0;
   transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1),
               opacity 0.4s ease;
   animation: rungAppear 0.6s ease backwards;
@@ -891,7 +865,7 @@ nav .container {
 @keyframes rungAppear {
   from {
     opacity: 0;
-    transform: scaleY(0.4) translateY(-15px);
+    transform: scaleY(0.3) translateY(-20px);
   }
   to {
     opacity: 1;
@@ -899,95 +873,115 @@ nav .container {
   }
 }
 
-/* ─── 3D Twisting Helix Effect ─── */
-.dna-helix-container {
-  perspective: 1200px;
+/* Hover effect — rung lifts up */
+.dna-rung:hover {
+  transform: translateY(-4px) scale(1.02);
+  z-index: 10;
+}
+.dna-rung:hover .rung-member-card {
+  box-shadow: 0 12px 40px rgba(222,29,22,0.3),
+              0 0 30px rgba(255,255,255,0.1);
+  border-color: var(--red);
+}
+.dna-rung:hover .rung-base-ball {
+  transform: scale(1.25);
+  box-shadow: 0 0 20px currentColor;
 }
 
-.dna-rung {
-  transform-style: preserve-3d;
-}
-
-/* Front rungs: rotate right, come forward, shift right */
-.dna-rung.helix-front {
-  transform: translateX(4%) rotateY(8deg) translateZ(15px);
-}
-.dna-rung.helix-front .rung-member-card {
-  transform: translateX(12%) scale(1);
-  opacity: 1;
-  box-shadow: 0 8px 32px rgba(255,255,255,0.06);
-}
-
-/* Back rungs: rotate left, go backward, shift left */
-.dna-rung.helix-back {
-  transform: translateX(-4%) rotateY(-8deg) translateZ(-10px);
-}
-.dna-rung.helix-back .rung-member-card {
-  transform: translateX(-12%) scale(0.88);
-  opacity: 0.7;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
-}
-
-/* Hover lifts the card out of the helix plane */
-.dna-rung.helix-front:hover {
-  transform: translateX(4%) rotateY(8deg) translateZ(30px);
-}
-.dna-rung.helix-back:hover {
-  transform: translateX(-4%) rotateY(-8deg) translateZ(5px);
-}
-.dna-rung.helix-back:hover .rung-member-card {
-  opacity: 1;
-}
-
-/* ─── RUNG: Angled connector line ─── */
+/* ─── RUNG: Connecting line between bases ─── */
 .rung-connector {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 0;
-  height: 0;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  height: 2px;
+  background: rgba(255,255,255,0.08);
   z-index: 0;
 }
+.dna-rung.active .rung-connector {
+  background: rgba(222,29,22,0.3);
+  height: 3px;
+  box-shadow: 0 0 10px rgba(222,29,22,0.3);
+}
 
-/* Connection from left backbone → card */
-.rung-connector-left {
+/* ─── RUNG: Left base (nucleotide) ─── */
+.rung-base-left {
+  position: absolute;
+  left: 8%;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+/* ─── RUNG: Right base (nucleotide) ─── */
+.rung-base-right {
+  position: absolute;
+  right: 8%;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+/* ─── Base ball (circle with letter) ─── */
+.rung-base-ball {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Courier New', monospace;
+  font-weight: 900;
+  font-size: 1.1rem;
+  color: var(--white);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  border: 2px solid rgba(255,255,255,0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+}
+
+/* Base-specific ball colors - complementary pairs */
+.dna-rung.base-a .rung-base-ball.left-ball { background: var(--base-a); color: #fff; }
+.dna-rung.base-a .rung-base-ball.right-ball { background: var(--base-t); color: #fff; }
+
+.dna-rung.base-t .rung-base-ball.left-ball { background: var(--base-t); color: #fff; }
+.dna-rung.base-t .rung-base-ball.right-ball { background: var(--base-a); color: #fff; }
+
+.dna-rung.base-c .rung-base-ball.left-ball { background: var(--base-c); color: #fff; }
+.dna-rung.base-c .rung-base-ball.right-ball { background: var(--base-g); color: #333; }
+
+.dna-rung.base-g .rung-base-ball.left-ball { background: var(--base-g); color: #333; }
+.dna-rung.base-g .rung-base-ball.right-ball { background: var(--base-c); color: #fff; }
+
+/* Small label under base ball */
+.rung-base-label {
+  font-family: 'Courier New', monospace;
+  font-size: 0.5rem;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ─── Hydrogen bond dots ─── */
+.rung-h-bonds {
+  display: flex;
+  gap: 0.2rem;
+  font-size: 0.5rem;
+  color: rgba(255,255,255,0.15);
+  letter-spacing: 0.15em;
   position: absolute;
   top: 50%;
-  left: 18%;
-  right: auto;
-  height: 2px;
-  background: rgba(255,255,255,0.06);
-  z-index: 0;
-  transform: translateY(-50%);
-  transition: all 0.3s ease;
-}
-.dna-rung.helix-front .rung-connector-left {
-  width: 18%;
-}
-.dna-rung.helix-back .rung-connector-left {
-  width: 22%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
 }
 
-/* Connection from right backbone → card */
-.rung-connector-right {
-  position: absolute;
-  top: 50%;
-  right: 18%;
-  left: auto;
-  height: 2px;
-  background: rgba(255,255,255,0.06);
-  z-index: 0;
-  transform: translateY(-50%);
-  transition: all 0.3s ease;
-}
-.dna-rung.helix-front .rung-connector-right {
-  width: 22%;
-}
-.dna-rung.helix-back .rung-connector-right {
-  width: 18%;
-}
-
-/* ─── RUNG: Member card ─── */
+/* ─── RUNG: Member card in center ─── */
 .rung-member-card {
   position: relative;
   z-index: 2;
@@ -995,47 +989,27 @@ nav .container {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 14px;
-  padding: 0.75rem 1.15rem;
-  width: 310px;
+  border-radius: 12px;
+  padding: 0.75rem 1.25rem;
+  width: 280px;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  gap: 0.85rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
 }
 
-/* Hover effect — card lifts */
-.dna-rung:hover .rung-member-card {
-  border-color: var(--red);
-  box-shadow: 0 12px 40px rgba(222,29,22,0.25), 0 0 30px rgba(222,29,22,0.08);
-  transform: translateY(-3px) scale(1.03) !important;
-  opacity: 1 !important;
-}
-.dna-rung:hover {
-  z-index: 10;
-}
-
-/* ─── Avatar circle with initials ─── */
 .rung-avatar {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-heading);
-  font-weight: 800;
-  font-size: 0.95rem;
-  color: #fff;
+  object-fit: cover;
   border: 2px solid rgba(255,255,255,0.2);
-  transition: all 0.3s ease;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  flex-shrink: 0;
+  transition: border-color 0.3s ease;
 }
 .dna-rung:hover .rung-avatar {
   border-color: var(--red);
-  box-shadow: 0 0 16px rgba(222,29,22,0.4);
 }
 
 .rung-info {
@@ -1061,115 +1035,15 @@ nav .container {
   display: block;
 }
 
-/* ─── Dual base pair display on card ─── */
-.rung-base-pair-display {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  flex-shrink: 0;
-  position: relative;
-}
-
-/* Individual base badges (left = member's base, right = complement) */
-.rung-base-badge {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Courier New', monospace;
-  font-weight: 900;
-  font-size: 0.8rem;
-  color: var(--white);
-  text-shadow: 0 1px 3px rgba(0,0,0,0.3);
-  border: 2px solid rgba(255,255,255,0.2);
-  flex-shrink: 0;
-  transition: all 0.3s ease;
-  position: relative;
-  z-index: 1;
-}
-
-/* Left badge uses the member's base color */
-.base-a .rung-base-left { background: var(--base-a); }
-.base-t .rung-base-left { background: var(--base-t); }
-.base-c .rung-base-left { background: var(--base-c); }
-.base-g .rung-base-left { background: var(--base-g); color: #333; }
-
-/* Right badge uses the complement base color */
-.base-a .rung-base-right { background: var(--base-t); }
-.base-t .rung-base-right { background: var(--base-a); }
-.base-c .rung-base-right { background: var(--base-g); color: #333; }
-.base-g .rung-base-right { background: var(--base-c); }
-
-.dna-rung:hover .rung-base-badge {
-  transform: scale(1.15);
-  box-shadow: 0 0 18px currentColor;
-}
-
-/* ─── Hydrogen bond dots between bases ─── */
-.rung-h-bonds {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin: 0 0.15rem;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 0;
-  pointer-events: none;
-}
-
-.rung-h-bond-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  /* Base-specific colors set via CSS custom properties by .base-* rules below */
-  background: var(--bond-color, rgba(255,255,255,0.35));
-  box-shadow: 0 0 6px var(--bond-glow, rgba(255,255,255,0.2));
-  animation: bondPulse 2s ease-in-out infinite;
-}
-
-.rung-h-bond-dot:nth-child(2) { animation-delay: 0.3s; }
-.rung-h-bond-dot:nth-child(3) { animation-delay: 0.6s; }
-
-@keyframes bondPulse {
-  0%, 100% { opacity: 0.3; transform: scale(1); }
-  50%      { opacity: 0.9; transform: scale(1.3); }
-}
-
-/* Base-specific bond colors — set as CSS custom properties that cascade */
-.base-a .rung-h-bond-dot,
-.base-t .rung-h-bond-dot {
-  --bond-color: rgba(230, 57, 70, 0.55);
-  --bond-glow: rgba(230, 57, 70, 0.35);
-}
-.base-c .rung-h-bond-dot,
-.base-g .rung-h-bond-dot {
-  --bond-color: rgba(42, 157, 143, 0.55);
-  --bond-glow: rgba(42, 157, 143, 0.35);
-}
-
-/* Front/back depth brightness — multiplicative with base-specific colors */
-.helix-front .rung-h-bond-dot {
-  opacity: 0.8;
-}
-.helix-back .rung-h-bond-dot {
-  opacity: 0.4;
-}
-
 /* ─── Active state — selected rung ─── */
 .dna-rung.active {
-  z-index: 20;
+  transform: translateY(-6px) scale(1.03);
 }
 .dna-rung.active .rung-member-card {
   border-color: var(--red);
   background: rgba(222,29,22,0.15);
   box-shadow: 0 8px 32px rgba(222,29,22,0.25),
               0 0 40px rgba(222,29,22,0.1);
-  transform: translateY(-4px) scale(1.04) !important;
-  opacity: 1 !important;
 }
 .dna-rung.active .rung-avatar {
   border-color: var(--red);
@@ -1179,8 +1053,8 @@ nav .container {
 /* ─── Pulse ring on click ─── */
 .rung-pulse {
   position: absolute;
-  inset: -10px;
-  border-radius: 18px;
+  inset: -8px;
+  border-radius: 16px;
   border: 2px solid var(--red);
   opacity: 0;
   pointer-events: none;
@@ -1190,32 +1064,26 @@ nav .container {
 
 @keyframes rungPulse {
   0%   { transform: scale(1); opacity: 1; }
-  100% { transform: scale(1.3); opacity: 0; }
+  100% { transform: scale(1.2); opacity: 0; }
 }
 
 /* ─── GENE EXPRESSION PANEL (member details) ─── */
 .gene-expression {
-  background: rgba(0,0,0,0.35);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-radius: 18px;
+  background: rgba(0,0,0,0.3);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 16px;
   border: 1px solid rgba(255,255,255,0.08);
   overflow: hidden;
   max-height: 0;
   opacity: 0;
-  transform: translateY(10px);
-  transition: max-height 0.5s cubic-bezier(0.23, 1, 0.32, 1),
-              opacity 0.5s ease,
-              padding 0.5s ease,
-              transform 0.5s ease;
+  transition: max-height 0.6s ease, opacity 0.6s ease, padding 0.6s ease;
   padding: 0 1.5rem;
   margin-bottom: 0;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
 }
 .gene-expression.gene-active {
-  max-height: 500px;
+  max-height: 400px;
   opacity: 1;
-  transform: translateY(0);
   padding: 1.5rem;
   margin-bottom: 2rem;
 }
@@ -1229,20 +1097,13 @@ nav .container {
 .gene-avatar {
   flex-shrink: 0;
 }
-.gene-avatar .gene-avatar-circle {
-  width: 90px;
-  height: 90px;
+.gene-avatar img {
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-heading);
-  font-weight: 800;
-  font-size: 2rem;
-  color: #fff;
+  object-fit: cover;
   border: 3px solid var(--red);
   box-shadow: 0 4px 16px rgba(222,29,22,0.3);
-  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
 .gene-info h3 {
@@ -1294,26 +1155,6 @@ nav .container {
 .gene-bond {
   font-size: 1.2rem;
   color: rgba(255,255,255,0.3);
-  transition: color 0.3s ease;
-}
-
-.gene-bond-count {
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  padding: 2px 6px;
-  border-radius: 10px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.08);
-  transition: all 0.3s ease;
-}
-.gene-bond-count.bond-count-2 {
-  color: rgba(230, 57, 70, 0.7);
-  border-color: rgba(230, 57, 70, 0.2);
-}
-.gene-bond-count.bond-count-3 {
-  color: rgba(42, 157, 143, 0.7);
-  border-color: rgba(42, 157, 143, 0.2);
 }
 
 .gene-bio {
@@ -1333,9 +1174,7 @@ nav .container {
   font-size: 1.1rem;
   color: var(--off-white);
   line-height: 1.7;
-  opacity: 0.8;
 }
-
 
 /* ═══════════════════════════════════════════════════
    RESPONSIVE
@@ -1375,49 +1214,37 @@ nav .container {
     align-items: stretch;
   }
 
-  .dna-backbone-left { left: 5%; }
-  .dna-backbone-right { right: 5%; }
+  .dna-backbone-left { left: 3%; }
+  .dna-backbone-right { right: 3%; }
   .dna-helix-container { min-height: 550px; }
 
-  .rung-connector-left { left: 5%; }
-  .rung-connector-right { right: 5%; }
-  .dna-rung.helix-front .rung-connector-left { width: 22%; }
-  .dna-rung.helix-front .rung-connector-right { width: 28%; }
-  .dna-rung.helix-back .rung-connector-left { width: 24%; }
-  .dna-rung.helix-back .rung-connector-right { width: 26%; }
+  .rung-base-left { left: 1%; }
+  .rung-base-right { right: 1%; }
+
+  .rung-base-ball {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+  }
 
   .rung-member-card {
     width: 220px;
     padding: 0.6rem 1rem;
   }
 
-  .dna-rung.helix-front .rung-member-card {
-    transform: translateX(8%) scale(1);
-  }
-  .dna-rung.helix-back .rung-member-card {
-    transform: translateX(-8%) scale(0.9);
-  }
-
   .rung-avatar {
-    width: 36px;
-    height: 36px;
-    font-size: 0.8rem;
-  }
-
-  .rung-base-badge {
-    width: 28px;
-    height: 28px;
-    font-size: 0.8rem;
+    width: 38px;
+    height: 38px;
   }
 
   .rung-name { font-size: 0.75rem; }
   .rung-role { font-size: 0.6rem; }
 
   .dna-end-label { font-size: 0.8rem; }
-  .dna-end-top-left { left: 2%; }
-  .dna-end-top-right { right: 2%; }
-  .dna-end-bottom-left { left: 2%; }
-  .dna-end-bottom-right { right: 2%; }
+  .dna-end-top-left { left: 1%; }
+  .dna-end-top-right { right: 1%; }
+  .dna-end-bottom-left { left: 1%; }
+  .dna-end-bottom-right { right: 1%; }
 }
 
 @media (max-width: 768px) {
@@ -1815,4 +1642,83 @@ footer p {
   font-size: 0.9rem;
   color: var(--red);
   letter-spacing: 0.08em;
+}
+
+
+.timeline-section {
+    margin: 60px 0;
+}
+.timeline-wrap {
+    position: relative;
+    width: 100%;
+    margin: 60px 0 40px;
+    display: flex;
+    justify-content: space-between;
+   align-items: flex-end;
+}
+
+.timeline-line {
+    position: absolute;
+    top: 48px;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background: linear-gradient(90deg, #f2c8c6 0%, #D83028 100%);
+    border-radius: 4px;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.timeline-line::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -40%;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+    animation: flow-forward 4s linear infinite;
+}
+@keyframes flow-forward {
+    0% { left: -40%; }
+    100% { left: 100%; }
+}
+
+.timeline-point {
+    position: relative;
+    width: 31%;
+    text-align: center;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.timeline-icon {
+    margin-bottom: 8px;
+}
+.timeline-icon img {
+    width: 48px;
+    height: auto;
+}
+
+.point-circle {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
+  border: 3px solid #D83028;
+  border-radius: 50%;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #D83028;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(216, 48, 40, 0.15);
+}
+.age-sub {
+    color: #D83028;
+    font-size: 18px;
+    margin: 6px 0;
 }
