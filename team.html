@@ -3,8 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Our Team – Strength Over Time</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=1.0">
 </head>
 <body>
 
@@ -37,14 +40,11 @@
         <div class="dna-controls reveal">
           <button class="btn dna-btn" id="shuffleBtn">🧬 Mutate</button>
           <button class="btn dna-btn" id="drawBtn">🔬 Sequence</button>
+          <button class="btn dna-btn" id="rotateToggleBtn" style="background:#457b9d">⏸ Pause Rotation</button>
         </div>
 
-        <!-- ─── DOUBLE-STRANDED DNA HELIX ─── -->
+        <!-- ─── 3D DOUBLE-STRANDED DNA HELIX ─── -->
         <div class="dna-helix-container reveal" id="dnaHelixContainer">
-          <!-- The two backbone strands -->
-          <div class="dna-backbone dna-backbone-left" id="backboneLeft"></div>
-          <div class="dna-backbone dna-backbone-right" id="backboneRight"></div>
-
           <!-- 5' and 3' labels -->
           <div class="dna-end-label dna-end-top-left">5'</div>
           <div class="dna-end-label dna-end-top-right">3'</div>
@@ -93,6 +93,6 @@
     </div>
   </footer>
 
-  <script src="js/main.js"></script>
+  <script src="js/main.js?v=1.0"></script>
 </body>
 </html>

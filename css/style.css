@@ -760,7 +760,7 @@ nav .container {
   cursor: not-allowed;
 }
 
-/* ─── DNA HELIX CONTAINER ─── */
+/* ─── DNA HELIX CONTAINER (true 3D) ─── */
 .dna-helix-container {
   position: relative;
   width: 100%;
@@ -768,20 +768,26 @@ nav .container {
   padding: 2.5rem 0;
   margin: 0 auto 2rem;
   overflow: visible;
+  perspective: 1600px;
+  perspective-origin: 50% 50%;
+  cursor: grab;
+}
+.dna-helix-container:active {
+  cursor: grabbing;
 }
 
-/* ─── BACKBONE STRANDS ─── */
-.dna-backbone {
+/* ─── 3D BACKBONE STRANDS (rendered as absolutely positioned dots) ─── */
+.dna-backbone-dot {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 8px;
-  border-radius: 4px;
+  width: 6px;
+  border-radius: 3px;
   z-index: 0;
 }
 
 .dna-backbone-left {
-  left: 10%;
+  left: 18%;
   background: linear-gradient(180deg,
     var(--base-a) 0%,
     var(--base-c) 16%,
@@ -791,12 +797,12 @@ nav .container {
     var(--base-c) 83%,
     var(--base-g) 100%
   );
-  box-shadow: 0 0 20px rgba(233, 196, 106, 0.3),
-              0 0 40px rgba(42, 157, 143, 0.2);
+  box-shadow: 0 0 15px rgba(233, 196, 106, 0.2),
+              0 0 30px rgba(42, 157, 143, 0.15);
 }
 
 .dna-backbone-right {
-  right: 10%;
+  right: 18%;
   background: linear-gradient(180deg,
     var(--base-t) 0%,
     var(--base-g) 16%,
@@ -806,9 +812,10 @@ nav .container {
     var(--base-g) 83%,
     var(--base-c) 100%
   );
-  box-shadow: 0 0 20px rgba(69, 123, 157, 0.3),
-              0 0 40px rgba(42, 157, 143, 0.2);
+  box-shadow: 0 0 15px rgba(69, 123, 157, 0.2),
+              0 0 30px rgba(42, 157, 143, 0.15);
 }
+
 
 /* ─── 5' / 3' END LABELS ─── */
 .dna-end-label {
@@ -873,30 +880,53 @@ nav .container {
   }
 }
 
-/* Hover effect — rung lifts up */
-.dna-rung:hover {
-  transform: translateY(-4px) scale(1.02);
-  z-index: 10;
-}
-.dna-rung:hover .rung-member-card {
-  box-shadow: 0 12px 40px rgba(222,29,22,0.3),
-              0 0 30px rgba(255,255,255,0.1);
-  border-color: var(--red);
-}
-.dna-rung:hover .rung-base-ball {
-  transform: scale(1.25);
-  box-shadow: 0 0 20px currentColor;
+/* ─── 3D Twisting Helix Effect ─── */
+.dna-helix-container {
+  perspective: 1200px;
 }
 
-/* ─── RUNG: Connecting line between bases ─── */
+.dna-rung {
+  transform-style: preserve-3d;
+}
+
+/* Front rungs: rotate right, come forward, shift right */
+.dna-rung.helix-front {
+  transform: translateX(4%) rotateY(8deg) translateZ(15px);
+}
+.dna-rung.helix-front .rung-member-card {
+  transform: translateX(12%) scale(1);
+  opacity: 1;
+  box-shadow: 0 8px 32px rgba(255,255,255,0.06);
+}
+
+/* Back rungs: rotate left, go backward, shift left */
+.dna-rung.helix-back {
+  transform: translateX(-4%) rotateY(-8deg) translateZ(-10px);
+}
+.dna-rung.helix-back .rung-member-card {
+  transform: translateX(-12%) scale(0.88);
+  opacity: 0.7;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+
+/* Hover lifts the card out of the helix plane */
+.dna-rung.helix-front:hover {
+  transform: translateX(4%) rotateY(8deg) translateZ(30px);
+}
+.dna-rung.helix-back:hover {
+  transform: translateX(-4%) rotateY(-8deg) translateZ(5px);
+}
+.dna-rung.helix-back:hover .rung-member-card {
+  opacity: 1;
+}
+
+/* ─── RUNG: Angled connector line ─── */
 .rung-connector {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  width: 60%;
-  height: 2px;
-  background: rgba(255,255,255,0.08);
+  width: 0;
+  height: 0;
   z-index: 0;
 }
 .dna-rung.active .rung-connector {
@@ -905,80 +935,42 @@ nav .container {
   box-shadow: 0 0 10px rgba(222,29,22,0.3);
 }
 
-/* ─── RUNG: Left base (nucleotide) ─── */
-.rung-base-left {
-  position: absolute;
-  left: 8%;
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.15rem;
-}
-
-/* ─── RUNG: Right base (nucleotide) ─── */
-.rung-base-right {
-  position: absolute;
-  right: 8%;
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.15rem;
-}
-
-/* ─── Base ball (circle with letter) ─── */
-.rung-base-ball {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Courier New', monospace;
-  font-weight: 900;
-  font-size: 1.1rem;
-  color: var(--white);
-  text-shadow: 0 1px 3px rgba(0,0,0,0.3);
-  border: 2px solid rgba(255,255,255,0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  position: relative;
-}
-
-/* Base-specific ball colors - complementary pairs */
-.dna-rung.base-a .rung-base-ball.left-ball { background: var(--base-a); color: #fff; }
-.dna-rung.base-a .rung-base-ball.right-ball { background: var(--base-t); color: #fff; }
-
-.dna-rung.base-t .rung-base-ball.left-ball { background: var(--base-t); color: #fff; }
-.dna-rung.base-t .rung-base-ball.right-ball { background: var(--base-a); color: #fff; }
-
-.dna-rung.base-c .rung-base-ball.left-ball { background: var(--base-c); color: #fff; }
-.dna-rung.base-c .rung-base-ball.right-ball { background: var(--base-g); color: #333; }
-
-.dna-rung.base-g .rung-base-ball.left-ball { background: var(--base-g); color: #333; }
-.dna-rung.base-g .rung-base-ball.right-ball { background: var(--base-c); color: #fff; }
-
-/* Small label under base ball */
-.rung-base-label {
-  font-family: 'Courier New', monospace;
-  font-size: 0.5rem;
-  color: rgba(255,255,255,0.3);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-/* ─── Hydrogen bond dots ─── */
-.rung-h-bonds {
-  display: flex;
-  gap: 0.2rem;
-  font-size: 0.5rem;
-  color: rgba(255,255,255,0.15);
-  letter-spacing: 0.15em;
+/* Connection from left backbone → card */
+.rung-connector-left {
   position: absolute;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1;
+  left: 18%;
+  right: auto;
+  height: 2px;
+  background: rgba(255,255,255,0.06);
+  z-index: 0;
+  transform: translateY(-50%);
+  transition: all 0.3s ease;
+}
+.dna-rung.helix-front .rung-connector-left {
+  width: 18%;
+}
+.dna-rung.helix-back .rung-connector-left {
+  width: 22%;
+}
+
+/* Connection from right backbone → card */
+.rung-connector-right {
+  position: absolute;
+  top: 50%;
+  right: 18%;
+  left: auto;
+  height: 2px;
+  background: rgba(255,255,255,0.06);
+  z-index: 0;
+  transform: translateY(-50%);
+  transition: all 0.3s ease;
+}
+.dna-rung.helix-front .rung-connector-right {
+  width: 22%;
+}
+.dna-rung.helix-back .rung-connector-right {
+  width: 18%;
 }
 
 /* ─── RUNG: Member card in center ─── */
@@ -1033,6 +1025,104 @@ nav .container {
   color: var(--red);
   line-height: 1.2;
   display: block;
+}
+
+/* ─── Dual base pair display on card ─── */
+.rung-base-pair-display {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+  position: relative;
+}
+
+/* Individual base badges (left = member's base, right = complement) */
+.rung-base-badge {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Courier New', monospace;
+  font-weight: 900;
+  font-size: 0.8rem;
+  color: var(--white);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  border: 2px solid rgba(255,255,255,0.2);
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+/* Left badge uses the member's base color */
+.base-a .rung-base-left { background: var(--base-a); }
+.base-t .rung-base-left { background: var(--base-t); }
+.base-c .rung-base-left { background: var(--base-c); }
+.base-g .rung-base-left { background: var(--base-g); color: #333; }
+
+/* Right badge uses the complement base color */
+.base-a .rung-base-right { background: var(--base-t); }
+.base-t .rung-base-right { background: var(--base-a); }
+.base-c .rung-base-right { background: var(--base-g); color: #333; }
+.base-g .rung-base-right { background: var(--base-c); }
+
+.dna-rung:hover .rung-base-badge {
+  transform: scale(1.15);
+  box-shadow: 0 0 18px currentColor;
+}
+
+/* ─── Hydrogen bond dots between bases ─── */
+.rung-h-bonds {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 0.15rem;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.rung-h-bond-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  /* Base-specific colors set via CSS custom properties by .base-* rules below */
+  background: var(--bond-color, rgba(255,255,255,0.35));
+  box-shadow: 0 0 6px var(--bond-glow, rgba(255,255,255,0.2));
+  animation: bondPulse 2s ease-in-out infinite;
+}
+
+.rung-h-bond-dot:nth-child(2) { animation-delay: 0.3s; }
+.rung-h-bond-dot:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes bondPulse {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50%      { opacity: 0.9; transform: scale(1.3); }
+}
+
+/* Base-specific bond colors — set as CSS custom properties that cascade */
+.base-a .rung-h-bond-dot,
+.base-t .rung-h-bond-dot {
+  --bond-color: rgba(230, 57, 70, 0.55);
+  --bond-glow: rgba(230, 57, 70, 0.35);
+}
+.base-c .rung-h-bond-dot,
+.base-g .rung-h-bond-dot {
+  --bond-color: rgba(42, 157, 143, 0.55);
+  --bond-glow: rgba(42, 157, 143, 0.35);
+}
+
+/* Front/back depth brightness — multiplicative with base-specific colors */
+.helix-front .rung-h-bond-dot {
+  opacity: 0.8;
+}
+.helix-back .rung-h-bond-dot {
+  opacity: 0.4;
 }
 
 /* ─── Active state — selected rung ─── */
@@ -1214,18 +1304,16 @@ nav .container {
     align-items: stretch;
   }
 
-  .dna-backbone-left { left: 3%; }
-  .dna-backbone-right { right: 3%; }
+  .dna-backbone-left { left: 5%; }
+  .dna-backbone-right { right: 5%; }
   .dna-helix-container { min-height: 550px; }
 
-  .rung-base-left { left: 1%; }
-  .rung-base-right { right: 1%; }
-
-  .rung-base-ball {
-    width: 32px;
-    height: 32px;
-    font-size: 0.9rem;
-  }
+  .rung-connector-left { left: 5%; }
+  .rung-connector-right { right: 5%; }
+  .dna-rung.helix-front .rung-connector-left { width: 22%; }
+  .dna-rung.helix-front .rung-connector-right { width: 28%; }
+  .dna-rung.helix-back .rung-connector-left { width: 24%; }
+  .dna-rung.helix-back .rung-connector-right { width: 26%; }
 
   .rung-member-card {
     width: 220px;
@@ -1323,19 +1411,6 @@ nav .container {
   }
 
   /* DNA helix responsive */
-  .dna-backbone-left { left: 2%; width: 5px; }
-  .dna-backbone-right { right: 2%; width: 5px; }
-
-  .rung-base-left { left: 0; }
-  .rung-base-right { right: 0; }
-
-  .rung-base-ball {
-    width: 28px;
-    height: 28px;
-    font-size: 0.75rem;
-  }
-  .rung-base-label { display: none; }
-
   .rung-member-card {
     width: 180px;
     padding: 0.5rem 0.75rem;
@@ -1365,12 +1440,6 @@ nav .container {
 }
 
 @media (max-width: 480px) {
-  .rung-base-ball {
-    width: 22px;
-    height: 22px;
-    font-size: 0.6rem;
-    border-width: 1px;
-  }
   .rung-member-card {
     width: 130px;
     padding: 0.4rem 0.5rem;
@@ -1388,9 +1457,6 @@ nav .container {
     font-size: 0.8rem;
     padding: 0.5rem 1rem;
   }
-
-  .dna-backbone-left { left: 1%; width: 4px; }
-  .dna-backbone-right { right: 1%; width: 4px; }
 }
 
 /* ═══════════════════════════════════════════════════
