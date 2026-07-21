@@ -24,6 +24,13 @@
     }
   });
 
+  // ── Fix bfcache: force reload when navigating back via browser back button ──
+  window.addEventListener('pageshow', function(event) {
+    if (event.persisted) {
+      window.location.reload();
+    }
+  });
+
   // ── Page fade-in on load ──
   document.body.classList.add('page-fade');
 
@@ -339,21 +346,52 @@
     '#6a4c93'  // purple
   ];
 
-  // ── Render the DNA helix ──
+  // ── 3D Helix configuration ──
+  var helixAngle = 0;                    // global rotation offset (radians)
+  var helixRotationSpeed = 0.003;        // radians per frame
+  var helixRadius = 0.28;                // fraction of container width for lateral offset
+  var rungsPerTurn = 5;                  // how many rungs per full 360° rotation
+  var helixTiltX = 0;                    // mouse-driven tilt
+  var helixTiltY = 0;
+  var isRotating = true;
+  var animFrameId = null;
+  var helixEls = [];                     // stores { el, baseAngle, id }
+  var backboneDots = [];                 // stores dot elements for cleanup
+  var backboneLines = [];                // stores line elements for cleanup
+  var helixContainer = document.getElementById('dnaHelixContainer');
+
+  // ── Get rotate toggle button ──
+  var rotateToggleBtn = document.getElementById('rotateToggleBtn');
+
+  // ── Render the 3D DNA helix ──
   function renderHelix() {
+    // Clear previous
     dnaRungsEl.innerHTML = '';
+    // Remove old backbone elements
+    document.querySelectorAll('.dna-backbone-dot, .dna-backbone-line').forEach(function(el) {
+      el.remove();
+    });
+    helixEls = [];
+    backboneDots = [];
+    backboneLines = [];
+
     var total = currentOrder.length;
+    var angleStep = (Math.PI * 2) / rungsPerTurn;
+
+    // Create a mapping of idx to yPos for the sine-wave backbone
+    var rungData = [];
 
     currentOrder.forEach(function(id, idx) {
       var m = teamMembers[id];
       var baseLetter = m.base;
       var compLetter = complement[baseLetter];
       var baseClass = 'base-' + baseLetter.toLowerCase();
-      // Determine if this rung is "front" or "back" of the helix (alternating)
-      var helixSide = idx % 2 === 0 ? 'helix-front' : 'helix-back';
+
+      // Store base angle for this rung (its position on the cylinder)
+      var baseAngle = idx * angleStep;
 
       var rung = document.createElement('div');
-      rung.className = 'dna-rung ' + baseClass + ' ' + helixSide;
+      rung.className = 'dna-rung ' + baseClass;
       rung.dataset.id = id;
       if (id === activeId) {
         rung.classList.add('active');
@@ -361,16 +399,6 @@
 
       // Staggered entrance animation
       rung.style.animationDelay = (idx * 0.12) + 's';
-
-      // ── Left connector line ──
-      var connectorLeft = document.createElement('div');
-      connectorLeft.className = 'rung-connector-left';
-      rung.appendChild(connectorLeft);
-
-      // ── Right connector line ──
-      var connectorRight = document.createElement('div');
-      connectorRight.className = 'rung-connector-right';
-      rung.appendChild(connectorRight);
 
       // ── Member card with DUAL base badges & hydrogen bonds ──
       var bondCount = hBonds[baseLetter];
@@ -402,8 +430,204 @@
       });
 
       dnaRungsEl.appendChild(rung);
+
+      // Store for animation updates
+      helixEls.push({
+        el: rung,
+        baseAngle: baseAngle,
+        id: id
+      });
+
+      // Calculate approximate Y position for backbone dots
+      var rungRect = rung.getBoundingClientRect();
+      var containerRect = helixContainer.getBoundingClientRect();
+      var yPercent = (idx + 0.5) / total;
+      rungData.push({ yPercent: yPercent, baseAngle: baseAngle });
+    });
+
+    // Wait a frame for layout
+    setTimeout(function() {
+      updateHelixPositions();
+      renderBackbones();
+    }, 50);
+  }
+
+  // ── Update helix rung positions based on current angle ──
+  function updateHelixPositions() {
+    var total = helixEls.length;
+    if (total === 0) return;
+
+    helixEls.forEach(function(item) {
+      var angle = item.baseAngle + helixAngle;
+      var sinVal = Math.sin(angle);
+      var cosVal = Math.cos(angle);
+
+      // depth: -1 (back) to 1 (front)
+      var depth = sinVal;
+
+      // Horizontal offset: cos gives left-right position
+      var xOffset = cosVal * helixRadius * 100; // percentage
+
+      // Map depth to 0-3 range for CSS class
+      var depthNorm = (depth + 1) / 2; // 0 (back) to 1 (front)
+      var depthClass = Math.round(depthNorm * 3);
+      depthClass = Math.max(0, Math.min(3, depthClass));
+
+      // Apply transform: translateX for helix position
+      // Also add a slight Y shift for the helix twist appearance
+      var yShift = sinVal * 4; // subtle vertical wave
+
+      var el = item.el;
+
+      // Remove old depth classes
+      el.classList.remove('depth-0', 'depth-1', 'depth-2', 'depth-3');
+
+      // Add appropriate depth class
+      el.classList.add('depth-' + depthClass);
+
+      // Apply horizontal offset + subtle vertical wave
+      el.style.transform = 'translateX(' + xOffset.toFixed(2) + '%) translateY(' + yShift.toFixed(1) + 'px)';
+
+      // Make back rungs send events through to front rungs
+      el.style.pointerEvents = depth < 0.2 ? 'auto' : 'auto';
     });
   }
+
+  // ── Render dynamic backbone strands ──
+  function renderBackbones() {
+    // Remove old
+    document.querySelectorAll('.dna-backbone-dot, .dna-backbone-line').forEach(function(el) {
+      el.remove();
+    });
+
+    var total = helixEls.length;
+    if (total < 2) return;
+
+    // Get container dimensions
+    var containerRect = helixContainer.getBoundingClientRect();
+    var containerHeight = containerRect.height;
+    var containerWidth = containerRect.width;
+    var yStart = 60; // approximate starting Y from top padding
+    var yEnd = containerHeight - 60;
+
+    // Generate backbone points for strand A and B
+    var pointsA = [];
+    var pointsB = [];
+
+    for (var i = 0; i < 60; i++) {
+      var t = i / 59;
+      var y = yStart + t * (yEnd - yStart);
+      var angle = t * total * (Math.PI * 2 / rungsPerTurn) + helixAngle;
+      var cosVal = Math.cos(angle);
+      var sinVal = Math.sin(angle);
+
+      // Strand A
+      var xA = cosVal * helixRadius * containerWidth * 0.5 + containerWidth * 0.5;
+      // Strand B: offset by 180 degrees
+      var angleB = angle + Math.PI;
+      var cosValB = Math.cos(angleB);
+      var xB = cosValB * helixRadius * containerWidth * 0.5 + containerWidth * 0.5;
+
+      // Depth determines size/opacity of dots
+      var depthA = (sinVal + 1) / 2;
+      var depthB = (Math.sin(angleB) + 1) / 2;
+
+      pointsA.push({ x: xA, y: y, depth: depthA });
+      pointsB.push({ x: xB, y: y, depth: depthB });
+    }
+
+    // Draw dots for backbone strands
+    pointsA.forEach(function(p) {
+      var dot = document.createElement('div');
+      dot.className = 'dna-backbone-dot strand-a';
+      dot.style.left = p.x + 'px';
+      dot.style.top = p.y + 'px';
+      dot.style.width = (4 + p.depth * 6) + 'px';
+      dot.style.height = (4 + p.depth * 6) + 'px';
+      dot.style.opacity = 0.3 + p.depth * 0.6;
+      dot.style.transform = 'translate(-50%, -50%)';
+      helixContainer.appendChild(dot);
+    });
+
+    pointsB.forEach(function(p) {
+      var dot = document.createElement('div');
+      dot.className = 'dna-backbone-dot strand-b';
+      dot.style.left = p.x + 'px';
+      dot.style.top = p.y + 'px';
+      dot.style.width = (4 + p.depth * 6) + 'px';
+      dot.style.height = (4 + p.depth * 6) + 'px';
+      dot.style.opacity = 0.3 + p.depth * 0.6;
+      dot.style.transform = 'translate(-50%, -50%)';
+      helixContainer.appendChild(dot);
+    });
+  }
+
+  // ── Animation loop ──
+  function animateHelix() {
+    if (isRotating) {
+      helixAngle += helixRotationSpeed;
+      updateHelixPositions();
+      renderBackbones();
+    }
+    animFrameId = requestAnimationFrame(animateHelix);
+  }
+
+  // ── Toggle rotation ──
+  function toggleRotation() {
+    isRotating = !isRotating;
+    if (rotateToggleBtn) {
+      rotateToggleBtn.innerHTML = isRotating ? '⏸ Pause Rotation' : '▶ Play Rotation';
+      rotateToggleBtn.style.background = isRotating ? '#457b9d' : '#2a9d8f';
+    }
+  }
+
+  // ── Mouse parallax tilt ──
+  var mouseX = 0.5;
+  var mouseY = 0.5;
+  var targetTiltX = 0;
+  var targetTiltY = 0;
+
+  if (helixContainer) {
+    helixContainer.addEventListener('mousemove', function(e) {
+      var rect = helixContainer.getBoundingClientRect();
+      mouseX = (e.clientX - rect.left) / rect.width;
+      mouseY = (e.clientY - rect.top) / rect.height;
+      // Map to tilt angles (-10 to 10 degrees)
+      targetTiltX = (mouseY - 0.5) * 16;
+      targetTiltY = (mouseX - 0.5) * 16;
+    });
+
+    helixContainer.addEventListener('mouseleave', function() {
+      targetTiltX = 0;
+      targetTiltY = 0;
+    });
+  }
+
+  // ── Apply smooth tilt in animation loop ──
+  function applyTilt() {
+    helixTiltX += (targetTiltX - helixTiltX) * 0.05;
+    helixTiltY += (targetTiltY - helixTiltY) * 0.05;
+
+    if (Math.abs(helixTiltX) > 0.01 || Math.abs(helixTiltY) > 0.01) {
+      // Apply perspective tilt to the container
+      helixContainer.style.transform = 'rotateX(' + helixTiltX.toFixed(2) + 'deg) rotateY(' + helixTiltY.toFixed(2) + 'deg)';
+      helixContainer.style.transition = 'none';
+    } else if (helixContainer.style.transform) {
+      helixContainer.style.transform = 'rotateX(0deg) rotateY(0deg)';
+    }
+  }
+
+  // ── Wrap the existing animate function to include tilt ──
+  var origAnimate = animateHelix;
+  animateHelix = function() {
+    if (isRotating) {
+      helixAngle += helixRotationSpeed;
+      updateHelixPositions();
+      renderBackbones();
+    }
+    applyTilt();
+    animFrameId = requestAnimationFrame(animateHelix);
+  };
 
 
   // ── Select a member (click on rung) ──
@@ -546,12 +770,18 @@
   if (drawBtn) {
     drawBtn.addEventListener('click', sequenceRandom);
   }
+  if (rotateToggleBtn) {
+    rotateToggleBtn.addEventListener('click', toggleRotation);
+  }
 
   // ── Init ──
   renderHelix();
   initReveal();
   initGradientText();
   initHeroParticles3D();
+
+  // ── Start animation loop ──
+  animateHelix();
 
   // ── Back to Top Button ──
   var backToTopBtn = document.createElement('button');

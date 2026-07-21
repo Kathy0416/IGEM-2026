@@ -164,6 +164,7 @@ nav .container {
   font-size: 1.2rem;
   color: var(--white);
   letter-spacing: 0.04em;
+  flex-shrink: 0;
 }
 .nav-logo span {
   color: var(--red);
@@ -171,17 +172,19 @@ nav .container {
 
 .nav-links {
   display: flex;
-  gap: 1.25rem;
+  gap: 0.45rem;
   list-style: none;
+  justify-content: flex-end;
 }
 .nav-links a {
   color: var(--off-white);
   font-family: var(--font-body);
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   font-weight: 400;
   transition: var(--transition);
-  padding: 0.25rem 0;
+  padding: 0.25rem 0.35rem;
   border-bottom: 2px solid transparent;
+  white-space: nowrap;
 }
 .nav-links a:hover,
 .nav-links a.active {
@@ -714,32 +717,6 @@ nav .container {
   padding: 5rem 0 2rem;
   color: var(--white);
   min-height: 100vh;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Animated mesh background */
-#team::before {
-  content: '';
-  position: absolute;
-  inset: -50%;
-  background:
-    radial-gradient(ellipse at 30% 20%, rgba(222,29,22,0.06) 0%, transparent 50%),
-    radial-gradient(ellipse at 70% 80%, rgba(69,123,157,0.08) 0%, transparent 50%);
-  animation: helixBgDrift 15s ease-in-out infinite alternate;
-  pointer-events: none;
-  z-index: 0;
-}
-
-@keyframes helixBgDrift {
-  0%   { transform: translate(0, 0) rotate(0deg); }
-  50%  { transform: translate(3%, -2%) rotate(2deg); }
-  100% { transform: translate(-2%, 3%) rotate(-1deg); }
-}
-
-#team .container {
-  position: relative;
-  z-index: 1;
 }
 
 #team .section-title {
@@ -786,18 +763,24 @@ nav .container {
   cursor: not-allowed;
 }
 
-/* ─── DNA HELIX CONTAINER ─── */
+/* ─── DNA HELIX CONTAINER (true 3D) ─── */
 .dna-helix-container {
   position: relative;
   width: 100%;
-  min-height: 680px;
+  min-height: 650px;
   padding: 2.5rem 0;
   margin: 0 auto 2rem;
   overflow: visible;
+  perspective: 1600px;
+  perspective-origin: 50% 50%;
+  cursor: grab;
+}
+.dna-helix-container:active {
+  cursor: grabbing;
 }
 
-/* ─── BACKBONE STRANDS ─── */
-.dna-backbone {
+/* ─── 3D BACKBONE STRANDS (rendered as absolutely positioned dots) ─── */
+.dna-backbone-dot {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -836,20 +819,21 @@ nav .container {
               0 0 30px rgba(42, 157, 143, 0.15);
 }
 
+
 /* ─── 5' / 3' END LABELS ─── */
 .dna-end-label {
   position: absolute;
   font-family: 'Courier New', monospace;
   font-weight: 900;
-  font-size: 0.9rem;
-  color: rgba(255,255,255,0.35);
+  font-size: 1rem;
+  color: rgba(255,255,255,0.5);
   z-index: 1;
   letter-spacing: 0.05em;
 }
-.dna-end-top-left { top: 0; left: 14%; }
-.dna-end-top-right { top: 0; right: 14%; }
-.dna-end-bottom-left { bottom: 0; left: 14%; }
-.dna-end-bottom-right { bottom: 0; right: 14%; }
+.dna-end-top-left { top: 0; left: 6%; }
+.dna-end-top-right { top: 0; right: 6%; }
+.dna-end-bottom-left { bottom: 0; left: 6%; }
+.dna-end-bottom-right { bottom: 0; right: 6%; }
 
 /* ─── CENTRAL AXIS GLOW ─── */
 .dna-axis-glow {
@@ -859,7 +843,7 @@ nav .container {
   transform: translateX(-50%);
   width: 2px;
   height: 100%;
-  background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.04) 20%, rgba(255,255,255,0.04) 80%, transparent 100%);
+  background: rgba(255,255,255,0.03);
   z-index: 0;
 }
 
@@ -870,7 +854,7 @@ nav .container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1rem;
   width: 100%;
 }
 
@@ -882,7 +866,7 @@ nav .container {
   width: 100%;
   position: relative;
   cursor: pointer;
-  padding: 0.4rem 0;
+  padding: 0.5rem 0;
   transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1),
               opacity 0.4s ease;
   animation: rungAppear 0.6s ease backwards;
@@ -891,7 +875,7 @@ nav .container {
 @keyframes rungAppear {
   from {
     opacity: 0;
-    transform: scaleY(0.4) translateY(-15px);
+    transform: scaleY(0.3) translateY(-20px);
   }
   to {
     opacity: 1;
@@ -948,6 +932,11 @@ nav .container {
   height: 0;
   z-index: 0;
 }
+.dna-rung.active .rung-connector {
+  background: rgba(222,29,22,0.3);
+  height: 3px;
+  box-shadow: 0 0 10px rgba(222,29,22,0.3);
+}
 
 /* Connection from left backbone → card */
 .rung-connector-left {
@@ -987,7 +976,7 @@ nav .container {
   width: 18%;
 }
 
-/* ─── RUNG: Member card ─── */
+/* ─── RUNG: Member card in center ─── */
 .rung-member-card {
   position: relative;
   z-index: 2;
@@ -995,47 +984,27 @@ nav .container {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 14px;
-  padding: 0.75rem 1.15rem;
-  width: 310px;
+  border-radius: 12px;
+  padding: 0.75rem 1.25rem;
+  width: 280px;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  gap: 0.85rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
 }
 
-/* Hover effect — card lifts */
-.dna-rung:hover .rung-member-card {
-  border-color: var(--red);
-  box-shadow: 0 12px 40px rgba(222,29,22,0.25), 0 0 30px rgba(222,29,22,0.08);
-  transform: translateY(-3px) scale(1.03) !important;
-  opacity: 1 !important;
-}
-.dna-rung:hover {
-  z-index: 10;
-}
-
-/* ─── Avatar circle with initials ─── */
 .rung-avatar {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-heading);
-  font-weight: 800;
-  font-size: 0.95rem;
-  color: #fff;
+  object-fit: cover;
   border: 2px solid rgba(255,255,255,0.2);
-  transition: all 0.3s ease;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  flex-shrink: 0;
+  transition: border-color 0.3s ease;
 }
 .dna-rung:hover .rung-avatar {
   border-color: var(--red);
-  box-shadow: 0 0 16px rgba(222,29,22,0.4);
 }
 
 .rung-info {
@@ -1161,15 +1130,13 @@ nav .container {
 
 /* ─── Active state — selected rung ─── */
 .dna-rung.active {
-  z-index: 20;
+  transform: translateY(-6px) scale(1.03);
 }
 .dna-rung.active .rung-member-card {
   border-color: var(--red);
   background: rgba(222,29,22,0.15);
   box-shadow: 0 8px 32px rgba(222,29,22,0.25),
               0 0 40px rgba(222,29,22,0.1);
-  transform: translateY(-4px) scale(1.04) !important;
-  opacity: 1 !important;
 }
 .dna-rung.active .rung-avatar {
   border-color: var(--red);
@@ -1179,8 +1146,8 @@ nav .container {
 /* ─── Pulse ring on click ─── */
 .rung-pulse {
   position: absolute;
-  inset: -10px;
-  border-radius: 18px;
+  inset: -8px;
+  border-radius: 16px;
   border: 2px solid var(--red);
   opacity: 0;
   pointer-events: none;
@@ -1190,32 +1157,26 @@ nav .container {
 
 @keyframes rungPulse {
   0%   { transform: scale(1); opacity: 1; }
-  100% { transform: scale(1.3); opacity: 0; }
+  100% { transform: scale(1.2); opacity: 0; }
 }
 
 /* ─── GENE EXPRESSION PANEL (member details) ─── */
 .gene-expression {
-  background: rgba(0,0,0,0.35);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-radius: 18px;
+  background: rgba(0,0,0,0.3);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 16px;
   border: 1px solid rgba(255,255,255,0.08);
   overflow: hidden;
   max-height: 0;
   opacity: 0;
-  transform: translateY(10px);
-  transition: max-height 0.5s cubic-bezier(0.23, 1, 0.32, 1),
-              opacity 0.5s ease,
-              padding 0.5s ease,
-              transform 0.5s ease;
+  transition: max-height 0.6s ease, opacity 0.6s ease, padding 0.6s ease;
   padding: 0 1.5rem;
   margin-bottom: 0;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
 }
 .gene-expression.gene-active {
-  max-height: 500px;
+  max-height: 400px;
   opacity: 1;
-  transform: translateY(0);
   padding: 1.5rem;
   margin-bottom: 2rem;
 }
@@ -1229,20 +1190,13 @@ nav .container {
 .gene-avatar {
   flex-shrink: 0;
 }
-.gene-avatar .gene-avatar-circle {
-  width: 90px;
-  height: 90px;
+.gene-avatar img {
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-heading);
-  font-weight: 800;
-  font-size: 2rem;
-  color: #fff;
+  object-fit: cover;
   border: 3px solid var(--red);
   box-shadow: 0 4px 16px rgba(222,29,22,0.3);
-  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
 .gene-info h3 {
@@ -1294,26 +1248,6 @@ nav .container {
 .gene-bond {
   font-size: 1.2rem;
   color: rgba(255,255,255,0.3);
-  transition: color 0.3s ease;
-}
-
-.gene-bond-count {
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  padding: 2px 6px;
-  border-radius: 10px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.08);
-  transition: all 0.3s ease;
-}
-.gene-bond-count.bond-count-2 {
-  color: rgba(230, 57, 70, 0.7);
-  border-color: rgba(230, 57, 70, 0.2);
-}
-.gene-bond-count.bond-count-3 {
-  color: rgba(42, 157, 143, 0.7);
-  border-color: rgba(42, 157, 143, 0.2);
 }
 
 .gene-bio {
@@ -1333,13 +1267,36 @@ nav .container {
   font-size: 1.1rem;
   color: var(--off-white);
   line-height: 1.7;
-  opacity: 0.8;
 }
-
 
 /* ═══════════════════════════════════════════════════
    RESPONSIVE
    ═══════════════════════════════════════════════════ */
+
+@media (max-width: 1050px) {
+  nav .container {
+    flex-wrap: wrap;
+  }
+
+  .nav-toggle {
+    display: block;
+  }
+
+  .nav-links {
+    display: none;
+    width: 100%;
+    max-height: calc(100vh - 4.5rem);
+    overflow-y: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 1rem 0 0.5rem;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+}
 
 @media (max-width: 900px) {
   .hero-grid {
@@ -1391,33 +1348,19 @@ nav .container {
     padding: 0.6rem 1rem;
   }
 
-  .dna-rung.helix-front .rung-member-card {
-    transform: translateX(8%) scale(1);
-  }
-  .dna-rung.helix-back .rung-member-card {
-    transform: translateX(-8%) scale(0.9);
-  }
-
   .rung-avatar {
-    width: 36px;
-    height: 36px;
-    font-size: 0.8rem;
-  }
-
-  .rung-base-badge {
-    width: 28px;
-    height: 28px;
-    font-size: 0.8rem;
+    width: 38px;
+    height: 38px;
   }
 
   .rung-name { font-size: 0.75rem; }
   .rung-role { font-size: 0.6rem; }
 
   .dna-end-label { font-size: 0.8rem; }
-  .dna-end-top-left { left: 2%; }
-  .dna-end-top-right { right: 2%; }
-  .dna-end-bottom-left { left: 2%; }
-  .dna-end-bottom-right { right: 2%; }
+  .dna-end-top-left { left: 1%; }
+  .dna-end-top-right { right: 1%; }
+  .dna-end-bottom-left { left: 1%; }
+  .dna-end-bottom-right { right: 1%; }
 }
 
 @media (max-width: 768px) {
@@ -1496,19 +1439,6 @@ nav .container {
   }
 
   /* DNA helix responsive */
-  .dna-backbone-left { left: 2%; width: 5px; }
-  .dna-backbone-right { right: 2%; width: 5px; }
-
-  .rung-base-left { left: 0; }
-  .rung-base-right { right: 0; }
-
-  .rung-base-ball {
-    width: 28px;
-    height: 28px;
-    font-size: 0.75rem;
-  }
-  .rung-base-label { display: none; }
-
   .rung-member-card {
     width: 180px;
     padding: 0.5rem 0.75rem;
@@ -1538,12 +1468,6 @@ nav .container {
 }
 
 @media (max-width: 480px) {
-  .rung-base-ball {
-    width: 22px;
-    height: 22px;
-    font-size: 0.6rem;
-    border-width: 1px;
-  }
   .rung-member-card {
     width: 130px;
     padding: 0.4rem 0.5rem;
@@ -1561,9 +1485,6 @@ nav .container {
     font-size: 0.8rem;
     padding: 0.5rem 1rem;
   }
-
-  .dna-backbone-left { left: 1%; width: 4px; }
-  .dna-backbone-right { right: 1%; width: 4px; }
 }
 
 /* ═══════════════════════════════════════════════════
@@ -1815,4 +1736,83 @@ footer p {
   font-size: 0.9rem;
   color: var(--red);
   letter-spacing: 0.08em;
+}
+
+
+.timeline-section {
+    margin: 60px 0;
+}
+.timeline-wrap {
+    position: relative;
+    width: 100%;
+    margin: 60px 0 40px;
+    display: flex;
+    justify-content: space-between;
+   align-items: flex-end;
+}
+
+.timeline-line {
+    position: absolute;
+    top: 48px;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background: linear-gradient(90deg, #f2c8c6 0%, #D83028 100%);
+    border-radius: 4px;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.timeline-line::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -40%;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+    animation: flow-forward 4s linear infinite;
+}
+@keyframes flow-forward {
+    0% { left: -40%; }
+    100% { left: 100%; }
+}
+
+.timeline-point {
+    position: relative;
+    width: 31%;
+    text-align: center;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.timeline-icon {
+    margin-bottom: 8px;
+}
+.timeline-icon img {
+    width: 48px;
+    height: auto;
+}
+
+.point-circle {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
+  border: 3px solid #D83028;
+  border-radius: 50%;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #D83028;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(216, 48, 40, 0.15);
+}
+.age-sub {
+    color: #D83028;
+    font-size: 18px;
+    margin: 6px 0;
 }

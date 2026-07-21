@@ -508,15 +508,15 @@ footer p{margin:0}
     <ul class="nav-links" id="navLinks">
       <li><a href="#home" class="nav-link">Home</a></li>
       <li><a href="#description" class="nav-link">Project</a></li>
-      <li><a href="#problem" class="nav-link">Problem</a></li>
-      <li><a href="#solution" class="nav-link">Solution</a></li>
+      <li><a href="problem.html" class="nav-link">Problem</a></li>
+      <li><a href="solution.html" class="nav-link">Solution</a></li>
       <li><a href="#engineering" class="nav-link">Engineering</a></li>
-      <li><a href="#results" class="nav-link">Results</a></li>
-      <li><a href="#hp" class="nav-link">HP</a></li>
+      <li><a href="results.html" class="nav-link">Results</a></li>
+      <li><a href="hp.html" class="nav-link">HP</a></li>
       <li><a href="#parts" class="nav-link">Parts</a></li>
       <li><a href="#notebook" class="nav-link">Notebook</a></li>
       <li><a href="#safety" class="nav-link">Safety</a></li>
-      <li><a href="#team" class="nav-link">Team</a></li>
+      <li><a href="team.html" class="nav-link">Team</a></li>
       <li><a href="#attributions" class="nav-link">Attributions</a></li>
     </ul>
   </div>
@@ -585,15 +585,15 @@ footer p{margin:0}
       <p class="reveal">Mr. Tanaka's story is just the beginning. Explore our research to see how synthetic biology is opening a new path forward.</p>
       <div class="nav-grid reveal">
         <a href="#description" class="nav-link"><span class="nav-grid-icon">📋</span>Project Description</a>
-        <a href="#problem" class="nav-link"><span class="nav-grid-icon">📊</span>The Problem</a>
-        <a href="#solution" class="nav-link"><span class="nav-grid-icon">🧬</span>Our Solution</a>
+        <a href="problem.html" class="nav-link"><span class="nav-grid-icon">📊</span>The Problem</a>
+        <a href="solution.html" class="nav-link"><span class="nav-grid-icon">🧬</span>Our Solution</a>
         <a href="#engineering" class="nav-link"><span class="nav-grid-icon">⚙️</span>Engineering</a>
-        <a href="#results" class="nav-link"><span class="nav-grid-icon">📈</span>The Evidence</a>
-        <a href="#hp" class="nav-link"><span class="nav-grid-icon">🤝</span>Human Practices</a>
+        <a href="results.html" class="nav-link"><span class="nav-grid-icon">📈</span>The Evidence</a>
+        <a href="hp.html" class="nav-link"><span class="nav-grid-icon">🤝</span>Human Practices</a>
         <a href="#parts" class="nav-link"><span class="nav-grid-icon">🧩</span>Parts</a>
         <a href="#notebook" class="nav-link"><span class="nav-grid-icon">📓</span>Notebook</a>
         <a href="#safety" class="nav-link"><span class="nav-grid-icon">🔬</span>Safety</a>
-        <a href="#team" class="nav-link"><span class="nav-grid-icon">👥</span>Our Team</a>
+        <a href="team.html" class="nav-link"><span class="nav-grid-icon">👥</span>Our Team</a>
         <a href="#attributions" class="nav-link"><span class="nav-grid-icon">📝</span>Attributions</a>
       </div>
     </div>
@@ -1501,8 +1501,22 @@ footer p{margin:0}
   // ══════════════════════════════════════════════════════
   var pages = document.querySelectorAll('.page');
   var navLinks = document.querySelectorAll('.nav-link');
+  var standalonePages = {
+    problem: 'problem.html',
+    solution: 'solution.html',
+    results: 'results.html',
+    hp: 'hp.html',
+    team: 'team.html'
+  };
 
   function showPage(hash) {
+    // Preserve old hash bookmarks/history for pages that are now standalone.
+    var route = hash ? hash.replace('#', '') : '';
+    if (standalonePages[route]) {
+      window.location.replace(standalonePages[route]);
+      return;
+    }
+
     if (!hash || hash === '#home') hash = 'home';
     else hash = hash.replace('#','');
 
@@ -1536,8 +1550,10 @@ footer p{margin:0}
   // Click handlers for nav links
   navLinks.forEach(function(link) {
     link.addEventListener('click', function(e) {
-      e.preventDefault();
       var href = this.getAttribute('href');
+      // Only the in-page routes should be handled by the hash router.
+      if (!href || href.charAt(0) !== '#') return;
+      e.preventDefault();
       window.location.hash = href;
     });
   });
