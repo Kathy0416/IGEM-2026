@@ -782,11 +782,25 @@ nav .container {
 /* ─── 3D BACKBONE STRANDS (rendered as absolutely positioned dots) ─── */
 .dna-backbone-dot {
   position: absolute;
-  top: 0;
-  bottom: 0;
   width: 6px;
+  height: 6px;
   border-radius: 3px;
-  z-index: 0;
+  z-index: 1;
+  pointer-events: none;
+  will-change: left, top, width, height, opacity;
+}
+
+/* Visible colors for the two animated backbone strands generated in main.js. */
+.dna-backbone-dot.strand-a {
+  background: #f4c95d;
+  box-shadow: 0 0 7px rgba(244, 201, 93, 0.95),
+              0 0 16px rgba(244, 201, 93, 0.55);
+}
+
+.dna-backbone-dot.strand-b {
+  background: #55d6c2;
+  box-shadow: 0 0 7px rgba(85, 214, 194, 0.95),
+              0 0 16px rgba(85, 214, 194, 0.55);
 }
 
 .dna-backbone-left {
