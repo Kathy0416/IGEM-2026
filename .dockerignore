@@ -1,7 +1,7 @@
-.git/
-.gitignore
-README.md
-*.md
-node_modules/
-Dockerfile
-.dockerignore
+.git
+.tmp-official-igem-template
+dist
+legacy-static
+node_modules
+npm-debug.log*
+yarn-error.log*
