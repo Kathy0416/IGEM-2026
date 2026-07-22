@@ -3,22 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
-  <title>The Problem – Strength Over Time</title>
-  <link rel="stylesheet" href="css/style.css?v=1.0">
+  <meta name="description" content="Explore how sarcopenia develops over time and why progressive muscle loss matters.">
+  <title>The Problem — Strength Over Time</title>
+  <link rel="stylesheet" href="css/style.css?v=2.0">
 </head>
-<body>
-
+<body class="problem-body">
   <nav role="navigation" aria-label="Main navigation">
     <div class="container">
       <div class="nav-logo">Strength <span>Over Time</span></div>
-      <button class="nav-toggle" aria-label="Toggle menu" id="navToggle">☰</button>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks" id="navToggle">☰</button>
       <ul class="nav-links" id="navLinks">
         <li><a href="index.html">Home</a></li>
         <li><a href="index.html#description">Project</a></li>
-        <li><a href="problem.html">Problem</a></li>
+        <li><a href="problem.html" aria-current="page">Problem</a></li>
         <li><a href="solution.html">Solution</a></li>
         <li><a href="index.html#engineering">Engineering</a></li>
         <li><a href="results.html">Results</a></li>
@@ -32,79 +29,148 @@
     </div>
   </nav>
 
-  <main>
-    <section id="problem" aria-label="The problem of sarcopenia" style="padding-top: 7rem;">
-      <div class="container">
-        <h2 class="section-title reveal">The Slow Fade of Strength</h2>
-        <p class="section-sub reveal">
-          Sarcopenia is a progressive loss of muscle mass and function that begins earlier than most realize.
-          By age 30, our muscles are at their peak — but by 50, the quiet decline has already begun, stealing
-          1–2% of our strength every year. Despite affecting hundreds of millions globally, it remains
-          vastly underdiagnosed and undertreated.
-        </p>
+  <main class="problem-page">
+    <section class="problem-hero" aria-labelledby="problem-title">
+      <div class="problem-hero__aurora" aria-hidden="true"></div>
+      <div class="problem-particles" id="problemParticles" aria-hidden="true"></div>
 
-           <div class="timeline-wrap">
-    
-    <div class="timeline-line"></div>
+      <svg class="problem-signal-field" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <linearGradient id="signal-up" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0" stop-color="#4de6ff" stop-opacity="0"></stop>
+            <stop offset=".34" stop-color="#74ecff" stop-opacity=".75"></stop>
+            <stop offset=".58" stop-color="#fff1a6" stop-opacity=".95"></stop>
+            <stop offset="1" stop-color="#60dfff" stop-opacity="0"></stop>
+          </linearGradient>
+          <linearGradient id="signal-down" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#b7deff" stop-opacity="0"></stop>
+            <stop offset=".48" stop-color="#c4e7ff" stop-opacity=".65"></stop>
+            <stop offset="1" stop-color="#fff1d4" stop-opacity="0"></stop>
+          </linearGradient>
+          <filter id="soft-glow" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="7" result="blur"></feGaussianBlur>
+            <feMerge><feMergeNode in="blur"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+          </filter>
+          <path id="up-path" d="M-80 860 C330 850 520 690 800 470 S1210 130 1690 50"></path>
+          <path id="down-path" d="M-90 110 C360 90 520 330 800 470 S1140 660 1690 870"></path>
+        </defs>
 
-   
-    <div class="timeline-point">
-        <div class="timeline-icon">
-            <img src="./assets/icons/muscle.svg" alt="muscle peak icon">
-        </div>
-        <div class="point-circle">30</div>
-        <h3>Peak Mass</h3>
-        <p class="age-sub">Age 30</p>
-        <p>Muscle mass reaches its natural peak. From this point onward, without intervention, a gradual decline in both fiber number and cross-sectional area begins.</p>
-    </div>
+        <g class="problem-signal-field__threads">
+          <use href="#up-path" transform="translate(0 -25)"></use>
+          <use href="#up-path" transform="translate(0 22)"></use>
+          <use href="#down-path" transform="translate(0 -18)"></use>
+          <use href="#down-path" transform="translate(0 24)"></use>
+          <path d="M-60 790 C370 550 380 190 720 390 S1150 890 1660 660"></path>
+          <path d="M-80 260 C390 340 520 680 850 470 S1250 100 1660 260"></path>
+        </g>
+        <use class="problem-signal-field__beam problem-signal-field__beam--up" href="#up-path"></use>
+        <use class="problem-signal-field__beam problem-signal-field__beam--down" href="#down-path"></use>
 
-    
-    <div class="timeline-point">
-        <div class="timeline-icon">
-            <img src="./assets/icons/decline-chart.svg" alt="muscle decline icon">
-        </div>
-        <div class="point-circle">50</div>
-        <h3>Onset</h3>
-        <p class="age-sub">Age 50</p>
-        <p>Gradual decline accelerates — 1–2% loss per year. Muscle protein synthesis slows while inflammatory cytokines like IL-6 and TNF-α begin to rise.</p>
-    </div>
+        <g class="problem-signal-field__signals" filter="url(#soft-glow)">
+          <circle r="5"><animateMotion dur="6.4s" begin="-0.2s" repeatCount="indefinite"><mpath href="#up-path"></mpath></animateMotion></circle>
+          <circle r="2.5"><animateMotion dur="7.1s" begin="-1.1s" repeatCount="indefinite"><mpath href="#up-path"></mpath></animateMotion></circle>
+          <circle r="3"><animateMotion dur="6.8s" begin="-2.0s" repeatCount="indefinite"><mpath href="#up-path"></mpath></animateMotion></circle>
+          <circle r="4"><animateMotion dur="7.7s" begin="-2.9s" repeatCount="indefinite"><mpath href="#up-path"></mpath></animateMotion></circle>
+          <circle r="2"><animateMotion dur="6.5s" begin="-3.8s" repeatCount="indefinite"><mpath href="#up-path"></mpath></animateMotion></circle>
+          <circle r="5"><animateMotion dur="8s" begin="-4.7s" repeatCount="indefinite"><mpath href="#up-path"></mpath></animateMotion></circle>
+          <circle r="2.5"><animateMotion dur="7.3s" begin="-5.6s" repeatCount="indefinite"><mpath href="#up-path"></mpath></animateMotion></circle>
+          <circle r="3"><animateMotion dur="6.9s" begin="-6.5s" repeatCount="indefinite"><mpath href="#up-path"></mpath></animateMotion></circle>
+          <circle r="4"><animateMotion dur="8.5s" begin="-.5s" repeatCount="indefinite"><mpath href="#down-path"></mpath></animateMotion></circle>
+          <circle r="2"><animateMotion dur="9.2s" begin="-1.8s" repeatCount="indefinite"><mpath href="#down-path"></mpath></animateMotion></circle>
+          <circle r="3"><animateMotion dur="8.8s" begin="-3.1s" repeatCount="indefinite"><mpath href="#down-path"></mpath></animateMotion></circle>
+          <circle r="2.5"><animateMotion dur="10s" begin="-4.4s" repeatCount="indefinite"><mpath href="#down-path"></mpath></animateMotion></circle>
+          <circle r="4"><animateMotion dur="9.5s" begin="-5.7s" repeatCount="indefinite"><mpath href="#down-path"></mpath></animateMotion></circle>
+          <circle r="2"><animateMotion dur="8.6s" begin="-7s" repeatCount="indefinite"><mpath href="#down-path"></mpath></animateMotion></circle>
+        </g>
+      </svg>
 
-    
-    <div class="timeline-point">
-        <div class="timeline-icon">
-            <img src="./assets/icons/elder-walk.svg" alt="elder mobility loss icon">
-        </div>
-        <div class="point-circle">70</div>
-        <h3>Debility</h3>
-        <p class="age-sub">Age 70</p>
-        <p>Significant functional impairment affects daily life. Loss of mobility, increased fall risk, and reduced independence become major quality-of-life concerns.</p>
-    </div>
-</div> 
-     
-        <div class="problem-stats reveal">
-          <div class="stat">
-            <strong>1 in 3</strong>
-            adults over 60 are affected by sarcopenia worldwide. That's over 200 million people — and the number is rising as the global population ages.
-          </div>
-          <div class="stat">
-            <strong>$40B+</strong>
-            annual healthcare burden in the US alone, driven by fall-related injuries, hospitalizations, and long-term care costs linked to muscle weakness.
-          </div>
-          <div class="stat">
-            <strong>67%</strong>
-            of patients remain undiagnosed until significant mobility loss has already occurred. Sarcopenia is often dismissed as "normal aging."
-          </div>
-        </div>
+      <div class="problem-hero__copy">
+        <p class="problem-kicker">The problem · Sarcopenia</p>
+        <h1 id="problem-title">Strength doesn't disappear <em>all at once.</em></h1>
+        <p>It fades through a chain of biological changes—quiet signals that accumulate until movement, resilience, and independence are at risk.</p>
+        <a class="problem-hero__link" href="#the-slow-fade">Trace the progression <span aria-hidden="true">↓</span></a>
       </div>
+
+      <div class="problem-node problem-node--early" aria-hidden="true">
+        <span class="problem-node__orbit"></span>
+        <svg viewBox="0 0 72 72" fill="none">
+          <circle cx="22" cy="15" r="5"></circle>
+          <path d="M22 22v18m0-12-8 10m8-8 9 7M22 40l-8 16m8-16 9 15"></path>
+          <path d="M43 22c15 7 15 23 0 30m14-30c-15 7-15 23 0 30M45 27h10m-13 8h18m-18 9h17m-13 7h9"></path>
+        </svg>
+        <small>Early signals</small>
+      </div>
+
+      <div class="problem-node problem-node--center" aria-hidden="true">
+        <span class="problem-node__orbit"></span>
+        <svg viewBox="0 0 72 72" fill="none">
+          <path d="M10 27c10 1 15-13 30-16-5 13-13 26-29 31 7-3 8-9 10-15"></path>
+          <path d="M42 31c17 7 17 23 2 29m15-29c-15 7-15 23 2 29M45 37h12m-15 8h20m-18 9h15"></path>
+          <circle cx="11" cy="50" r="2"></circle><circle cx="18" cy="55" r="2"></circle><path d="m13 51 4 3"></path>
+        </svg>
+        <small>Cellular shift</small>
+      </div>
+
+      <div class="problem-node problem-node--late" aria-hidden="true">
+        <span class="problem-node__orbit"></span>
+        <svg viewBox="0 0 72 72" fill="none">
+          <path d="M11 24c12 1 17-13 35-17-6 15-15 29-34 34 7-5 8-10 10-17"></path>
+          <circle cx="47" cy="43" r="3"></circle><circle cx="59" cy="34" r="3"></circle>
+          <circle cx="59" cy="53" r="3"></circle><circle cx="40" cy="57" r="3"></circle>
+          <path d="m49 41 8-5m-8 9 8 6m-12-5-4 8"></path>
+        </svg>
+        <small>Functional loss</small>
+      </div>
+    </section>
+
+    <section class="problem-story" id="the-slow-fade">
+      <div class="problem-story__intro problem-reveal">
+        <p class="problem-kicker">A slow, systemic change</p>
+        <h2>The slow fade of strength</h2>
+        <p>Sarcopenia is the progressive loss of muscle mass and function. Its biology unfolds over decades, while its consequences are often recognized only when ordinary actions become difficult.</p>
+      </div>
+
+      <div class="problem-progression" aria-label="Sarcopenia progression">
+        <div class="problem-progression__track" aria-hidden="true"></div>
+        <article class="problem-milestone problem-reveal" style="--order: 0">
+          <div class="problem-milestone__marker"><span>30</span></div>
+          <p class="problem-milestone__label">Peak</p>
+          <h3>Muscle at its strongest</h3>
+          <p>Muscle mass and function are near their natural peak. What follows is gradual, often invisible, and easy to overlook.</p>
+        </article>
+        <article class="problem-milestone problem-reveal" style="--order: 1">
+          <div class="problem-milestone__marker"><span>50</span></div>
+          <p class="problem-milestone__label">Shift</p>
+          <h3>The decline accelerates</h3>
+          <p>Reduced protein synthesis and changing inflammatory signals can begin to outpace the body’s ability to rebuild muscle.</p>
+        </article>
+        <article class="problem-milestone problem-reveal" style="--order: 2">
+          <div class="problem-milestone__marker"><span>70</span></div>
+          <p class="problem-milestone__label">Impact</p>
+          <h3>Strength becomes independence</h3>
+          <p>Loss of function can make movement harder, increase fall risk, and reshape the routines of everyday life.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="problem-impact">
+      <div class="problem-impact__heading problem-reveal">
+        <p class="problem-kicker">Why it matters</p>
+        <h2>A biological signal becomes a human burden.</h2>
+      </div>
+      <div class="problem-impact__grid">
+        <article class="problem-impact-card problem-reveal"><strong>1 in 3</strong><p>people over 60 may be affected</p></article>
+        <article class="problem-impact-card problem-reveal"><strong>$40B+</strong><p>estimated annual US healthcare burden</p></article>
+        <article class="problem-impact-card problem-reveal"><strong>67%</strong><p>may remain undiagnosed until mobility declines</p></article>
+      </div>
+      <p class="problem-page__verification-note problem-reveal">These figures are retained from the draft migration. Verify each scientific claim and add a primary-source citation before publication.</p>
     </section>
   </main>
 
   <footer>
-    <div class="container">
-      <p>iGEM 2026 – Strength Over Time</p>
-    </div>
+    <div class="container"><p>iGEM 2026 — Strength Over Time</p></div>
   </footer>
 
-  <script src="js/main.js?v=1.0"></script>
+  <script src="js/problem.js?v=2.0"></script>
 </body>
 </html>
