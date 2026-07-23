@@ -2321,6 +2321,166 @@ footer p {
   .problem-reveal { opacity: 1; transform: none; transition: none; }
 }
 
+/* Problem-page content aligned with the site's navy/red design system.
+   The signal-field hero and its 3D particle effects intentionally remain unchanged. */
+.problem-story {
+  background:
+    radial-gradient(circle at 88% 8%, rgba(222, 29, 22, 0.06), transparent 26%),
+    linear-gradient(rgba(18, 41, 92, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(18, 41, 92, 0.045) 1px, transparent 1px),
+    var(--off-white);
+  background-size: 42px 42px;
+}
+
+.problem-story > .problem-story__intro .problem-kicker {
+  color: var(--red);
+}
+
+.problem-story h2,
+.problem-impact h2 {
+  color: var(--navy);
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+}
+
+.problem-story h2::after,
+.problem-impact h2::after {
+  display: block;
+  width: 60px;
+  height: 3px;
+  margin-top: 1.2rem;
+  background: var(--red);
+  content: '';
+}
+
+.problem-story__intro > p:last-child {
+  color: #3f4d62;
+  font-family: var(--font-heading);
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  font-weight: 200;
+  line-height: 1.75;
+}
+
+.problem-progression__track {
+  height: 6px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #f2c8c6 0%, var(--red) 100%);
+}
+
+.problem-progression__track::after {
+  top: 0;
+  left: -35%;
+  width: 35%;
+  height: 100%;
+  border-radius: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.82), transparent);
+  box-shadow: none;
+  animation: problem-red-track 5s ease-in-out infinite;
+}
+
+.problem-milestone {
+  padding: 1.5rem;
+  border: 1px solid rgba(18, 41, 92, 0.1);
+  border-radius: var(--glass-radius);
+  background: rgba(255, 255, 255, 0.66);
+  box-shadow: 0 12px 35px rgba(18, 41, 92, 0.07);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+}
+
+.problem-milestone__marker {
+  border: 3px solid var(--red);
+  background: #fff;
+  box-shadow:
+    0 0 0 9px var(--off-white),
+    0 5px 16px rgba(222, 29, 22, 0.18);
+}
+
+.problem-milestone__marker span {
+  color: var(--red);
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  font-weight: 800;
+}
+
+.problem-milestone__label {
+  color: var(--red);
+}
+
+.problem-milestone h3 {
+  color: var(--navy);
+  font-family: var(--font-heading);
+}
+
+.problem-milestone > p:last-child {
+  color: #4a5363;
+}
+
+.problem-impact {
+  background:
+    radial-gradient(circle at 80% 10%, rgba(222, 29, 22, 0.12), transparent 30%),
+    var(--navy);
+}
+
+.problem-impact::before {
+  background: linear-gradient(115deg, transparent 0 58%, rgba(255, 255, 255, 0.035) 58.2% 58.4%, transparent 58.6%);
+}
+
+.problem-impact .problem-kicker {
+  color: #ff7772;
+}
+
+.problem-impact h2 {
+  color: #fff;
+}
+
+.problem-impact__grid {
+  gap: 1.5rem;
+  background: transparent;
+}
+
+.problem-impact-card {
+  border: 1px solid var(--glass-dark-border);
+  border-radius: var(--glass-radius);
+  background: var(--glass-dark);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.17);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+}
+
+.problem-impact-card strong {
+  color: #ff5a54;
+  font-family: var(--font-heading);
+  font-size: clamp(2.6rem, 5vw, 4.8rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+}
+
+.problem-page__verification-note {
+  border-left: 3px solid var(--red);
+  background: rgba(222, 29, 22, 0.08);
+}
+
+@keyframes problem-red-track {
+  0%, 10% { left: -35%; opacity: 0; }
+  20%, 80% { opacity: 1; }
+  90%, 100% { left: 100%; opacity: 0; }
+}
+
+@media (max-width: 700px) {
+  .problem-progression__track {
+    background: linear-gradient(transparent, var(--red) 8% 92%, transparent);
+  }
+
+  .problem-milestone {
+    padding-left: 7.5rem;
+  }
+}
+
 .point-circle {
   width: 64px;
   height: 64px;
