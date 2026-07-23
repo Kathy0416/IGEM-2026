@@ -1,0 +1,13 @@
+# Local dependency installs
+/node_modules/
+
+# Generated build output
+/dist/
+
+# Local browser-rendering artifacts
+/.chrome-*/
+/*-check.png
+
+# Editor and operating-system files
+.DS_Store
+Thumbs.db
