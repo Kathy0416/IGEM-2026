@@ -3,10 +3,11 @@ import react from "@vitejs/plugin-react";
 import { stringToSlug } from "./src/utils/stringToSlug";
 
 // https://vitejs.dev/config/
-export default () => {
-  const env = loadEnv("dev", process.cwd());
+export default ({ mode }: { mode: string }) => {
+  const env = loadEnv(mode, process.cwd());
+  const teamName = env.VITE_TEAM_NAME || "Worldshaper-Nanjing";
   return defineConfig({
-    base: `/${stringToSlug(env.VITE_TEAM_NAME)}/`,
+    base: `/${stringToSlug(teamName)}/`,
     plugins: [react()],
   });
 };

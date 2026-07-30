@@ -1,39 +1,69 @@
-import { Inspirations, InspirationLink } from "../components/Inspirations";
+import {
+  ContentNotice,
+  InfoCard,
+  PageSection,
+  ResponsiveTable,
+} from "../components/ContentBlocks";
 
 export function Experiments() {
-  const links: InspirationLink[] = [
-    { year: 2025, teamName: "Heidelberg", pageName: "experiments" },
-    { year: 2025, teamName: "McGill", pageName: "experiments" },
-    { year: 2025, teamName: "EPFL", pageName: "experiments" },
-  ];
-
   return (
     <>
-      <div className="row mt-4">
-        <div className="col-lg-8">
-          <h2>What Should this Page Contain?</h2>
-          <hr />
-          <p>
-            Provide comprehensive, step-by-step protocols for all experiments
-            conducted. Include a list of materials, reagents, and equipment
-            used. Specify concentrations, volumes, incubation times,
-            temperatures, and other critical parameters. Document any
-            modifications or optimizations made to standard protocols.
-          </p>
-          <p>
-            Explain the purpose of each experiment and its relevance to your
-            project goals. Describe the experimental design, including controls
-            and replicates. Provide a clear rationale for the chosen methods and
-            approaches.
-          </p>
-          <p>
-            Document any troubleshooting steps taken and optimizations made
-            during the experimental process. Share any lessons learned that
-            could benefit future teams.
-          </p>
+      <ContentNotice title="Protocols must reflect work actually performed">
+        Add versioned, reproducible protocols only after the team confirms the
+        materials, equipment, conditions, controls, and safety requirements.
+      </ContentNotice>
+
+      <PageSection
+        eyebrow="Protocol index"
+        title="Experiments and methods"
+        intro="Each protocol will receive a stable identifier so results and notebook entries can link back to the exact method used."
+      >
+        <div className="card-grid card-grid--three">
+          <InfoCard number="EXP-01" title="Construct preparation">
+            <p>[TEAM CONTENT REQUIRED] Purpose, version, and status.</p>
+          </InfoCard>
+          <InfoCard number="EXP-02" title="System characterization">
+            <p>[TEAM CONTENT REQUIRED] Purpose, version, and status.</p>
+          </InfoCard>
+          <InfoCard number="EXP-03" title="Functional evaluation">
+            <p>[TEAM CONTENT REQUIRED] Purpose, version, and status.</p>
+          </InfoCard>
         </div>
-        <Inspirations inspirationLinkList={links} />
-      </div>
+      </PageSection>
+
+      <PageSection eyebrow="Reproducibility" title="Protocol record" tone="tint">
+        <ResponsiveTable
+          caption="Experiment protocol register"
+          headers={["ID", "Materials", "Controls", "Output", "Safety reference"]}
+          rows={[
+            [
+              "EXP-01",
+              "[TEAM CONTENT REQUIRED]",
+              "[TEAM CONTENT REQUIRED]",
+              "[TEAM CONTENT REQUIRED]",
+              "[TEAM CONTENT REQUIRED]",
+            ],
+            [
+              "EXP-02",
+              "[TEAM CONTENT REQUIRED]",
+              "[TEAM CONTENT REQUIRED]",
+              "[TEAM CONTENT REQUIRED]",
+              "[TEAM CONTENT REQUIRED]",
+            ],
+          ]}
+        />
+      </PageSection>
+
+      <PageSection eyebrow="Documentation" title="What every protocol must include">
+        <ul className="check-list">
+          <li>Version, date, author, and linked notebook entry</li>
+          <li>Materials with suppliers or Registry identifiers where relevant</li>
+          <li>Step-by-step method with units, timings, and conditions</li>
+          <li>Positive, negative, and process controls</li>
+          <li>Data-processing method and predefined evaluation criteria</li>
+          <li>Risk assessment, waste handling, and approval references</li>
+        </ul>
+      </PageSection>
     </>
   );
 }

@@ -1,54 +1,84 @@
-import { Inspirations, InspirationLink } from "../components/Inspirations";
+import {
+  ContentNotice,
+  FigurePlaceholder,
+  InfoCard,
+  PageSection,
+  ResponsiveTable,
+} from "../components/ContentBlocks";
 
 export function Results() {
-  const links: InspirationLink[] = [
-    { year: 2025, teamName: "Heidelberg", pageName: "results" },
-    { year: 2025, teamName: "McGill", pageName: "results" },
-    { year: 2025, teamName: "EPFL", pageName: "results" },
-    { year: 2025, teamName: "Marburg", pageName: "results" },
-    { year: 2025, teamName: "Munich", pageName: "results" },
-    { year: 2025, teamName: "Freiburg", pageName: "results" },
-  ];
-
   return (
     <>
-      <div className="row mt-4">
-        <div className="col-lg-8">
-          <h2>What Should this Page Contain?</h2>
-          <hr />
-          <ul>
-            <li>
-              Clearly and objectively describe the results of your experiments
-              and research.
-            </li>
-            <li>Use tables, graphs, and images to visualize your data.</li>
-            <li>
-              Discuss the implications of your findings in the context of your
-              project goals.
-            </li>
-            <li>
-              Highlight any trends, patterns, or significant observations.
-            </li>
-            <li>
-              Include an analysis summary section to synthesize your findings
-              and discuss their overall significance.
-            </li>
-            <li>
-              Outline your future plans for the project, including potential
-              applications, further research, and development.
-            </li>
-            <li>
-              Explain what went wrong and what you learned from these
-              experiences.
-            </li>
-            <li>Discuss potential improvements or alternative approaches.</li>
-            <li>
-              Emphasize the importance of scientific honesty and transparency.
-            </li>
-          </ul>
+      <ContentNotice title="No experimental results have been entered">
+        The previous site&apos;s numerical outcomes were illustrative and have
+        been removed. Add only team-generated data with controls, sample sizes,
+        analysis methods, uncertainty, and raw-data provenance.
+      </ContentNotice>
+
+      <PageSection
+        eyebrow="Evidence"
+        title="Results at a glance"
+        intro="This summary will report what was measured and what the evidence supports—without turning expectations into conclusions."
+      >
+        <div className="card-grid card-grid--three">
+          <InfoCard title="Build verification">
+            <p>[TEAM CONTENT REQUIRED] Method, outcome, and evidence link.</p>
+          </InfoCard>
+          <InfoCard title="Characterization">
+            <p>[TEAM CONTENT REQUIRED] Measurement, controls, and uncertainty.</p>
+          </InfoCard>
+          <InfoCard title="Functional test">
+            <p>[TEAM CONTENT REQUIRED] Outcome and limits of interpretation.</p>
+          </InfoCard>
         </div>
-        <Inspirations inspirationLinkList={links} />
-      </div>
+      </PageSection>
+
+      <PageSection eyebrow="Data" title="Figures and analysis" tone="tint">
+        <div className="figure-grid">
+          <FigurePlaceholder
+            title="Primary result"
+            description="Include axes, units, sample size, error definition, statistical method, and a complete caption."
+          />
+          <FigurePlaceholder
+            title="Control comparison"
+            description="Show the controls needed to interpret the primary result and link the underlying data."
+          />
+        </div>
+      </PageSection>
+
+      <PageSection eyebrow="Interpretation" title="Claims mapped to evidence">
+        <ResponsiveTable
+          caption="Result interpretation register"
+          headers={["Observation", "Evidence", "Supported conclusion", "Limitation"]}
+          rows={[
+            [
+              "[TEAM CONTENT REQUIRED]",
+              "[TEAM CONTENT REQUIRED]",
+              "[TEAM CONTENT REQUIRED]",
+              "[TEAM CONTENT REQUIRED]",
+            ],
+            [
+              "[TEAM CONTENT REQUIRED]",
+              "[TEAM CONTENT REQUIRED]",
+              "[TEAM CONTENT REQUIRED]",
+              "[TEAM CONTENT REQUIRED]",
+            ],
+          ]}
+        />
+      </PageSection>
+
+      <PageSection eyebrow="Reflection" title="What failed and what comes next">
+        <div className="claim-boundary">
+          <div>
+            <h3>Unexpected or negative results</h3>
+            <p>[TEAM CONTENT REQUIRED] Report honestly and connect to learning.</p>
+          </div>
+          <div>
+            <h3>Next experiment</h3>
+            <p>[TEAM CONTENT REQUIRED] State the next test and why it matters.</p>
+          </div>
+        </div>
+      </PageSection>
     </>
   );
 }

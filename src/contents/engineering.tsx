@@ -1,60 +1,104 @@
+import {
+  ContentNotice,
+  PageSection,
+  ResponsiveTable,
+  Timeline,
+} from "../components/ContentBlocks";
+
+const cycleStages = [
+  {
+    label: "Design",
+    title: "Define the requirement",
+    body: (
+      <p>
+        [TEAM CONTENT REQUIRED] State the problem, constraints, proposed design,
+        and expected performance before building.
+      </p>
+    ),
+  },
+  {
+    label: "Build",
+    title: "Create the testable system",
+    body: (
+      <p>
+        [TEAM CONTENT REQUIRED] Record parts, methods, assembly evidence,
+        deviations, and Registry identifiers.
+      </p>
+    ),
+  },
+  {
+    label: "Test",
+    title: "Measure against controls",
+    body: (
+      <p>
+        [TEAM CONTENT REQUIRED] Provide raw-data links, controls, replicates,
+        analysis methods, and uncertainties.
+      </p>
+    ),
+  },
+  {
+    label: "Learn",
+    title: "Use evidence to change the next design",
+    body: (
+      <p>
+        [TEAM CONTENT REQUIRED] Explain what worked, what failed, and the exact
+        design change that follows.
+      </p>
+    ),
+  },
+];
+
 export function Engineering() {
   return (
     <>
-      <div className="row mt-4">
-        <div className="col">
-          <div className="bd-callout bd-callout-info">
-            <h4>Silver Medal Criterion #1</h4>
-            <p>
-              Demonstrate engineering success in a technical aspect of your
-              project by going through at least one iteration of the engineering
-              design cycle.
-            </p>
-            <hr />
-            <p>
-              Visit the{" "}
-              <a href="https://competition.igem.org/judging/awards/medals">
-                Medals page
-              </a>{" "}
-              for more information.
-            </p>
-          </div>
-        </div>
-      </div>
+      <ContentNotice title="Engineering evidence has not yet been supplied">
+        This standard URL is ready for the team&apos;s real Design–Build–Test–Learn
+        record. Add at least one complete iteration and connect the learning to
+        a subsequent design decision.
+      </ContentNotice>
 
-      <div className="row mt-4">
-        <div className="col">
-          <h2>Tips for Success</h2>
-          <hr />
+      <PageSection
+        eyebrow="Cycle 01"
+        title="Engineering design cycle"
+        intro="Each stage should be documented with dates, responsible team members, evidence, and links to the relevant experiment or Registry page."
+      >
+        <Timeline items={cycleStages} />
+      </PageSection>
+
+      <PageSection
+        eyebrow="Traceability"
+        title="Decision and evidence register"
+        tone="tint"
+      >
+        <ResponsiveTable
+          caption="Engineering decision register"
+          headers={["Iteration", "Decision", "Evidence used", "Resulting change"]}
+          rows={[
+            [
+              "Cycle 01",
+              "[TEAM CONTENT REQUIRED]",
+              "[TEAM CONTENT REQUIRED]",
+              "[TEAM CONTENT REQUIRED]",
+            ],
+            [
+              "Cycle 02",
+              "[TEAM CONTENT REQUIRED]",
+              "[TEAM CONTENT REQUIRED]",
+              "[TEAM CONTENT REQUIRED]",
+            ],
+          ]}
+        />
+      </PageSection>
+
+      <PageSection eyebrow="Next iteration" title="What the team will change">
+        <div className="focus-statement">
           <p>
-            Engineering success can be achieved by documenting your effort to
-            follow the engineering design cycle: Design → Build → Test → Learn
-          </p>
-          <p>
-            We invite you to think about ways to tackle and solve one or more of
-            your project's problems and use synthetic biology tools and/or
-            experimental techniques to generate expected results.
-          </p>
-          <p>
-            When you have completed the cycle once, think about and document
-            what changes in design you would make for the next iteration(s) of
-            the cycle.
-          </p>
-          <p>
-            For example, you can design and build a new Part, measure its
-            performance, document whether it worked or not, and propose how the
-            results would inform the next design or steps (documentation must be
-            on the Part's Pages on the Registry).
-          </p>
-          <p>
-            Visit the{" "}
-            <a href="https://technology.igem.org/engineering" target="_blank">
-              Engineering pages
-            </a>{" "}
-            for additional guidance on engineering success.
+            [TEAM CONTENT REQUIRED] Summarize the evidence-based next design.
+            If no second build was completed, state what would be changed and
+            why rather than claiming an unperformed iteration.
           </p>
         </div>
-      </div>
+      </PageSection>
     </>
   );
 }

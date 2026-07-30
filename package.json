@@ -1,6 +1,6 @@
 {
-  "name": "team-slug",
-  "version": "0.0.1",
+  "name": "worldshaper-nanjing-igem-2026-wiki",
+  "version": "1.0.0",
   "license": "CC-BY-4.0",
   "packageManager": "yarn@1.22.22",
   "type": "module",
@@ -8,6 +8,9 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --max-warnings 0",
+    "audit:compliance": "node scripts/compliance-audit.mjs",
+    "audit:strict": "node scripts/compliance-audit.mjs --strict",
+    "verify": "yarn lint && yarn audit:compliance && yarn build",
     "format": "prettier --write \"**/*.{ts,tsx,md,json,css}\"",
     "preview": "vite preview"
   },

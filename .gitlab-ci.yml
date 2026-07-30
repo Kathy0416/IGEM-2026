@@ -13,6 +13,7 @@ pages:
     - echo 'yarn-offline-mirror-pruning true' >> .yarnrc
     - yarn install --frozen-lockfile
   script:
+    - yarn audit:compliance
     - yarn build
     - cp -a dist/. public/
     - echo '/* /index.html 200' > public/_redirects

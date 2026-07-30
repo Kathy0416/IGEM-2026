@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { stringToSlug } from "../utils";
 
 export function Footer() {
@@ -6,73 +7,69 @@ export function Footer() {
   const teamSlug = stringToSlug(teamName);
 
   return (
-    <footer className="pt-5 pb-5 footer py-5 mt-5 bg-dark text-white">
-      <div className="container">
-        <div className="row mb-4">
-          <div className="col-lg-6 col-xs-12">
-            <h4 className="mb-3">Heading</h4>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac
-              ante mollis quam tristique convallis
+    <footer className="site-footer">
+      <div className="site-container">
+        <div className="site-footer__top">
+          <div>
+            <p className="eyebrow">Worldshaper-Nanjing · iGEM 2026</p>
+            <h2>Strength is built through iteration.</h2>
+            <p className="site-footer__summary">
+              This wiki is being developed as an honest, reproducible record of
+              our team&apos;s work. Draft fields are clearly marked until the
+              team provides verified content.
             </p>
           </div>
-          <div className="col-lg-3 col-xs-12">
-            <h4 className="mt-lg-0 mt-sm-3">Links</h4>
-            <ul className="m-2 p-2">
+          <div>
+            <h3>Key pages</h3>
+            <ul className="footer-links">
               <li>
-                <a href="#">Lorem ipsum</a>
+                <Link to="/engineering">Engineering</Link>
               </li>
               <li>
-                <a href="#">Nam mauris velit</a>
+                <Link to="/human-practices">Human Practices</Link>
               </li>
               <li>
-                <a href="#">Etiam vitae mauris</a>
+                <Link to="/contribution">Contribution</Link>
               </li>
               <li>
-                <a href="#">Fusce scelerisque</a>
-              </li>
-              <li>
-                <a href="#">Sed faucibus</a>
-              </li>
-              <li>
-                <a href="#">Mauris efficitur nulla</a>
+                <Link to="/safety-and-security">Safety</Link>
               </li>
             </ul>
           </div>
-          <div className="col-lg-3 col-xs-12">
-            <h4 className="mt-lg-0 mt-sm-4 mb-3">Contact</h4>
-            <p>22, Lorem ipsum dolor, consectetur adipiscing</p>
-            <p className="mb-0">(541) 754-3010</p>
-            <p>info@hsdf.com</p>
+          <div>
+            <h3>Official resources</h3>
+            <ul className="footer-links">
+              <li>
+                <a href="https://competition.igem.org/about/rules-and-policies">
+                  Rules and policies
+                </a>
+              </li>
+              <li>
+                <a href="https://competition.igem.org/judging/medals">
+                  Medal criteria
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
-        <hr />
-        {/* The following MUST be on every page: license information and link to the repository on gitlab.igem.org */}
-        <div className="row mt-4">
-          <div className="col">
-            <p className="mb-0">
-              <small>
-                © {teamYear} - Content on this site is licensed under a{" "}
-                <a
-                  className="subfoot"
-                  href="https://creativecommons.org/licenses/by/4.0/"
-                  rel="license"
-                >
-                  Creative Commons Attribution 4.0 International license
-                </a>
-                .
-              </small>
-            </p>
-            <p>
-              <small>
-                The repository used to create this website is available at{" "}
-                <a href={`https://gitlab.igem.org/${teamYear}/${teamSlug}`}>
-                  gitlab.igem.org/{teamYear}/{teamSlug}
-                </a>
-                .
-              </small>
-            </p>
-          </div>
+        <div className="site-footer__legal">
+          <p>
+            © {teamYear} Worldshaper-Nanjing. Content is licensed under a{" "}
+            <a
+              href="https://creativecommons.org/licenses/by/4.0/"
+              rel="license"
+            >
+              Creative Commons Attribution 4.0 International license
+            </a>
+            .
+          </p>
+          <p>
+            The source repository for this wiki will be available at{" "}
+            <a href={`https://gitlab.igem.org/${teamYear}/${teamSlug}`}>
+              gitlab.igem.org/{teamYear}/{teamSlug}
+            </a>
+            . The official repository has not yet been connected.
+          </p>
         </div>
       </div>
     </footer>

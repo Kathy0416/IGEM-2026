@@ -1,42 +1,67 @@
-import { Inspirations, InspirationLink } from "../components/Inspirations";
+import {
+  ContentNotice,
+  PageSection,
+  ResponsiveTable,
+  Timeline,
+} from "../components/ContentBlocks";
 
 export function Notebook() {
-  const links: InspirationLink[] = [
-    { year: 2025, teamName: "EPFL", pageName: "notebook" },
-    { year: 2025, teamName: "WageningenUR", pageName: "notebook" },
-    { year: 2024, teamName: "JU-Krakow", pageName: "notebook" },
-  ];
-
   return (
     <>
-      <div className="row mt-4">
-        <div className="col-lg-8">
-          <h2>What Should this Page Contain?</h2>
-          <hr />
-          <ul>
-            <li>
-              Record all activities in chronological order, with each entry
-              clearly dated.
-            </li>
-            <li>Provide sufficient detail for each activity, including:</li>
-            <ul>
-              <li>Purpose of the activity.</li>
-              <li>Methods and procedures used.</li>
-              <li>Results obtained.</li>
-              <li>Observations and notes.</li>
-            </ul>
-            <li>
-              Document all experiments, protocols, data analysis, meetings,
-              brainstorming sessions, and other project-related activities.
-            </li>
-            <li>
-              Include photos, videos, and diagrams to illustrate your progress.
-            </li>
-            <li>Indicate which team members participated in each activity.</li>
-          </ul>
-        </div>
-        <Inspirations inspirationLinkList={links} />
-      </div>
+      <ContentNotice title="Chronology awaiting laboratory records">
+        This is intentionally a readable chronological activity log. Add dated
+        entries from the team&apos;s actual notebook and link each technical
+        entry to its protocol, data, and engineering cycle.
+      </ContentNotice>
+
+      <PageSection
+        eyebrow="Season record"
+        title="Decisions over time"
+        intro="Entries should document decisions and setbacks as carefully as successful work."
+      >
+        <Timeline
+          items={[
+            {
+              label: "Date required",
+              title: "Project definition",
+              body: <p>[TEAM CONTENT REQUIRED] Decision, participants, and evidence.</p>,
+            },
+            {
+              label: "Date required",
+              title: "First technical milestone",
+              body: <p>[TEAM CONTENT REQUIRED] Work completed, observations, and files.</p>,
+            },
+            {
+              label: "Date required",
+              title: "Learning and revision",
+              body: <p>[TEAM CONTENT REQUIRED] What changed and where it is documented.</p>,
+            },
+          ]}
+        />
+      </PageSection>
+
+      <PageSection eyebrow="Index" title="Notebook entry register" tone="tint">
+        <ResponsiveTable
+          caption="Notebook entries"
+          headers={["Date", "Area", "Activity", "Outcome", "Linked evidence"]}
+          rows={[
+            [
+              "[TEAM CONTENT REQUIRED]",
+              "[TEAM CONTENT REQUIRED]",
+              "[TEAM CONTENT REQUIRED]",
+              "[TEAM CONTENT REQUIRED]",
+              "[TEAM CONTENT REQUIRED]",
+            ],
+            [
+              "[TEAM CONTENT REQUIRED]",
+              "[TEAM CONTENT REQUIRED]",
+              "[TEAM CONTENT REQUIRED]",
+              "[TEAM CONTENT REQUIRED]",
+              "[TEAM CONTENT REQUIRED]",
+            ],
+          ]}
+        />
+      </PageSection>
     </>
   );
 }

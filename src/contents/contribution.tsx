@@ -1,58 +1,69 @@
+import {
+  ContentNotice,
+  InfoCard,
+  PageSection,
+  ResponsiveTable,
+} from "../components/ContentBlocks";
+
 export function Contribution() {
   return (
     <>
-      <div className="row mt-4">
-        <div className="col">
-          <div className="bd-callout bd-callout-info">
-            <h4>Bronze Medal Criterion #3</h4>
-            <p>
-              Make a useful contribution for future iGEM teams and document it
-              on this page.
-            </p>
-            <hr />
-            <p>
-              Visit the{" "}
-              <a href="https://competition.igem.org/judging/awards/medals">
-                Medals page
-              </a>{" "}
-              for more information.
-            </p>
-          </div>
-        </div>
-      </div>
+      <ContentNotice title="Contribution deliverables awaiting completion">
+        Describe only resources the team has actually produced and made
+        accessible. Explain who can use each contribution, where it is hosted,
+        how it was validated, and what license applies.
+      </ContentNotice>
 
-      <div className="row mt-4">
-        <div className="col">
-          <h2>What Should this Page Contain?</h2>
-          <hr />
-          <p>
-            Teams must document their contribution and explain why their effort
-            is a contribution to fellow iGEMers. There is no single definition
-            of what a contribution should be. We invite teams to be creative and
-            generous in the knowledge, data or tools they may provide to the
-            community.
-          </p>
-          <p>A few examples of contributions are:</p>
-          <ul>
-            <li>
-              Creating a new BioBrick part or significantly improving an
-              existing one in the iGEM Registry.
-            </li>
-            <li>
-              Developing software, tools, or resources that can considerably
-              assist future iGEM teams.
-            </li>
-            <li>
-              Sharing optimized protocols, experimental techniques, or
-              methodologies.
-            </li>
-            <li>
-              Any other contributions that provide a clear benefit to future
-              iGEM teams.
-            </li>
-          </ul>
+      <PageSection
+        eyebrow="For future teams"
+        title="Useful, documented, reusable"
+        intro="A contribution should help others do something more effectively—not simply repeat a summary of our project."
+      >
+        <div className="card-grid card-grid--three">
+          <InfoCard title="Resource">
+            <p>[TEAM CONTENT REQUIRED] Protocol, part documentation, dataset, tool, or guidance.</p>
+          </InfoCard>
+          <InfoCard title="Evidence of usefulness">
+            <p>[TEAM CONTENT REQUIRED] Testing, feedback, comparison, or demonstrated reuse.</p>
+          </InfoCard>
+          <InfoCard title="Access">
+            <p>[TEAM CONTENT REQUIRED] Stable link, file format, license, and instructions.</p>
+          </InfoCard>
         </div>
-      </div>
+      </PageSection>
+
+      <PageSection eyebrow="Contribution index" title="What we are sharing" tone="tint">
+        <ResponsiveTable
+          caption="Team contributions"
+          headers={["Contribution", "Intended user", "Validation", "Access", "License"]}
+          rows={[
+            [
+              "[TEAM CONTENT REQUIRED]",
+              "[TEAM CONTENT REQUIRED]",
+              "[TEAM CONTENT REQUIRED]",
+              "[TEAM CONTENT REQUIRED]",
+              "[TEAM CONTENT REQUIRED]",
+            ],
+            [
+              "[TEAM CONTENT REQUIRED]",
+              "[TEAM CONTENT REQUIRED]",
+              "[TEAM CONTENT REQUIRED]",
+              "[TEAM CONTENT REQUIRED]",
+              "[TEAM CONTENT REQUIRED]",
+            ],
+          ]}
+        />
+      </PageSection>
+
+      <PageSection eyebrow="Reproducibility" title="How another team can build on it">
+        <div className="focus-statement">
+          <p>
+            [TEAM CONTENT REQUIRED] Provide complete instructions, prerequisites,
+            known limitations, version information, and a contact or issue
+            process that does not expose personal information.
+          </p>
+        </div>
+      </PageSection>
     </>
   );
 }

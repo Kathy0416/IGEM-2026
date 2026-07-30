@@ -1,94 +1,92 @@
-import { Inspirations, InspirationLink } from "../components/Inspirations";
+import {
+  CitationList,
+  ContentNotice,
+  FigurePlaceholder,
+  InfoCard,
+  PageSection,
+} from "../components/ContentBlocks";
 
 export function Description() {
-  const links: InspirationLink[] = [
-    { year: 2025, teamName: "Heidelberg", pageName: "description" },
-    { year: 2025, teamName: "McGill", pageName: "description" },
-    { year: 2025, teamName: "IZJU-China", pageName: "description" },
-    { year: 2025, teamName: "GreatBay-SCIE", pageName: "description" },
-    { year: 2024, teamName: "Marburg", pageName: "description" },
-    { year: 2024, teamName: "EPFL", pageName: "description" },
-  ];
-
   return (
     <>
-      <div className="row mt-4">
-        <div className="col">
-          <div className="bd-callout bd-callout-info">
-            <h4>Bronze Medal Criterion #1: Wiki</h4>
-            <p>Describe how and why you chose your iGEM project.</p>
-            <hr />
+      <ContentNotice title="Project description awaiting team verification">
+        Add the team-approved project title, abstract, motivation, scope, and
+        primary literature. Do not reuse claims or numbers from the former
+        static website without verification.
+      </ContentNotice>
+
+      <PageSection
+        eyebrow="Context"
+        title="Why this project?"
+        intro="Worldshaper-Nanjing is investigating whether synthetic biology can contribute to the broader challenge of maintaining muscle health with age."
+      >
+        <div className="split-layout">
+          <div className="prose">
             <p>
-              Visit the{" "}
-              <a href="https://competition.igem.org/judging/awards/medals">
-                Medals page
-              </a>{" "}
-              for more information.
+              The final description should begin with the real-world context,
+              narrow to the biological problem, and explain why the team chose
+              this question. It should clearly distinguish established
+              literature from the team&apos;s own hypotheses.
+            </p>
+            <p>
+              Every scientific statement, prevalence estimate, mechanism, and
+              prior result must be linked to a traceable source in the
+              references section.
+            </p>
+          </div>
+          <FigurePlaceholder
+            title="Project overview figure"
+            description="Upload a team-created, licensed diagram through the iGEM uploads tool and describe what each element represents."
+          />
+        </div>
+      </PageSection>
+
+      <PageSection eyebrow="Definition" title="Project objectives" tone="tint">
+        <div className="card-grid card-grid--three">
+          <InfoCard number="01" title="Research question">
+            <p>[TEAM CONTENT REQUIRED] State the precise biological question.</p>
+          </InfoCard>
+          <InfoCard number="02" title="Technical objective">
+            <p>[TEAM CONTENT REQUIRED] Define what the team plans to design and test.</p>
+          </InfoCard>
+          <InfoCard number="03" title="Responsible outcome">
+            <p>[TEAM CONTENT REQUIRED] Describe intended users, limits, and context.</p>
+          </InfoCard>
+        </div>
+      </PageSection>
+
+      <PageSection eyebrow="Boundaries" title="What is—and is not—being claimed">
+        <div className="claim-boundary">
+          <div>
+            <h3>Current project status</h3>
+            <p>
+              [TEAM CONTENT REQUIRED] Describe completed work using precise
+              language such as “designed,” “assembled,” “tested,” or
+              “proposed.”
+            </p>
+          </div>
+          <div>
+            <h3>Limitations</h3>
+            <p>
+              [TEAM CONTENT REQUIRED] State what has not been demonstrated and
+              what evidence would be needed next.
             </p>
           </div>
         </div>
-      </div>
+      </PageSection>
 
-      <div className="row mt-4">
-        <div className="col-lg-8">
-          <h2>What Should this Page Contain?</h2>
-          <hr />
-          <ul>
-            <li>
-              Explain the problem your project addresses and its potential
-              impact.
-            </li>
-            <li>
-              Provide a clear and concise summary of your project's goals and
-              objectives.
-            </li>
-            <li>
-              Detail the specific reasons why your team chose this project.
-            </li>
-            <li>
-              Explain the inspiration behind your project, including any prior
-              research or real-world problems that motivated your team.
-            </li>
-            <li>
-              Use illustrations, diagrams, and other visual aids to enhance
-              understanding.
-            </li>
-            <li>
-              Include relevant scientific background, technical details, and
-              experimental approaches.
-            </li>
-          </ul>
-        </div>
-        <Inspirations inspirationLinkList={links} />
-      </div>
-
-      <div className="row mt-4">
-        <div className="col-lg-8">
-          <h2>Tips for Success</h2>
-          <hr />
-          <ul>
-            <li>
-              While providing detailed information, strive for clarity and
-              conciseness.
-            </li>
-            <li>Use summaries and subheadings to organize your content.</li>
-            <li>Utilize visuals to enhance understanding and engagement.</li>
-            <li>Document your research process and sources thoroughly.</li>
-          </ul>
-        </div>
-        <div className="col-lg-4">
-          <h2>References</h2>
-          <hr />
-          <p>
-            Cite all relevant research papers, scientific articles, and other
-            sources that informed your project.
-          </p>
-          <p>
-            Create a dedicated "References" section at the end of the page, and
-            use a consistent citation style.
-          </p>
-        </div>
-      </div>
+      <CitationList
+        citations={[
+          {
+            id: "description-1",
+            text: "[TEAM CONTENT REQUIRED] Primary source supporting the problem context.",
+          },
+          {
+            id: "description-2",
+            text: "[TEAM CONTENT REQUIRED] Primary source supporting the proposed biological mechanism.",
+          },
+        ]}
+      />
     </>
   );
 }
