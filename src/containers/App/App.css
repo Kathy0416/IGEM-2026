@@ -18,6 +18,8 @@
   --radius-md: 18px;
   --radius-lg: 30px;
   --container: 1180px;
+  --nav-height: 76px;
+  --progress-height: 28px;
   color: var(--ink);
   font-family:
     Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
@@ -136,20 +138,24 @@ a {
 
 /* Navigation */
 
-.site-nav {
+.site-nav-shell {
   position: sticky;
   z-index: 1000;
   top: 0;
+  box-shadow: 0 8px 28px rgba(1, 10, 23, 0.18);
+}
+
+.site-nav {
+  position: relative;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(4, 17, 36, 0.97);
-  box-shadow: 0 8px 28px rgba(1, 10, 23, 0.18);
   color: var(--white);
 }
 
 .site-nav__inner {
   display: flex;
   min-width: 0;
-  min-height: 76px;
+  min-height: var(--nav-height);
   align-items: center;
   justify-content: space-between;
   gap: 2rem;
@@ -249,6 +255,7 @@ a {
 
 .nav-group__menu {
   position: absolute;
+  z-index: 3;
   top: calc(100% + 0.7rem);
   right: 0;
   display: grid;
@@ -292,6 +299,99 @@ a {
   height: 2px;
   margin: 4px 0;
   background: var(--white);
+}
+
+/* Reading progress */
+
+.reading-progress {
+  --progress-mascot-width: 58px;
+  position: relative;
+  height: var(--progress-height);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--navy-950);
+}
+
+.reading-progress__track {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  height: 6px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.16);
+  transform: translateY(-50%);
+}
+
+.reading-progress__fill {
+  display: block;
+  width: calc(var(--reading-progress) * 100%);
+  height: 100%;
+  background: linear-gradient(90deg, var(--navy-700), var(--red-500));
+  box-shadow: 0 0 12px rgba(227, 75, 80, 0.65);
+}
+
+.reading-progress__mascot {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: clamp(
+    0px,
+    calc(
+      (100% * var(--reading-progress)) -
+        (var(--progress-mascot-width) / 2)
+    ),
+    calc(100% - var(--progress-mascot-width))
+  );
+  width: var(--progress-mascot-width);
+  max-width: none;
+  pointer-events: none;
+  transform: translateY(-50%);
+  transition: left 80ms linear;
+  user-select: none;
+}
+
+/* Custom cursor */
+
+.cursor-follower {
+  position: fixed;
+  z-index: 9998;
+  top: 0;
+  left: 0;
+  width: 58px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(-100px, -100px, 0);
+  transition: opacity 150ms ease;
+  user-select: none;
+  will-change: transform;
+}
+
+.cursor-follower img {
+  display: block;
+  width: 100%;
+  max-width: none;
+  transform: translate(-14%, -10%);
+  transition: transform 120ms ease;
+}
+
+.cursor-follower.is-visible:not(.is-native-context) {
+  opacity: 1;
+}
+
+.cursor-follower.is-pressed img {
+  transform: translate(-14%, -10%) scale(0.9);
+}
+
+html.has-custom-cursor,
+html.has-custom-cursor body,
+html.has-custom-cursor body * {
+  cursor: none !important;
+}
+
+html.has-custom-cursor.is-native-cursor,
+html.has-custom-cursor.is-native-cursor body,
+html.has-custom-cursor.is-native-cursor body * {
+  cursor: revert !important;
 }
 
 /* Page header */
@@ -1163,11 +1263,13 @@ a {
 
   .site-nav__links {
     position: absolute;
-    top: 76px;
+    top: calc(var(--nav-height) + var(--progress-height));
     right: 0;
     left: 0;
     display: none;
-    max-height: calc(100vh - 76px);
+    max-height: calc(
+      100vh - var(--nav-height) - var(--progress-height)
+    );
     padding: 1rem 1.5rem 1.5rem;
     overflow-y: auto;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -1255,6 +1357,10 @@ a {
 
   .brand__text small {
     display: none;
+  }
+
+  .reading-progress {
+    --progress-mascot-width: 50px;
   }
 
   .page-header__inner {
@@ -1361,5 +1467,19 @@ a {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .reading-progress__mascot {
+    transition: none;
+  }
+
+  .cursor-follower {
+    display: none;
+  }
+}
+
+@media (pointer: coarse) {
+  .cursor-follower {
+    display: none;
   }
 }
