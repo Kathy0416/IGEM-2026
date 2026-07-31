@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import cursorMascot from "../assets/cursor-mascot.png";
 
 const cursorAssets = {
@@ -11,6 +11,12 @@ const interactiveSelector =
 const nativeCursorSelector =
   'input, textarea, select, option, [contenteditable="true"], [data-native-cursor], p, li, td, th, dd, dt, blockquote, code, pre, h1, h2, h3, h4, h5, h6';
 
+type CursorSplash = {
+  id: number;
+  x: number;
+  y: number;
+};
+
 function supportsCursorFollower() {
   return (
     window.matchMedia("(pointer: fine)").matches &&
@@ -21,7 +27,36 @@ function supportsCursorFollower() {
 export function CursorFollower() {
   const followerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
+  const nextSplashIdRef = useRef(0);
+  const splashTimersRef = useRef(new Map<number, number>());
   const [enabled, setEnabled] = useState(supportsCursorFollower);
+  const [splashes, setSplashes] = useState<CursorSplash[]>([]);
+
+  const createSplash = useCallback((x: number, y: number) => {
+    const id = nextSplashIdRef.current++;
+
+    setSplashes((currentSplashes) => [
+      ...currentSplashes,
+      { id, x, y },
+    ]);
+
+    const timer = window.setTimeout(() => {
+      setSplashes((currentSplashes) =>
+        currentSplashes.filter((splash) => splash.id !== id),
+      );
+      splashTimersRef.current.delete(id);
+    }, 560);
+
+    splashTimersRef.current.set(id, timer);
+  }, []);
+
+  useEffect(
+    () => () => {
+      splashTimersRef.current.forEach((timer) => window.clearTimeout(timer));
+      splashTimersRef.current.clear();
+    },
+    [],
+  );
 
   useEffect(() => {
     const pointerQuery = window.matchMedia("(pointer: fine)");
@@ -89,11 +124,17 @@ export function CursorFollower() {
       }
     };
 
-    const updateContext = (target: EventTarget | null) => {
+    const getCursorContext = (target: EventTarget | null) => {
       const element = target instanceof Element ? target : null;
       const isInteractive = Boolean(element?.closest(interactiveSelector));
       const useNativeCursor =
         !isInteractive && Boolean(element?.closest(nativeCursorSelector));
+
+      return { isInteractive, useNativeCursor };
+    };
+
+    const updateContext = (target: EventTarget | null) => {
+      const { isInteractive, useNativeCursor } = getCursorContext(target);
       const nextVariant = isInteractive ? "pointer" : "default";
 
       document.documentElement.classList.toggle(
@@ -125,11 +166,17 @@ export function CursorFollower() {
       requestAnimation();
     };
 
-    const handlePointerDown = () => {
+    const handlePointerDown = (event: PointerEvent) => {
+      const { useNativeCursor } = getCursorContext(event.target);
+
       currentX = targetX;
       currentY = targetY;
       renderPosition();
       follower.classList.add("is-pressed");
+
+      if (!useNativeCursor) {
+        createSplash(event.clientX, event.clientY);
+      }
     };
 
     const handlePointerUp = () => {
@@ -168,15 +215,31 @@ export function CursorFollower() {
       window.removeEventListener("blur", hideFollower);
       window.cancelAnimationFrame(animationFrame);
     };
-  }, [enabled]);
+  }, [createSplash, enabled]);
 
   if (!enabled) {
     return null;
   }
 
   return (
-    <div className="cursor-follower" ref={followerRef} aria-hidden="true">
-      <img ref={imageRef} src={cursorAssets.default} alt="" />
-    </div>
+    <>
+      <div className="cursor-follower" ref={followerRef} aria-hidden="true">
+        <img ref={imageRef} src={cursorAssets.default} alt="" />
+      </div>
+      <div className="cursor-splash-layer" aria-hidden="true">
+        {splashes.map((splash) => (
+          <span
+            className="cursor-splash"
+            key={splash.id}
+            style={{ left: splash.x, top: splash.y }}
+          >
+            <span className="cursor-splash__ripple" />
+            {Array.from({ length: 7 }, (_, index) => (
+              <span className="cursor-splash__drop" key={index} />
+            ))}
+          </span>
+        ))}
+      </div>
+    </>
   );
 }
