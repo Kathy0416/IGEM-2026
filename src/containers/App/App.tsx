@@ -3,6 +3,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import { CursorFollower } from "../../components/CursorFollower";
 import { Footer } from "../../components/Footer";
 import { Header } from "../../components/Header";
+import { LegacyEffects } from "../../components/LegacyEffects";
 import { Navbar } from "../../components/Navbar";
 import { NotFound } from "../../components/NotFound";
 import { getPathMapping } from "../../utils";
@@ -25,6 +26,7 @@ const App = () => {
         Skip to main content
       </a>
       <CursorFollower />
+      <LegacyEffects />
       <Navbar />
       <main id="main-content">
         <Routes>

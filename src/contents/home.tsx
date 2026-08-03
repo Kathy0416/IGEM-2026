@@ -12,10 +12,8 @@ export function Home() {
         <div className="home-hero__mesh" aria-hidden="true" />
         <div className="site-container home-hero__content">
           <p className="eyebrow">Worldshaper-Nanjing · iGEM 2026</p>
-          <h1>
-            Strength
-            <span>Over Time</span>
-          </h1>
+          <h1>Strength Over Time</h1>
+          <span className="home-hero__red-line" aria-hidden="true" />
           <p className="home-hero__lead">
             A developing synthetic biology project exploring new ways to
             address age-related muscle decline.
@@ -33,14 +31,12 @@ export function Home() {
             Draft wiki · verified team content is still being collected
           </div>
         </div>
-        <div className="home-hero__system" aria-hidden="true">
-          <div className="system-ring system-ring--one" />
-          <div className="system-ring system-ring--two" />
-          <div className="system-core">WN</div>
-        </div>
+        <a className="scroll-indicator" href="#home-content">
+          Explore
+        </a>
       </section>
 
-      <div className="site-container home-content">
+      <div className="site-container home-content" id="home-content">
         <ContentNotice title="A transparent starting point">
           The former static website contained illustrative data that did not
           come from the team. This rebuild intentionally uses placeholders
