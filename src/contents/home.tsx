@@ -15,11 +15,14 @@ export function Home() {
           <h1>Strength Over Time</h1>
           <span className="home-hero__red-line" aria-hidden="true" />
           <p className="home-hero__lead">
-            A developing synthetic biology project exploring new ways to
-            address age-related muscle decline.
+            A developing synthetic biology project exploring new ways to address
+            age-related muscle decline.
           </p>
           <div className="button-row">
-            <Link className="button-link button-link--primary" to="/description">
+            <Link
+              className="button-link button-link--primary"
+              to="/description"
+            >
               Explore the project
             </Link>
             <Link className="button-link button-link--ghost" to="/engineering">
@@ -39,9 +42,8 @@ export function Home() {
       <div className="site-container home-content" id="home-content">
         <ContentNotice title="A transparent starting point">
           The former static website contained illustrative data that did not
-          come from the team. This rebuild intentionally uses placeholders
-          until Worldshaper-Nanjing supplies evidence, citations, and approved
-          media.
+          come from the team. This rebuild intentionally uses placeholders until
+          Worldshaper-Nanjing supplies evidence, citations, and approved media.
         </ContentNotice>
 
         <PageSection
@@ -80,7 +82,11 @@ export function Home() {
             {[
               ["Problem", "Define the need and its context.", "/problem"],
               ["Solution", "Explain the proposed design logic.", "/solution"],
-              ["Engineering", "Document iterative technical work.", "/engineering"],
+              [
+                "Engineering",
+                "Document iterative technical work.",
+                "/engineering",
+              ],
               ["Results", "Report evidence without overclaiming.", "/results"],
             ].map(([title, body, path], index) => (
               <Link className="pathway__item" to={path} key={title}>
