@@ -21,6 +21,8 @@ verified content is added to the wiki.
 | Results | Experimental figures and analysis | Raw data and analysis files required | Research lead | Required |
 | Human Practices | Stakeholder activities and project changes | Consent-aware activity records required | HP lead | Required |
 | Safety | Organisms, risks, controls, and approvals | Safety forms and institutional records required | PI / safety lead | Required |
+| Team | Member names (English display only), titles, assignments, short bios (19 people: 1 Team Captain + 2 lab captains + 16 members, org-chart layout with bio modal) | `_team_info.zip` self-submissions + user corrections (Kathy = Dry Lab Captain; English-only display names) | Team lead | Draft (self-submitted) |
+| Team | Instructor / PI / advisor / attributions names (3 blank template cards shown until consent) | Consent & verification records required | PI / team lead | Required |
 
 ## Media and licensing
 
@@ -28,7 +30,7 @@ verified content is added to the wiki.
 | --- | --- | --- | --- | --- |
 | Project logo | Required | Required | Required | Required |
 | Project overview figure | Required | Required | Required | Required |
-| Team portraits | Required | Required | Individual consent required | Required |
+| Team portraits | Required | Team members (self-submitted in team docx; source files kept locally outside the repo, pending upload) | Individual consent required before publication; upload via the iGEM uploads tool to static.igem.wiki and fill the URL slots in `src/contents/team-photos.ts` | Required (not in repo — page falls back to initials avatars until URLs are filled) |
 | Experimental figures | Required | Team-generated | Data provenance required | Required |
 
 ## Contributions and external assistance
