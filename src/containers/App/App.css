@@ -372,6 +372,14 @@ a {
   max-width: none;
   transform: translate(-14%, -10%);
   transition: transform 120ms ease;
+  /* Visibility outline for the mascot silhouette: the dark halo hugs the
+     artwork and the white halo wraps around it, so the red/blue mascot
+     stays readable on navy, red and light backgrounds alike. */
+  filter:
+    drop-shadow(0 0 1px rgba(7, 26, 53, 0.9))
+    drop-shadow(0 0 1px rgba(7, 26, 53, 0.9))
+    drop-shadow(0 0 2px rgba(255, 255, 255, 0.95))
+    drop-shadow(0 2px 4px rgba(7, 26, 53, 0.35));
 }
 
 .cursor-follower.is-visible:not(.is-native-context) {
@@ -380,6 +388,45 @@ a {
 
 .cursor-follower.is-pressed img {
   transform: translate(-14%, -10%) scale(0.9);
+}
+
+/* Hotspot tip marker: pinned to the raw pointer coordinates (no easing), so
+   it always shows the true click point, independent of the eased mascot. */
+.cursor-tip {
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(-100px, -100px, 0);
+  transition: opacity 150ms ease;
+  user-select: none;
+  will-change: transform;
+}
+
+.cursor-tip::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid rgba(7, 26, 53, 0.9);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.95),
+    0 0 6px rgba(7, 26, 53, 0.4);
+  transform: translate(-50%, -50%);
+  transition: transform 120ms ease;
+}
+
+.cursor-tip.is-visible:not(.is-native-context) {
+  opacity: 1;
+}
+
+.cursor-tip.is-pressed::before {
+  transform: translate(-50%, -50%) scale(0.8);
 }
 
 .cursor-splash-layer {
@@ -1610,7 +1657,8 @@ html.has-custom-cursor.is-native-cursor body * {
     transition-duration: 0.01ms !important;
   }
 
-  .cursor-follower {
+  .cursor-follower,
+  .cursor-tip {
     display: none;
   }
 
@@ -1621,6 +1669,7 @@ html.has-custom-cursor.is-native-cursor body * {
 
 @media (pointer: coarse) {
   .cursor-follower,
+  .cursor-tip,
   .cursor-splash-layer {
     display: none;
   }
