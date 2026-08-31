@@ -2427,6 +2427,8 @@ h2 {
   stroke-width: 2;
 }
 
+/* Fork SVG is defined in team.tsx (viewBox 640x72): stem at x=320 forks
+   to x=160/480 — the captain columns' centers in the 640px captain-row. */
 .team-merge--split {
   margin-top: 0.5rem;
   margin-bottom: 0.25rem;
@@ -2443,7 +2445,10 @@ h2 {
 }
 
 /* Bar endpoints sit exactly on the centers of the outermost member
-   columns: center offset = (100% - (N-1)*gap) / (2N), gap = 1.5rem. */
+   columns: center offset = (100% - (N-1)*gap) / (2N), gap = 1.5rem.
+   Base rule = 2-column layout (480-768px); N=3/4 kick in at 768/1024px,
+   and the whole rail is hidden below 720px (connectors only make sense
+   with the side-by-side layout). */
 .team-rail__bar {
   position: absolute;
   top: 30px;
@@ -2469,6 +2474,8 @@ h2 {
   }
 }
 
+/* Two vertical drops at x=160/480 in a 640-wide viewBox — same alignment
+   contract as the fork SVG above (captain columns' centers). */
 .team-rail__drops {
   display: block;
   width: min(640px, 100%);
@@ -2554,7 +2561,10 @@ h2 {
     0 16px 32px rgba(18, 41, 92, 0.24);
 }
 
-/* Photo-ready: real portraits swap in via this modifier later. */
+/* Real portrait, applied as an inline backgroundImage in team.tsx (AVIF
+   served from static.igem.wiki — see src/contents/team-photos.ts). The
+   initial letter underneath stays as the fallback whenever a slot is
+   cleared and the modifier is omitted. */
 .avatar-ring--photo {
   background-size: cover;
   background-position: center;

@@ -28,6 +28,8 @@ const teamCaptain: Person = {
   bio: 'My name is Jay, and I\'m a Grade 10 high school student from Shanghai. In our team, I serve as the Team Captain, responsible for coordinating everyone\'s work. I am also a member of the "Theoretical and Biological Experiments" and "Bioinformatics" sub-teams. In my free time, I enjoy playing chess, playing the violin, swimming, and volleyball — as well as studying biology and physics :)',
 };
 
+// Wet Lab Captain (Aurora) on the left, Dry Lab Captain (Kathy) on the
+// right — matches the two fork endpoints of the connector rendered below.
 const captains: Person[] = [
   {
     id: "aurora",
@@ -45,6 +47,8 @@ const captains: Person[] = [
   },
 ];
 
+// 16 members in the official assignment-sheet order (display order only;
+// the connectors below adapt to the responsive grid, not to this list).
 const members: Person[] = [
   {
     id: "letong-sun",
@@ -184,6 +188,13 @@ interface PersonTriggerProps {
   onOpen: (id: string, opener: HTMLElement) => void;
 }
 
+// One clickable roster card: optional title badge on top, circular avatar
+// (portrait from team-photos.ts, or the first-letter initial fallback),
+// name, and assignment chips. The whole card opens the bio dialog; onOpen
+// receives the trigger element so focus can return to it on close. The
+// visuals are aria-hidden and the button carries an explicit aria-label,
+// so assistive tech announces one clean sentence ("Read Jay's self
+// introduction") instead of badge + photo + name + every chip.
 function PersonTrigger({ person, variant, onOpen }: PersonTriggerProps) {
   const photo = photoFor(person.id);
   return (
@@ -191,25 +202,29 @@ function PersonTrigger({ person, variant, onOpen }: PersonTriggerProps) {
       type="button"
       className="person-trigger"
       aria-haspopup="dialog"
+      aria-label={`Read ${person.name}'s self introduction`}
       onClick={(event) => onOpen(person.id, event.currentTarget)}
     >
       {person.title && (
-        <span className={badgeClassName(person.title)}>{person.title}</span>
+        <span aria-hidden="true" className={badgeClassName(person.title)}>
+          {person.title}
+        </span>
       )}
       <span
+        aria-hidden="true"
         className={
           photo
             ? `${ringClassName(variant)} avatar-ring--photo`
             : ringClassName(variant)
         }
-        role="img"
-        aria-label={`Photo of ${person.name}`}
         style={photo ? { backgroundImage: `url(${photo})` } : undefined}
       >
         {person.name.charAt(0)}
       </span>
-      <span className="person-name">{person.name}</span>
-      <span className="person-chips">
+      <span aria-hidden="true" className="person-name">
+        {person.name}
+      </span>
+      <span aria-hidden="true" className="person-chips">
         {person.assignments.map((assignment, index) => (
           <span className="chip" key={`${assignment}-${index}`}>
             {assignment}
@@ -225,8 +240,14 @@ interface BioModalProps {
   onClose: () => void;
 }
 
+// Accessible bio dialog. On mount: locks body scroll and moves focus to
+// the close button; closes via ×, Esc, or clicking the backdrop. Tab and
+// Shift+Tab are trapped inside the dialog so keyboard users cannot land
+// in the page behind the overlay. Focus returns to the opening trigger
+// through the effect in <Team>.
 function BioModal({ person, onClose }: BioModalProps) {
   const closeRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const photo = photoFor(person.id);
 
   useEffect(() => {
@@ -235,7 +256,28 @@ function BioModal({ person, onClose }: BioModalProps) {
     closeRef.current?.focus();
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
+      if (event.key === "Escape") {
+        onClose();
+        return;
+      }
+      // Minimal focus trap: cycle Tab / Shift+Tab within the panel.
+      if (event.key !== "Tab" || !panelRef.current) return;
+      const focusables = panelRef.current.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      );
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      const inside = panelRef.current.contains(document.activeElement);
+      if (event.shiftKey) {
+        if (document.activeElement === first || !inside) {
+          event.preventDefault();
+          last.focus();
+        }
+      } else if (document.activeElement === last || !inside) {
+        event.preventDefault();
+        first.focus();
+      }
     };
     window.addEventListener("keydown", handleKeyDown);
 
@@ -253,6 +295,7 @@ function BioModal({ person, onClose }: BioModalProps) {
       }}
     >
       <div
+        ref={panelRef}
         className="bio-modal__panel"
         role="dialog"
         aria-modal="true"
@@ -338,6 +381,10 @@ export function Team() {
             <PersonTrigger person={teamCaptain} variant="top" onOpen={openBio} />
           </li>
         </ul>
+        {/* Fork connector (viewBox 640x72): a stem drops from Jay at the
+            center (x=320) and forks to the two captain columns (x=160/480
+            in the 640px-wide captain-row grid); Q corners round the turns.
+            Purely decorative — hidden from AT and on small screens. */}
         <svg
           className="team-merge team-merge--split"
           viewBox="0 0 640 72"
@@ -358,6 +405,10 @@ export function Team() {
             </li>
           ))}
         </ul>
+        {/* Rail connector: two drops fall from the captain columns onto a
+            near-full-width bar whose upturned ends land exactly on the
+            centers of the outermost member columns (geometry in App.css).
+            Purely decorative — hidden from AT and on small screens. */}
         <div className="team-rail" aria-hidden="true">
           <div className="team-rail__bar" />
           <svg className="team-rail__drops" viewBox="0 0 640 30" focusable="false">
