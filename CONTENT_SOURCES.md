@@ -30,7 +30,7 @@ verified content is added to the wiki.
 | --- | --- | --- | --- | --- |
 | Project logo | Required | Required | Required | Required |
 | Project overview figure | Required | Required | Required | Required |
-| Team portraits | Required | Team members (self-submitted in team docx; source files kept locally outside the repo, pending upload) | Individual consent required before publication; upload via the iGEM uploads tool to static.igem.wiki and fill the URL slots in `src/contents/team-photos.ts` | Required (not in repo — page falls back to initials avatars until URLs are filled) |
+| Team portraits | `https://static.igem.wiki/teams/6508/wiki/team-photos/<member>.avif` (19/19 uploaded via the iGEM uploads tool, 2026-08-31; AVIF conversion by the tool) | Team members (self-submitted in team docx; source files kept locally outside the repo) | Individual consent required before the wiki goes public; URL slots already filled in `src/contents/team-photos.ts` | Uploaded (not in repo — avatars fall back to initials only if a URL is cleared) |
 | Experimental figures | Required | Team-generated | Data provenance required | Required |
 
 ## Contributions and external assistance
