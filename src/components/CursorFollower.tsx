@@ -26,6 +26,7 @@ function supportsCursorFollower() {
 
 export function CursorFollower() {
   const followerRef = useRef<HTMLDivElement>(null);
+  const tipRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const nextSplashIdRef = useRef(0);
   const splashTimersRef = useRef(new Map<number, number>());
@@ -82,9 +83,10 @@ export function CursorFollower() {
     }
 
     const follower = followerRef.current;
+    const tip = tipRef.current;
     const image = imageRef.current;
 
-    if (!follower || !image) {
+    if (!follower || !tip || !image) {
       return;
     }
 
@@ -142,6 +144,7 @@ export function CursorFollower() {
         useNativeCursor,
       );
       follower.classList.toggle("is-native-context", useNativeCursor);
+      tip.classList.toggle("is-native-context", useNativeCursor);
 
       if (nextVariant !== currentVariant) {
         currentVariant = nextVariant;
@@ -152,6 +155,9 @@ export function CursorFollower() {
     const handlePointerMove = (event: PointerEvent) => {
       targetX = event.clientX;
       targetY = event.clientY;
+      // The tip marker follows the raw pointer coordinates with no easing, so
+      // it always marks the true hotspot even while the mascot is catching up.
+      tip.style.transform = `translate3d(${targetX}px, ${targetY}px, 0)`;
       updateContext(event.target);
 
       if (!hasPosition) {
@@ -160,6 +166,7 @@ export function CursorFollower() {
         hasPosition = true;
         renderPosition();
         follower.classList.add("is-visible");
+        tip.classList.add("is-visible");
         return;
       }
 
@@ -173,6 +180,7 @@ export function CursorFollower() {
       currentY = targetY;
       renderPosition();
       follower.classList.add("is-pressed");
+      tip.classList.add("is-pressed");
 
       if (!useNativeCursor) {
         createSplash(event.clientX, event.clientY);
@@ -181,10 +189,12 @@ export function CursorFollower() {
 
     const handlePointerUp = () => {
       follower.classList.remove("is-pressed");
+      tip.classList.remove("is-pressed");
     };
 
     const hideFollower = () => {
       follower.classList.remove("is-visible", "is-pressed");
+      tip.classList.remove("is-visible", "is-pressed");
       document.documentElement.classList.remove("is-native-cursor");
       hasPosition = false;
     };
@@ -226,6 +236,8 @@ export function CursorFollower() {
       <div className="cursor-follower" ref={followerRef} aria-hidden="true">
         <img ref={imageRef} src={cursorAssets.default} alt="" />
       </div>
+      {/* Hotspot marker pinned to the raw pointer coordinates (no easing). */}
+      <div className="cursor-tip" ref={tipRef} aria-hidden="true" />
       <div className="cursor-splash-layer" aria-hidden="true">
         {splashes.map((splash) => (
           <span
