@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { stringToSlug } from "../utils/stringToSlug";
 
 interface SectionProps {
   eyebrow?: string;
@@ -16,7 +17,10 @@ export function PageSection({
   tone = "light",
 }: SectionProps) {
   return (
-    <section className={`content-section content-section--${tone}`}>
+    <section
+      className={`content-section content-section--${tone}`}
+      id={stringToSlug(title)}
+    >
       <div className="content-section__heading">
         {eyebrow && <p className="eyebrow">{eyebrow}</p>}
         <h2>{title}</h2>
@@ -151,7 +155,11 @@ export interface Citation {
 
 export function CitationList({ citations }: { citations: Citation[] }) {
   return (
-    <section className="citations" aria-labelledby="references-title">
+    <section
+      className="citations"
+      aria-labelledby="references-title"
+      id={stringToSlug("References and evidence")}
+    >
       <h2 id="references-title">References and evidence</h2>
       <ol>
         {citations.map((citation) => (

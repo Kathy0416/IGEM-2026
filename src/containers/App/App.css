@@ -219,36 +219,47 @@ a {
   gap: 0.2rem;
 }
 
+/* Nav group trigger: a real button (disclosure pattern, #22). The reset must
+   precede the shared rule below so the shared nav sizing still applies. */
+.nav-group__trigger {
+  display: flex;
+  align-items: center;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: left;
+}
+
 .site-nav__links > a,
-.nav-group > summary {
+.nav-group__trigger {
   padding: 0.7rem 0.85rem;
   border-radius: 8px;
   color: rgba(255, 255, 255, 0.78);
   cursor: pointer;
   font-size: 0.84rem;
   font-weight: 700;
-  list-style: none;
   text-decoration: none;
 }
 
-.nav-group > summary::-webkit-details-marker {
-  display: none;
-}
-
-.nav-group > summary::after {
+.nav-group__chevron {
   display: inline-block;
+  flex: 0 0 auto;
   margin-left: 0.45rem;
   border: solid currentColor;
   border-width: 0 1.5px 1.5px 0;
   padding: 2.5px;
-  content: "";
   transform: rotate(45deg) translateY(-2px);
+  transition: transform 160ms ease;
+}
+
+.nav-group[data-open] .nav-group__chevron {
+  transform: rotate(-180deg) translateY(-2px);
 }
 
 .site-nav__links > a:hover,
 .site-nav__links > a.active,
-.nav-group > summary:hover,
-.nav-group[open] > summary {
+.nav-group__trigger:hover,
+.nav-group[data-open] .nav-group__trigger {
   background: rgba(255, 255, 255, 0.09);
   color: var(--white);
 }
@@ -269,6 +280,25 @@ a {
   border-radius: 12px;
   background: var(--navy-950);
   box-shadow: 0 22px 50px rgba(0, 0, 0, 0.28);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transform-origin: top center;
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease,
+    visibility 0s linear 160ms;
+}
+
+/* data-state is toggled by NavGroups; visibility keeps closed menus out of
+   the tab order and the a11y tree while the exit transition still plays. */
+.nav-group__menu[data-state="open"] {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
 }
 
 .nav-group__menu a {
@@ -284,6 +314,20 @@ a {
 .nav-group__menu a.active {
   background: rgba(227, 75, 80, 0.16);
   color: var(--white);
+}
+
+.site-nav__links > a:focus-visible,
+.nav-group__trigger:focus-visible,
+.nav-group__menu a:focus-visible {
+  outline: 2px solid var(--gold-400);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-group__menu {
+    transform: none;
+    transition: none;
+  }
 }
 
 .nav-toggle {
@@ -372,6 +416,14 @@ a {
   max-width: none;
   transform: translate(-14%, -10%);
   transition: transform 120ms ease;
+  /* Visibility outline for the mascot silhouette: the dark halo hugs the
+     artwork and the white halo wraps around it, so the red/blue mascot
+     stays readable on navy, red and light backgrounds alike. */
+  filter:
+    drop-shadow(0 0 1px rgba(7, 26, 53, 0.9))
+    drop-shadow(0 0 1px rgba(7, 26, 53, 0.9))
+    drop-shadow(0 0 2px rgba(255, 255, 255, 0.95))
+    drop-shadow(0 2px 4px rgba(7, 26, 53, 0.35));
 }
 
 .cursor-follower.is-visible:not(.is-native-context) {
@@ -380,6 +432,45 @@ a {
 
 .cursor-follower.is-pressed img {
   transform: translate(-14%, -10%) scale(0.9);
+}
+
+/* Hotspot tip marker: pinned to the raw pointer coordinates (no easing), so
+   it always shows the true click point, independent of the eased mascot. */
+.cursor-tip {
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(-100px, -100px, 0);
+  transition: opacity 150ms ease;
+  user-select: none;
+  will-change: transform;
+}
+
+.cursor-tip::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid rgba(7, 26, 53, 0.9);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.95),
+    0 0 6px rgba(7, 26, 53, 0.4);
+  transform: translate(-50%, -50%);
+  transition: transform 120ms ease;
+}
+
+.cursor-tip.is-visible:not(.is-native-context) {
+  opacity: 1;
+}
+
+.cursor-tip.is-pressed::before {
+  transform: translate(-50%, -50%) scale(0.8);
 }
 
 .cursor-splash-layer {
@@ -1422,7 +1513,7 @@ html.has-custom-cursor.is-native-cursor body * {
   }
 
   .site-nav__links > a,
-  .nav-group > summary {
+  .nav-group__trigger {
     padding: 0.8rem;
   }
 
@@ -1610,7 +1701,8 @@ html.has-custom-cursor.is-native-cursor body * {
     transition-duration: 0.01ms !important;
   }
 
-  .cursor-follower {
+  .cursor-follower,
+  .cursor-tip {
     display: none;
   }
 
@@ -1621,6 +1713,7 @@ html.has-custom-cursor.is-native-cursor body * {
 
 @media (pointer: coarse) {
   .cursor-follower,
+  .cursor-tip,
   .cursor-splash-layer {
     display: none;
   }
@@ -1707,8 +1800,21 @@ h2 {
 .site-nav {
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(18, 41, 92, 0.9);
+}
+
+/* #21: backdrop-filter on .site-nav itself creates a stacking context that
+   traps .nav-group__menu's z-index inside it, so the reading progress strip
+   (a later positioned sibling) paints over the open menus. Blurring from a
+   negative-z pseudo keeps .site-nav context-free: open menus paint and
+   hit-test above the strip and its mascot, with the same glass composite. */
+.site-nav::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
+  pointer-events: none;
 }
 
 .site-nav__inner {
@@ -1747,7 +1853,7 @@ h2 {
 }
 
 .site-nav__links > a,
-.nav-group > summary {
+.nav-group__trigger {
   padding: 0.42rem 0.55rem;
   border-bottom: 2px solid transparent;
   border-radius: 0;
@@ -1758,8 +1864,8 @@ h2 {
 
 .site-nav__links > a:hover,
 .site-nav__links > a.active,
-.nav-group > summary:hover,
-.nav-group[open] > summary {
+.nav-group__trigger:hover,
+.nav-group[data-open] .nav-group__trigger {
   border-bottom-color: var(--red-500);
   background: transparent;
   color: var(--red-500);
@@ -1789,6 +1895,9 @@ h2 {
 /* Preserve the mascot reading progress while matching the legacy palette. */
 
 .reading-progress {
+  /* #21 hardening: the strip stays one layer below the open nav menus
+     (z-index: 3) even if paint-order details change around it. */
+  z-index: 0;
   background: rgba(11, 29, 67, 0.98);
 }
 
@@ -2268,7 +2377,7 @@ h2 {
   }
 
   .site-nav__links > a,
-  .nav-group > summary {
+  .nav-group__trigger {
     border-bottom: 0;
     border-left: 2px solid transparent;
     padding: 0.8rem;
@@ -2276,14 +2385,19 @@ h2 {
 
   .site-nav__links > a:hover,
   .site-nav__links > a.active,
-  .nav-group > summary:hover,
-  .nav-group[open] > summary {
+  .nav-group__trigger:hover,
+  .nav-group[data-open] .nav-group__trigger {
     border-left-color: var(--red-500);
     background: rgba(255, 255, 255, 0.045);
   }
 
   .nav-group__menu {
     background: rgba(11, 29, 67, 0.68);
+    transform: translateY(-4px);
+  }
+
+  .nav-group__menu a {
+    padding-left: 2.2rem;
   }
 }
 
@@ -2370,5 +2484,776 @@ h2 {
 
   .legacy-particle-canvas {
     display: none;
+  }
+}
+/* ===== Search bar (issues #12 #13 #14) ===== */
+
+/* Deep links land below the sticky nav + reading progress bar. */
+.content-section,
+.citations {
+  scroll-margin-top: calc(var(--nav-height) + var(--progress-height) + 0.75rem);
+}
+
+/* Keep the nav links flush right; the search bar reserves its own flex space. */
+.site-nav__inner > .site-nav__links {
+  margin-left: auto;
+}
+
+.site-search {
+  position: relative;
+  min-width: 0;
+}
+
+.site-search--desktop {
+  flex: 0 1 230px;
+}
+
+/* The mobile search row only exists inside the expandable nav panel. */
+.site-search-mobile-row {
+  display: none;
+}
+
+.site-search__field {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  width: 100%;
+  padding: 0.32rem 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--white);
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.site-search__field:hover {
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+.site-search__field:focus-within {
+  border-color: var(--gold-400);
+  background: rgba(255, 255, 255, 0.11);
+}
+
+.site-search__icon {
+  flex: 0 0 auto;
+  width: 14px;
+  height: 14px;
+  opacity: 0.72;
+}
+
+.site-search__input {
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--white);
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.site-search__input::placeholder {
+  color: rgba(255, 255, 255, 0.62);
+  font-weight: 600;
+}
+
+.site-search__input:focus {
+  outline: none;
+}
+
+.site-search :focus-visible {
+  outline: 3px solid var(--gold-400);
+  outline-offset: 2px;
+}
+
+/* Results panel: dark surface matching the nav dropdown menus. */
+.site-search__listbox {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 0.45rem);
+  right: 0;
+  left: 0;
+  max-height: min(60vh, 430px);
+  margin: 0;
+  padding: 0.4rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 12px;
+  background: var(--navy-950);
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.32);
+  list-style: none;
+}
+
+.site-search__status {
+  padding: 0.6rem 0.7rem;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.82rem;
+}
+
+.site-search__option {
+  display: flex;
+  gap: 0.6rem;
+  align-items: baseline;
+  padding: 0.55rem 0.65rem;
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.82);
+  cursor: pointer;
+  font-size: 0.84rem;
+}
+
+.site-search__option:hover,
+.site-search__option.is-active {
+  background: rgba(227, 75, 80, 0.18);
+  color: var(--white);
+}
+
+.site-search__option--section {
+  padding-left: 1.5rem;
+}
+
+.site-search__page {
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 0.4rem;
+  align-items: baseline;
+  font-weight: 700;
+}
+
+.site-search__badge {
+  padding: 0.05rem 0.45rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.site-search__context {
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.66);
+  font-size: 0.78rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.site-search__option--section .site-search__context {
+  font-size: 0.74rem;
+}
+
+.site-search__section-label {
+  margin-right: 0.3rem;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+mark.search-hit {
+  padding: 0 0.08em;
+  border-radius: 3px;
+  background: rgba(240, 195, 107, 0.28);
+  color: var(--gold-400);
+  font-weight: 700;
+}
+
+.site-search__mobile-toggle {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: left;
+}
+
+@media (max-width: 960px) {
+  .site-search--desktop {
+    display: none;
+  }
+
+  .site-search-mobile-row {
+    display: block;
+    margin-bottom: 0.9rem;
+  }
+
+  .site-search-mobile-row .site-search__field {
+    padding: 0.55rem 0.75rem;
+  }
+
+  .site-search-mobile-row .site-search__input {
+    font-size: 1rem;
+  }
+
+  /* Render results in flow so the panel scrolls them naturally. */
+  .site-search-mobile-row .site-search__listbox {
+    position: static;
+    max-height: 45vh;
+    box-shadow: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-search,
+  .site-search * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ===== Team page v2 (org chart + bio modal) =====
+   Spec: design-specs/team-page-v2.md — leadership-first org chart,
+   uniform photo-ready initials avatars, max-2 assignment chips,
+   click-to-open accessible bio modal, English-only content. */
+
+.org-chart,
+.captain-row,
+.team-rail {
+  --team-connector: rgba(41, 71, 117, 0.45);
+}
+
+/* --- Org chart: Team Captain -> Wet/Dry Lab Captains --- */
+
+.org-chart {
+  display: flex;
+  justify-content: center;
+  margin: 2.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.leader-node {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.captain-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: min(640px, 100%);
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+
+/* --- Merge braces: Jay -> captains (split), captains -> members (gather) --- */
+
+.team-merge {
+  display: block;
+  width: min(640px, 100%);
+  height: auto;
+  margin: 0 auto;
+  color: var(--team-connector);
+}
+
+.team-merge path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+/* Fork SVG is defined in team.tsx (viewBox 640x72): stem at x=320 forks
+   to x=160/480 — the captain columns' centers in the 640px captain-row. */
+.team-merge--split {
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+/* --- Wide rail: captain drops land on a near-full-width bar whose ends
+       curl down toward the member grid --- */
+
+.team-rail {
+  position: relative;
+  height: 78px;
+  max-width: 62rem;
+  margin: 0.25rem auto 0;
+}
+
+/* Bar endpoints sit exactly on the centers of the outermost member
+   columns: center offset = (100% - (N-1)*gap) / (2N), gap = 1.5rem.
+   Base rule = 2-column layout (480-768px); N=3/4 kick in at 768/1024px,
+   and the whole rail is hidden below 720px (connectors only make sense
+   with the side-by-side layout). */
+.team-rail__bar {
+  position: absolute;
+  top: 30px;
+  right: calc((100% - 24px) / 4);
+  left: calc((100% - 24px) / 4);
+  height: 46px;
+  border: 2px solid var(--team-connector);
+  border-bottom: 0;
+  border-radius: 16px 16px 0 0;
+}
+
+@media (min-width: 768px) {
+  .team-rail__bar {
+    right: calc((100% - 48px) / 6);
+    left: calc((100% - 48px) / 6);
+  }
+}
+
+@media (min-width: 1024px) {
+  .team-rail__bar {
+    right: calc((100% - 72px) / 8);
+    left: calc((100% - 72px) / 8);
+  }
+}
+
+/* Two vertical drops at x=160/480 in a 640-wide viewBox — same alignment
+   contract as the fork SVG above (captain columns' centers). */
+.team-rail__drops {
+  display: block;
+  width: min(640px, 100%);
+  height: 31px;
+  margin: 0 auto;
+  color: var(--team-connector);
+}
+
+.team-rail__drops path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+/* --- Shared person trigger (leaders + members) --- */
+
+.person-trigger {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.75rem 0.5rem;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
+}
+
+.person-trigger:focus-visible {
+  outline: 3px solid var(--gold-400);
+  outline-offset: 2px;
+}
+
+/* --- Avatar rings (photo-ready initials) --- */
+
+.avatar-ring {
+  display: grid;
+  width: 112px;
+  height: 112px;
+  place-items: center;
+  border: 2px solid rgba(41, 71, 117, 0.4);
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      circle at 30% 25%,
+      rgba(255, 255, 255, 0.18),
+      transparent 55%
+    ),
+    linear-gradient(135deg, var(--navy-700), var(--navy-900));
+  color: var(--white);
+  font-family: Montserrat, "Segoe UI", Arial, sans-serif;
+  font-size: 2.1rem;
+  font-weight: 800;
+  line-height: 1;
+  user-select: none;
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease,
+    transform 150ms ease;
+}
+
+.avatar-ring--captain {
+  width: 144px;
+  height: 144px;
+  border: 3px solid var(--gold-400);
+  font-size: 2.6rem;
+  box-shadow:
+    0 0 0 4px rgba(240, 195, 107, 0.22),
+    0 12px 26px rgba(18, 41, 92, 0.2);
+}
+
+.avatar-ring--top {
+  width: 168px;
+  height: 168px;
+  border: 3px solid var(--gold-400);
+  font-size: 3rem;
+  box-shadow:
+    0 0 0 5px rgba(240, 195, 107, 0.28),
+    0 16px 32px rgba(18, 41, 92, 0.24);
+}
+
+/* Real portrait, applied as an inline backgroundImage in team.tsx (AVIF
+   served from static.igem.wiki — see src/contents/team-photos.ts). The
+   initial letter underneath stays as the fallback whenever a slot is
+   cleared and the modifier is omitted. */
+.avatar-ring--photo {
+  background-size: cover;
+  background-position: center;
+  color: transparent;
+  text-indent: -9999px;
+}
+
+.avatar-ring--modal {
+  width: 72px;
+  height: 72px;
+  flex: 0 0 auto;
+  border: 2px solid rgba(41, 71, 117, 0.4);
+  font-size: 1.6rem;
+  box-shadow: none;
+}
+
+/* --- Title badges (above the circle, titled roles only) --- */
+
+.title-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--gold-400);
+  color: var(--navy-950);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.title-badge--captain {
+  background: var(--red-600);
+  color: var(--white);
+}
+
+/* --- Name + assignment chips --- */
+
+.person-name {
+  color: var(--navy-900);
+  font-family: Montserrat, "Segoe UI", Arial, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.leader-node .person-name {
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.person-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.3rem;
+}
+
+.chip {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: rgba(18, 41, 92, 0.08);
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+/* --- Member grid (clean cells, no cards) --- */
+
+.member-grid--org {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem 1.5rem;
+  max-width: 62rem;
+  margin: 3rem auto 0;
+  padding: 0;
+  list-style: none;
+}
+
+.member-cell {
+  display: flex;
+  justify-content: center;
+}
+
+@media (min-width: 480px) {
+  .member-grid--org {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 768px) {
+  .member-grid--org {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .member-grid--org {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* --- Hover affordances --- */
+
+.person-trigger:hover .avatar-ring,
+.person-trigger:focus-visible .avatar-ring {
+  transform: translateY(-3px);
+}
+
+.member-cell .person-trigger:hover .avatar-ring,
+.member-cell .person-trigger:focus-visible .avatar-ring {
+  border-color: var(--red-600);
+}
+
+/* --- Instructor / advisor templates (blank until consent) --- */
+
+.instructor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+  max-width: 46rem;
+  margin: 2rem auto 0;
+  padding: 0;
+  list-style: none;
+}
+
+.instructor-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 1.75rem 1rem 1.5rem;
+  border: 1px dashed rgba(41, 71, 117, 0.35);
+  border-radius: var(--radius-md);
+  background: var(--white);
+  text-align: center;
+}
+
+.instructor-card__frame {
+  position: relative;
+  display: grid;
+  width: 96px;
+  height: 96px;
+  overflow: hidden;
+  border: 2px dashed rgba(41, 71, 117, 0.4);
+  border-radius: 50%;
+  background: rgba(18, 41, 92, 0.05);
+}
+
+.instructor-card__frame::before {
+  content: "";
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(41, 71, 117, 0.35);
+  transform: translateX(-50%);
+}
+
+.instructor-card__frame::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  width: 56px;
+  height: 36px;
+  border-radius: 50% 50% 0 0;
+  background: rgba(41, 71, 117, 0.35);
+  transform: translateX(-50%);
+}
+
+.instructor-card__name {
+  margin-top: 0.35rem;
+  color: var(--navy-900);
+  font-family: Montserrat, "Segoe UI", Arial, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.instructor-card__role {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.instructor-note {
+  max-width: 46rem;
+  margin: 1.5rem auto 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* --- Bio modal --- */
+
+.bio-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+  background: rgba(4, 17, 36, 0.72);
+  backdrop-filter: blur(4px);
+  animation: bio-modal-fade 120ms ease-out;
+}
+
+.bio-modal__panel {
+  position: relative;
+  width: min(560px, 100%);
+  max-height: 80vh;
+  overflow: auto;
+  padding: 2rem;
+  border-top: 3px solid var(--gold-400);
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  box-shadow: var(--shadow);
+  animation: bio-modal-rise 120ms ease-out;
+}
+
+@keyframes bio-modal-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes bio-modal-rise {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.bio-modal__close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  display: grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  place-items: center;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--navy-900);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    border-color 150ms ease,
+    color 150ms ease;
+}
+
+.bio-modal__close:hover {
+  border-color: var(--red-600);
+  color: var(--red-600);
+}
+
+.bio-modal__close:focus-visible {
+  outline: 3px solid var(--gold-400);
+  outline-offset: 2px;
+}
+
+.bio-modal__header {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  margin: 0 2.5rem 1.25rem 0;
+}
+
+.bio-modal__identity h3 {
+  margin: 0;
+  color: var(--navy-900);
+  font-size: 1.2rem;
+}
+
+.bio-modal__identity .title-badge {
+  margin-top: 0.45rem;
+}
+
+.bio-modal__identity .person-chips {
+  justify-content: flex-start;
+  margin-top: 0.6rem;
+}
+
+.bio-modal__bio {
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+/* --- Responsive: stack the org chart, full-width modal --- */
+
+@media (max-width: 720px) {
+  .team-merge--split,
+  .team-rail {
+    display: none;
+  }
+
+  .captain-row {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 2rem;
+    padding-top: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .bio-modal {
+    padding: 0.75rem;
+  }
+
+  .bio-modal__panel {
+    width: 100%;
+    padding: 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bio-modal,
+  .bio-modal__panel {
+    animation: none;
+  }
+
+  .avatar-ring,
+  .bio-modal__close {
+    transition: none;
+  }
+
+  .person-trigger:hover .avatar-ring,
+  .person-trigger:focus-visible .avatar-ring {
+    transform: none;
   }
 }
