@@ -1,17 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import pages, { PageGroup } from "../pages.ts";
+import { NavGroups } from "./NavGroups";
 import { ReadingProgress } from "./ReadingProgress";
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const location = useLocation();
-  const groups: PageGroup[] = ["Project", "Research", "People"];
+  const shellRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => setOpen(false), [location.pathname]);
 
   return (
-    <div className="site-nav-shell">
+    <div className="site-nav-shell" ref={shellRef}>
       <nav className="site-nav" aria-label="Primary navigation">
         <div className="site-container site-nav__inner">
           <NavLink
@@ -48,20 +48,7 @@ export function Navbar() {
             <NavLink className="nav-home-link" to="/">
               Home
             </NavLink>
-            {groups.map((group) => (
-              <details className="nav-group" key={group}>
-                <summary>{group}</summary>
-                <div className="nav-group__menu">
-                  {pages
-                    .filter((page) => page.group === group)
-                    .map((page) => (
-                      <NavLink key={page.path} to={page.path}>
-                        {page.name}
-                      </NavLink>
-                    ))}
-                </div>
-              </details>
-            ))}
+            <NavGroups drawerOpen={open} shellRef={shellRef} />
           </div>
         </div>
       </nav>
