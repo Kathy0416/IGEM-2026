@@ -617,8 +617,8 @@ export const searchIndex: SearchEntry[] = [
     pageTitle: "Our Team",
     group: "People",
     kind: "section",
-    sectionTitle: "Strength comes from people",
-    anchor: "strength-comes-from-people",
+    sectionTitle: "Built by a multidisciplinary team",
+    anchor: "built-by-a-multidisciplinary-team",
     keywords: ["our team", "captains", "members", "introductions"],
   },
   {
@@ -627,9 +627,9 @@ export const searchIndex: SearchEntry[] = [
     pageTitle: "Our Team",
     group: "People",
     kind: "section",
-    sectionTitle: "Guidance pending confirmation",
-    anchor: "guidance-pending-confirmation",
-    keywords: ["instructors", "advisors", "guidance", "consent"],
+    sectionTitle: "Team role matrix",
+    anchor: "team-role-matrix",
+    keywords: ["instructors", "advisors", "roles", "responsibilities"],
   },
   {
     path: "/team",
