@@ -20,6 +20,16 @@ const App = () => {
     window.scrollTo({ top: 0, behavior: "instant" });
   }, [currentPage, location.pathname]);
 
+  // Deep links with a hash land on the anchored section after render;
+  // navigations without a hash keep the scroll-to-top behavior above.
+  useEffect(() => {
+    if (!location.hash) {
+      return;
+    }
+    const target = document.getElementById(location.hash.slice(1));
+    target?.scrollIntoView({ behavior: "instant", block: "start" });
+  }, [location.hash]);
+
   return (
     <>
       <a className="skip-link" href="#main-content">

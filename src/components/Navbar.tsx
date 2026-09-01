@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import pages, { PageGroup } from "../pages.ts";
 import { ReadingProgress } from "./ReadingProgress";
+import { MobileSearchRow, SearchBar } from "./SearchBar";
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
@@ -45,6 +46,7 @@ export function Navbar() {
             className={`site-nav__links${open ? " is-open" : ""}`}
             id="primary-links"
           >
+            <MobileSearchRow />
             <NavLink className="nav-home-link" to="/">
               Home
             </NavLink>
@@ -63,6 +65,11 @@ export function Navbar() {
               </details>
             ))}
           </div>
+
+          <SearchBar
+            idPrefix="site-search-desktop"
+            className="site-search--desktop"
+          />
         </div>
       </nav>
       <ReadingProgress />
