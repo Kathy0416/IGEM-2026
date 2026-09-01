@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { NavGroups } from "./NavGroups";
 import { ReadingProgress } from "./ReadingProgress";
+import { MobileSearchRow, SearchBar } from "./SearchBar";
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
@@ -45,11 +46,17 @@ export function Navbar() {
             className={`site-nav__links${open ? " is-open" : ""}`}
             id="primary-links"
           >
+            <MobileSearchRow />
             <NavLink className="nav-home-link" to="/">
               Home
             </NavLink>
             <NavGroups drawerOpen={open} shellRef={shellRef} />
           </div>
+
+          <SearchBar
+            idPrefix="site-search-desktop"
+            className="site-search--desktop"
+          />
         </div>
       </nav>
       <ReadingProgress />
