@@ -1,15 +1,28 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import cursorMascot from "../assets/cursor-mascot.png";
+import typingCursor from "../assets/type-cursor.png";
 
 const cursorAssets = {
   default: cursorMascot,
   pointer: cursorMascot,
+  typing: typingCursor,
 };
 
 const interactiveSelector =
   'a, button, summary, [role="button"], [role="link"], [tabindex]:not([tabindex="-1"])';
+const textEntrySelector = [
+  "textarea",
+  '[contenteditable]:not([contenteditable="false"])',
+  "input:not([type])",
+  'input[type="email"]',
+  'input[type="password"]',
+  'input[type="search"]',
+  'input[type="tel"]',
+  'input[type="text"]',
+  'input[type="url"]',
+].join(", ");
 const nativeCursorSelector =
-  'input, textarea, select, option, [contenteditable="true"], [data-native-cursor], p, li, td, th, dd, dt, blockquote, code, pre, h1, h2, h3, h4, h5, h6';
+  'select, option, [data-native-cursor], p, li, td, th, dd, dt, blockquote, code, pre, h1, h2, h3, h4, h5, h6';
 
 type CursorSplash = {
   id: number;
@@ -58,6 +71,13 @@ export function CursorFollower() {
     },
     [],
   );
+
+  useEffect(() => {
+    Object.values(cursorAssets).forEach((src) => {
+      const image = new Image();
+      image.src = src;
+    });
+  }, []);
 
   useEffect(() => {
     const pointerQuery = window.matchMedia("(pointer: fine)");
@@ -128,22 +148,32 @@ export function CursorFollower() {
 
     const getCursorContext = (target: EventTarget | null) => {
       const element = target instanceof Element ? target : null;
-      const isInteractive = Boolean(element?.closest(interactiveSelector));
+      const isTextEntry = Boolean(element?.closest(textEntrySelector));
+      const isInteractive =
+        !isTextEntry && Boolean(element?.closest(interactiveSelector));
       const useNativeCursor =
-        !isInteractive && Boolean(element?.closest(nativeCursorSelector));
+        !isTextEntry &&
+        !isInteractive &&
+        Boolean(element?.closest(nativeCursorSelector));
 
-      return { isInteractive, useNativeCursor };
+      return { isInteractive, isTextEntry, useNativeCursor };
     };
 
     const updateContext = (target: EventTarget | null) => {
-      const { isInteractive, useNativeCursor } = getCursorContext(target);
-      const nextVariant = isInteractive ? "pointer" : "default";
+      const { isInteractive, isTextEntry, useNativeCursor } =
+        getCursorContext(target);
+      const nextVariant = isTextEntry
+        ? "typing"
+        : isInteractive
+          ? "pointer"
+          : "default";
 
       document.documentElement.classList.toggle(
         "is-native-cursor",
         useNativeCursor,
       );
       follower.classList.toggle("is-native-context", useNativeCursor);
+      follower.classList.toggle("is-typing", isTextEntry);
       tip.classList.toggle("is-native-context", useNativeCursor);
 
       if (nextVariant !== currentVariant) {
@@ -174,7 +204,7 @@ export function CursorFollower() {
     };
 
     const handlePointerDown = (event: PointerEvent) => {
-      const { useNativeCursor } = getCursorContext(event.target);
+      const { isTextEntry, useNativeCursor } = getCursorContext(event.target);
 
       currentX = targetX;
       currentY = targetY;
@@ -182,7 +212,7 @@ export function CursorFollower() {
       follower.classList.add("is-pressed");
       tip.classList.add("is-pressed");
 
-      if (!useNativeCursor) {
+      if (!useNativeCursor && !isTextEntry) {
         createSplash(event.clientX, event.clientY);
       }
     };
