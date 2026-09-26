@@ -398,27 +398,6 @@ a {
   width: 100%;
   max-width: none;
   transform: scaleX(-1);
-  transform-origin: 50% 55%;
-}
-
-.reading-progress__mascot-position.is-swimming .reading-progress__mascot {
-  animation: jellyfish-swim 450ms ease-in-out infinite alternate;
-}
-
-@keyframes jellyfish-swim {
-  from {
-    transform: translateY(1px) rotate(-1.5deg) scaleX(-1) scaleY(0.98);
-  }
-
-  to {
-    transform: translateY(-3px) rotate(1.5deg) scaleX(-1.025) scaleY(1.025);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .reading-progress__mascot-position.is-swimming .reading-progress__mascot {
-    animation: none;
-  }
 }
 
 /* Custom cursor */

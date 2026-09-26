@@ -1,6 +1,11 @@
 import { CSSProperties, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import progressMascot from "../assets/progress-mascot.png";
+import navi1 from "../assets/navi1.png";
+import navi2 from "../assets/navi2.png";
+import navi3 from "../assets/navi3.png";
+
+const MASCOT_FRAMES = [navi1, navi2, navi3];
+const FRAME_DURATION = 120;
 
 type ProgressStyle = CSSProperties & {
   "--reading-progress": number;
@@ -10,6 +15,42 @@ export function ReadingProgress() {
   const location = useLocation();
   const [progress, setProgress] = useState(0);
   const [isSwimming, setIsSwimming] = useState(false);
+  const [frameIndex, setFrameIndex] = useState(0);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    MASCOT_FRAMES.forEach((src) => {
+      const image = new Image();
+      image.src = src;
+    });
+
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updateMotionPreference = () => {
+      setPrefersReducedMotion(motionQuery.matches);
+    };
+
+    updateMotionPreference();
+    motionQuery.addEventListener("change", updateMotionPreference);
+
+    return () => {
+      motionQuery.removeEventListener("change", updateMotionPreference);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isSwimming || prefersReducedMotion) {
+      setFrameIndex(0);
+      return;
+    }
+
+    const frameTimer = window.setInterval(() => {
+      setFrameIndex((currentFrame) =>
+        (currentFrame + 1) % MASCOT_FRAMES.length,
+      );
+    }, FRAME_DURATION);
+
+    return () => window.clearInterval(frameTimer);
+  }, [isSwimming, prefersReducedMotion]);
 
   useEffect(() => {
     let animationFrame = 0;
@@ -83,12 +124,12 @@ export function ReadingProgress() {
         <span className="reading-progress__fill" />
       </div>
       <span
-        className={`reading-progress__mascot-position${isSwimming ? " is-swimming" : ""}`}
+        className="reading-progress__mascot-position"
         aria-hidden="true"
       >
         <img
           className="reading-progress__mascot"
-          src={progressMascot}
+          src={MASCOT_FRAMES[frameIndex]}
           alt=""
         />
       </span>
