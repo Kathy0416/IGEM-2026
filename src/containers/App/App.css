@@ -378,7 +378,7 @@ a {
   box-shadow: 0 0 12px rgba(227, 75, 80, 0.65);
 }
 
-.reading-progress__mascot {
+.reading-progress__mascot-position {
   position: absolute;
   z-index: 2;
   top: 50%;
@@ -388,10 +388,16 @@ a {
     calc(100% - var(--progress-mascot-width))
   );
   width: var(--progress-mascot-width);
-  max-width: none;
   pointer-events: none;
-  transform: translateY(-50%) scaleX(-1);
+  transform: translateY(-50%);
   user-select: none;
+}
+
+.reading-progress__mascot {
+  display: block;
+  width: 100%;
+  max-width: none;
+  transform: scaleX(-1);
 }
 
 /* Custom cursor */
