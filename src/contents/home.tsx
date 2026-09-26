@@ -82,11 +82,7 @@ export function Home() {
             {[
               ["Problem", "Define the need and its context.", "/problem"],
               ["Solution", "Explain the proposed design logic.", "/solution"],
-              [
-                "Engineering",
-                "Document iterative technical work.",
-                "/engineering",
-              ],
+              ["Engineering", "Document iterative technical work.", "/engineering"],
               ["Results", "Report evidence without overclaiming.", "/results"],
             ].map(([title, body, path], index) => (
               <Link className="pathway__item" to={path} key={title}>
