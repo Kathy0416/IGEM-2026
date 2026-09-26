@@ -80,10 +80,18 @@ export function Home() {
         >
           <div className="pathway">
             {[
-              ["Problem", "Define the need and its context.", "/problem"],
-              ["Solution", "Explain the proposed design logic.", "/solution"],
+              ["Description", "Define the need and its context.", "/description"],
               ["Engineering", "Document iterative technical work.", "/engineering"],
-              ["Results", "Report evidence without overclaiming.", "/results"],
+              [
+                "Human Practices",
+                "Connect stakeholder learning to project decisions.",
+                "/human-practices",
+              ],
+              [
+                "Contribution",
+                "Share documented resources that future teams can reuse.",
+                "/contribution",
+              ],
             ].map(([title, body, path], index) => (
               <Link className="pathway__item" to={path} key={title}>
                 <span>0{index + 1}</span>

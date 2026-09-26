@@ -1,4 +1,4 @@
-export function iHP() {
+export function HumanPractices() {
   return (
     <div>
       <h1>iHP</h1>

@@ -10,7 +10,7 @@ export { Notebook } from "./notebook.tsx";
 export { Safety } from "./safety.tsx";
 export { Model } from "./model.tsx";
 export { BinderViewer } from "./binderviewer.tsx";
-export { iHP } from "./ihp.tsx";
+export { HumanPractices } from "./ihp.tsx";
 export { Education } from "./education.tsx";
 export { Entrepreneurship } from "./entrepreneurship.tsx";
 export { Members } from "./members.tsx";
