@@ -1,9 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import cursorMascot from "../assets/cursor-mascot.png";
+
+// 这里为鼠标不同的状态留了不同的图片资源和变量，有需要直接加对应的状态变量和图片即可，4-10行
+import cursorDefault from "../assets/cursor-mascot.png";
+import cursorPointer from "../assets/cursor-pointer-placeholder.png";
 
 const cursorAssets = {
-  default: cursorMascot,
-  pointer: cursorMascot,
+  default: cursorDefault,
+  pointer: cursorPointer,
 };
 
 const interactiveSelector =
@@ -237,7 +240,7 @@ export function CursorFollower() {
         <img ref={imageRef} src={cursorAssets.default} alt="" />
       </div>
       {/* Hotspot marker pinned to the raw pointer coordinates (no easing). */}
-      <div className="cursor-tip" ref={tipRef} aria-hidden="true" />
+      <div className="cursor-tip" ref={tipRef} aria-hidden="true" style={{ display: 'none' }} />
       <div className="cursor-splash-layer" aria-hidden="true">
         {splashes.map((splash) => (
           <span
