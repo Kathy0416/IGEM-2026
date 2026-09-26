@@ -440,6 +440,18 @@ a {
   transform: translate(-14%, -10%) scale(0.9);
 }
 
+.cursor-follower.is-typing {
+  width: 42px;
+}
+
+.cursor-follower.is-typing img {
+  transform: translate(18%, -50%);
+}
+
+.cursor-follower.is-typing.is-pressed img {
+  transform: translate(18%, -50%) scale(0.92);
+}
+
 /* Hotspot tip marker: pinned to the raw pointer coordinates (no easing), so
    it always shows the true click point, independent of the eased mascot. */
 .cursor-tip {
@@ -2510,8 +2522,24 @@ h2 {
   min-width: 0;
 }
 
+.site-search-desktop-cluster {
+  display: flex;
+  flex: 0 1 286px;
+  gap: 0.4rem;
+  align-items: center;
+  min-width: 190px;
+}
+
 .site-search--desktop {
-  flex: 0 1 230px;
+  flex: 1 1 220px;
+}
+
+.site-search__mascot {
+  flex: 0 0 auto;
+  width: 48px;
+  max-width: none;
+  pointer-events: none;
+  user-select: none;
 }
 
 /* The mobile search row only exists inside the expandable nav panel. */
@@ -2687,7 +2715,7 @@ mark.search-hit {
 }
 
 @media (max-width: 960px) {
-  .site-search--desktop {
+  .site-search-desktop-cluster {
     display: none;
   }
 

@@ -3,6 +3,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import { NavGroups } from "./NavGroups";
 import { ReadingProgress } from "./ReadingProgress";
 import { MobileSearchRow, SearchBar } from "./SearchBar";
+import searchMascot from "../assets/search-mascot.png";
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
@@ -53,10 +54,18 @@ export function Navbar() {
             <NavGroups drawerOpen={open} shellRef={shellRef} />
           </div>
 
-          <SearchBar
-            idPrefix="site-search-desktop"
-            className="site-search--desktop"
-          />
+          <div className="site-search-desktop-cluster">
+            <SearchBar
+              idPrefix="site-search-desktop"
+              className="site-search--desktop"
+            />
+            <img
+              className="site-search__mascot"
+              src={searchMascot}
+              alt=""
+              aria-hidden="true"
+            />
+          </div>
         </div>
       </nav>
       <ReadingProgress />
