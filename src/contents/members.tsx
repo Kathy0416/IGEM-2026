@@ -345,7 +345,7 @@ function BioModal({ person, onClose }: BioModalProps) {
   );
 }
 
-export function Team() {
+export function Members() {
   const [activeId, setActiveId] = useState<string | null>(null);
   const openerRef = useRef<HTMLElement | null>(null);
 

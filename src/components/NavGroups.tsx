@@ -3,7 +3,7 @@ import type { FocusEvent, KeyboardEvent, RefObject } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import pages, { PageGroup } from "../pages.ts";
 
-const groups: PageGroup[] = ["Project", "Research", "People"];
+const groups: PageGroup[] = ["Project", "Wet Lab", "Dry Lab", "Human Practices", "Team"];
 
 type NavGroupsProps = {
   /** Whether the mobile drawer (nav-toggle panel) is currently open. */
