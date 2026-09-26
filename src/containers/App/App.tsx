@@ -6,6 +6,7 @@ import { Header } from "../../components/Header";
 import { LegacyEffects } from "../../components/LegacyEffects";
 import { Navbar } from "../../components/Navbar";
 import { NotFound } from "../../components/NotFound";
+import { PageContents } from "../../components/PageContents";
 import { getPathMapping } from "../../utils";
 import "./App.css";
 
@@ -51,8 +52,9 @@ const App = () => {
                   ) : (
                     <>
                       <Header title={title} lead={lead} />
-                      <div className="page-shell">
-                        <Component />
+                      <div className="page-shell page-frame">
+                        <PageContents />
+                        <div className="page-frame__body"><Component /></div>
                       </div>
                     </>
                   )

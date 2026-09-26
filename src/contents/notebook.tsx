@@ -14,6 +14,10 @@ export function Notebook() {
         entry to its protocol, data, and engineering cycle.
       </ContentNotice>
 
+      <PageSection eyebrow="Find an entry" title="Browse the season record">
+        <p>[TEAM CONTENT REQUIRED] Add dated entries with workstream labels as records become available. Keep the newest and earliest dates clear and link each entry to its source record.</p>
+      </PageSection>
+
       <PageSection
         eyebrow="Season record"
         title="Decisions over time"

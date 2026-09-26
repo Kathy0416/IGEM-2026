@@ -45,7 +45,7 @@ export const pages: WikiPage[] = [
     title: "Project Description",
     path: "/description",
     component: Description,
-    lead: "The context, motivation, and scope of our proposed project.",
+    lead: "Why this question matters, what we propose, and how we will test it.",
     group: "Project",
   },
   {
@@ -53,7 +53,7 @@ export const pages: WikiPage[] = [
     title: "Contribution",
     path: "/contribution",
     component: Contribution,
-    lead: "The context, motivation, and scope of our proposed project.",
+    lead: "Reusable resources and documentation for future iGEM teams.",
     group: "Project",
   },
   {
@@ -61,7 +61,7 @@ export const pages: WikiPage[] = [
     title: "Engineering",
     path: "/engineering",
     component: Engineering,
-    lead: "Document iterative technical work.",
+    lead: "Follow design decisions through each build, test, and revision.",
     group: "Wet Lab",
   },
   {
@@ -77,7 +77,7 @@ export const pages: WikiPage[] = [
     title: "Part",
     path: "/part",
     component: Part,
-    lead: "Description of the parts we have designed.",
+    lead: "Part designs, Registry records, characterization, and reuse guidance.",
     group: "Wet Lab",
   },
   {
@@ -85,7 +85,7 @@ export const pages: WikiPage[] = [
     title: "Protocol",
     path: "/protocol",
     component: Protocol,
-    lead: "Description of the protocols we have designed.",
+    lead: "Versioned methods, materials, controls, and troubleshooting.",
     group: "Wet Lab",
   },
   {
@@ -93,7 +93,7 @@ export const pages: WikiPage[] = [
     title: "Measurement",
     path: "/measurement",
     component: Measurement,
-    lead: "Description of the measurements we have designed.",
+    lead: "Measurement methods, calibration, analysis, and validation.",
     group: "Wet Lab",
   },
   {
@@ -109,7 +109,7 @@ export const pages: WikiPage[] = [
     title: "Safety and Security",
     path: "/safety-and-security",
     component: Safety,
-    lead: "Description of the safety measures we have designed.",
+    lead: "Hazards, controls, containment, and responsible use.",
     group: "Wet Lab",
   },
   {
@@ -117,7 +117,7 @@ export const pages: WikiPage[] = [
     title: "Model",
     path: "/model",
     component: Model,
-    lead: "Description of the model we have designed.",
+    lead: "Assumptions, methods, predictions, validation, and limitations.",
     group: "Dry Lab",
   },
   {
@@ -125,7 +125,7 @@ export const pages: WikiPage[] = [
     title: "Binder Viewer",
     path: "/binder-viewer",
     component: BinderViewer,
-    lead: "Interactive visualization of our binder designs.",
+    lead: "Explore binder designs and the evidence behind their interpretation.",
     group: "Dry Lab",
   },
   {
@@ -133,7 +133,7 @@ export const pages: WikiPage[] = [
     title: "Human Practices",
     path: "/human-practices",
     component: HumanPractices,
-    lead: "Description of the iHP we have designed.",
+    lead: "See how stakeholder input shapes project decisions.",
     group: "Human Practices",
   },
   {
@@ -141,7 +141,7 @@ export const pages: WikiPage[] = [
     title: "Education",
     path: "/education",
     component: Education,
-    lead: "Description of the education initiatives we have designed.",
+    lead: "Learning activities, feedback, and materials others can reuse.",
     group: "Human Practices",
   },
   {
@@ -149,7 +149,7 @@ export const pages: WikiPage[] = [
     title: "Entrepreneurship",
     path: "/entrepreneurship",
     component: Entrepreneurship,
-    lead: "Description of the entrepreneurship initiatives we have designed.",
+    lead: "Proposed users, value, feasibility, and open questions.",
     group: "Human Practices",
   },
   {

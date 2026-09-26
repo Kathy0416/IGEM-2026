@@ -41,7 +41,15 @@ export function Description() {
         </div>
       </PageSection>
 
-      <PageSection eyebrow="Definition" title="Project objectives" tone="tint">
+      <PageSection eyebrow="Research gap" title="The question this project addresses" tone="tint">
+        <div className="focus-statement"><p>[TEAM CONTENT REQUIRED] Explain what prior research establishes, where uncertainty remains, and the specific gap the proposed system addresses. Cite primary sources.</p></div>
+      </PageSection>
+
+      <PageSection eyebrow="Proposed solution" title="How the proposed system would work">
+        <FigurePlaceholder title="Proposed system diagram" description="Show components, expected interactions, and the measurable output. Distinguish proposed behavior from tested results." />
+      </PageSection>
+
+      <PageSection eyebrow="Definition" title="Measurable project objectives" tone="tint">
         <div className="card-grid card-grid--three">
           <InfoCard number="01" title="Research question">
             <p>[TEAM CONTENT REQUIRED] State the precise biological question.</p>

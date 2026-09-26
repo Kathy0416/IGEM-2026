@@ -1,8 +1,5 @@
+import { BlueprintPage } from "../components/BlueprintPage";
+
 export function Entrepreneurship() {
-  return (
-    <div>
-      <h1>Entrepreneurship</h1>
-      <p>这里是 Entrepreneurship 页面的内容</p>
-    </div>
-  );
+  return <BlueprintPage page="entrepreneurship" />;
 }

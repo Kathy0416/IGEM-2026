@@ -65,6 +65,10 @@ export function Engineering() {
         <Timeline items={cycleStages} />
       </PageSection>
 
+      <PageSection eyebrow="Iteration record" title="Engineering cycles over time" tone="tint">
+        <p>[TEAM CONTENT REQUIRED] Add one Design–Build–Test–Learn panel for each completed cycle. Link each test to its experiment, data, and any resulting design change.</p>
+      </PageSection>
+
       <PageSection
         eyebrow="Traceability"
         title="Decision and evidence register"
