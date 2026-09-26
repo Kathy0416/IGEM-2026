@@ -9,9 +9,11 @@ type ProgressStyle = CSSProperties & {
 export function ReadingProgress() {
   const location = useLocation();
   const [progress, setProgress] = useState(0);
+  const [isSwimming, setIsSwimming] = useState(false);
 
   useEffect(() => {
     let animationFrame = 0;
+    let scrollEndTimer = 0;
 
     const updateProgress = () => {
       animationFrame = 0;
@@ -38,15 +40,26 @@ export function ReadingProgress() {
       }
     };
 
+    const handleScroll = () => {
+      requestUpdate();
+      setIsSwimming(true);
+      window.clearTimeout(scrollEndTimer);
+      scrollEndTimer = window.setTimeout(() => {
+        setIsSwimming(false);
+      }, 180);
+    };
+
     setProgress(0);
+    setIsSwimming(false);
     requestUpdate();
-    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", requestUpdate);
 
     return () => {
-      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", requestUpdate);
       window.cancelAnimationFrame(animationFrame);
+      window.clearTimeout(scrollEndTimer);
     };
   }, [location.pathname]);
 
@@ -69,12 +82,16 @@ export function ReadingProgress() {
       <div className="reading-progress__track" aria-hidden="true">
         <span className="reading-progress__fill" />
       </div>
-      <img
-        className="reading-progress__mascot"
-        src={progressMascot}
-        alt=""
+      <span
+        className={`reading-progress__mascot-position${isSwimming ? " is-swimming" : ""}`}
         aria-hidden="true"
-      />
+      >
+        <img
+          className="reading-progress__mascot"
+          src={progressMascot}
+          alt=""
+        />
+      </span>
     </div>
   );
 }
