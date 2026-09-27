@@ -8,6 +8,8 @@ import { Navbar } from "../../components/Navbar";
 import { NotFound } from "../../components/NotFound";
 import { getPathMapping } from "../../utils";
 import "./App.css";
+import "./Theme.css";
+import { BackToTop } from "../../components/BackToTop";
 
 const App = () => {
   const pathMapping = getPathMapping();
@@ -38,7 +40,7 @@ const App = () => {
       <CursorFollower />
       <LegacyEffects />
       <Navbar />
-      <main id="main-content">
+      <main id="main-content" tabIndex={-1}>
         <Routes>
           {Object.values(pathMapping).map(
             ({ path, title, lead, layout, component: Component }) => (
@@ -77,6 +79,7 @@ const App = () => {
         </Routes>
       </main>
       <Footer />
+      <BackToTop />
     </>
   );
 };
