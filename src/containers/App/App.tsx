@@ -3,8 +3,10 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import { CursorFollower } from "../../components/CursorFollower";
 import { Footer } from "../../components/Footer";
 import { Header } from "../../components/Header";
+import { LegacyEffects } from "../../components/LegacyEffects";
 import { Navbar } from "../../components/Navbar";
 import { NotFound } from "../../components/NotFound";
+import { PageContents } from "../../components/PageContents";
 import { getPathMapping } from "../../utils";
 import "./App.css";
 
@@ -19,12 +21,23 @@ const App = () => {
     window.scrollTo({ top: 0, behavior: "instant" });
   }, [currentPage, location.pathname]);
 
+  // Deep links with a hash land on the anchored section after render;
+  // navigations without a hash keep the scroll-to-top behavior above.
+  useEffect(() => {
+    if (!location.hash) {
+      return;
+    }
+    const target = document.getElementById(location.hash.slice(1));
+    target?.scrollIntoView({ behavior: "instant", block: "start" });
+  }, [location.hash]);
+
   return (
     <>
       <a className="skip-link" href="#main-content">
         Skip to main content
       </a>
       <CursorFollower />
+      <LegacyEffects />
       <Navbar />
       <main id="main-content">
         <Routes>
@@ -39,8 +52,9 @@ const App = () => {
                   ) : (
                     <>
                       <Header title={title} lead={lead} />
-                      <div className="page-shell">
-                        <Component />
+                      <div className="page-shell page-frame">
+                        <PageContents />
+                        <div className="page-frame__body"><Component /></div>
                       </div>
                     </>
                   )

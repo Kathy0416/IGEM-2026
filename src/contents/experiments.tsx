@@ -31,7 +31,11 @@ export function Experiments() {
         </div>
       </PageSection>
 
-      <PageSection eyebrow="Reproducibility" title="Protocol record" tone="tint">
+      <PageSection eyebrow="Experimental design" title="Purpose, controls, and outputs" tone="tint">
+        <p>[TEAM CONTENT REQUIRED] For each experiment, explain the question, positive and negative controls, expected readout, and criteria for interpretation.</p>
+      </PageSection>
+
+      <PageSection eyebrow="Methods and materials" title="Protocol record">
         <ResponsiveTable
           caption="Experiment protocol register"
           headers={["ID", "Materials", "Controls", "Output", "Safety reference"]}
@@ -52,6 +56,10 @@ export function Experiments() {
             ],
           ]}
         />
+      </PageSection>
+
+      <PageSection eyebrow="Evidence" title="Results linked to methods" tone="tint">
+        <p>[TEAM CONTENT REQUIRED] Link every reported result to the exact protocol version, notebook entry, raw data, and analysis.</p>
       </PageSection>
 
       <PageSection eyebrow="Documentation" title="What every protocol must include">

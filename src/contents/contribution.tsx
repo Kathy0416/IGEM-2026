@@ -32,7 +32,7 @@ export function Contribution() {
         </div>
       </PageSection>
 
-      <PageSection eyebrow="Contribution index" title="What we are sharing" tone="tint">
+      <PageSection eyebrow="Contribution index" title="Resources and access" tone="tint">
         <ResponsiveTable
           caption="Team contributions"
           headers={["Contribution", "Intended user", "Validation", "Access", "License"]}

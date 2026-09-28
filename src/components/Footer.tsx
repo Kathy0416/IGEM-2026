@@ -32,7 +32,7 @@ export function Footer() {
                 <Link to="/contribution">Contribution</Link>
               </li>
               <li>
-                <Link to="/safety-and-security">Safety</Link>
+                <Link to="/safety-and-security">Safety and Security</Link>
               </li>
             </ul>
           </div>

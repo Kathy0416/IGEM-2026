@@ -5,8 +5,8 @@
       "type": "node",
       "request": "launch",
       "name": "Run iGEM Wiki",
-      "runtimeExecutable": "npm.cmd",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeExecutable": "corepack",
+      "runtimeArgs": ["yarn", "dev", "--host", "0.0.0.0"],
       "cwd": "${workspaceFolder}",
       "console": "integratedTerminal",
       "env": {
