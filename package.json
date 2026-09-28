@@ -10,7 +10,8 @@
     "lint": "eslint . --max-warnings 0",
     "audit:compliance": "node scripts/compliance-audit.mjs",
     "audit:strict": "node scripts/compliance-audit.mjs --strict",
-    "verify": "yarn lint && yarn audit:compliance && yarn build",
+    "check:articles": "node --experimental-strip-types scripts/check-articles.mjs",
+    "verify": "yarn lint && yarn check:articles && yarn audit:compliance && yarn build",
     "format": "prettier --write \"**/*.{ts,tsx,md,json,css}\"",
     "preview": "vite preview"
   },
@@ -19,7 +20,11 @@
     "react": "^19.2.0",
     "react-bootstrap": "^2.10.10",
     "react-dom": "^19.2.0",
-    "react-router-dom": "^7.9.0"
+    "react-markdown": "^10.1.0",
+    "react-router-dom": "^7.9.0",
+    "remark-gfm": "^4.0.1",
+    "remark-parse": "^11.0.0",
+    "unified": "^11.0.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",

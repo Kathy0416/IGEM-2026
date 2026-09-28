@@ -1,17 +1,2 @@
 export { Home } from "./home.tsx";
-export { Description } from "./description.tsx";
-export { Contribution } from "./contribution.tsx";
-export { Engineering } from "./engineering.tsx";
-export { Experiments } from "./experiments.tsx";
-export { Part } from "./part.tsx";
-export { Protocol } from "./protocol.tsx";
-export { Measurement } from "./measurement.tsx";
-export { Notebook } from "./notebook.tsx";
-export { Safety } from "./safety.tsx";
-export { Model } from "./model.tsx";
-export { BinderViewer } from "./binderviewer.tsx";
-export { HumanPractices } from "./ihp.tsx";
-export { Education } from "./education.tsx";
-export { Entrepreneurship } from "./entrepreneurship.tsx";
 export { Members } from "./members.tsx";
-export { Attributions } from "./attributions.tsx";
