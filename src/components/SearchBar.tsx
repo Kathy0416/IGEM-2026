@@ -45,6 +45,7 @@ function searchSite(query: string): SearchEntry[] {
       entry.sectionTitle ?? "",
       entry.anchor ?? "",
       entry.keywords.join(" "),
+      entry.text ?? "",
     ]
       .join(" ")
       .toLowerCase();

@@ -28,6 +28,10 @@ placeholders and with the official team ID configured.
 
 ## Content policy
 
+Edit page text in `src/content/pages/*.md`. See [EDITING_GUIDE.md](EDITING_GUIDE.md)
+for replacing the Shakespeare samples, adding figures, and maintaining protocol
+and notebook records. Development requires Node 22.6+ for the article checks.
+
 - Do not fabricate results, statistics, citations, quotations, names, or
   attributions.
 - Record content provenance in [`CONTENT_SOURCES.md`](CONTENT_SOURCES.md).

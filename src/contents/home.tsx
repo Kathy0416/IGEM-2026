@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
+import { ArticlePage } from "../components/ArticlePage";
 import {
-  ContentNotice,
   InfoCard,
   PageSection,
 } from "../components/ContentBlocks";
@@ -40,11 +40,7 @@ export function Home() {
       </section>
 
       <div className="site-container home-content" id="home-content">
-        <ContentNotice title="A transparent starting point">
-          The former static website contained illustrative data that did not
-          come from the team. This rebuild intentionally uses placeholders until
-          Worldshaper-Nanjing supplies evidence, citations, and approved media.
-        </ContentNotice>
+        <ArticlePage pageKey="home" variant="home" />
 
         <PageSection
           eyebrow="Our direction"

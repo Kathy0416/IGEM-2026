@@ -1,4 +1,5 @@
 import pages from "../pages.ts";
+import { documents } from "../content/documents";
 import { stringToSlug } from "../utils/stringToSlug.ts";
 
 export interface SearchEntry {
@@ -10,6 +11,7 @@ export interface SearchEntry {
   sectionTitle?: string;
   anchor?: string;
   keywords: string[];
+  text?: string;
 }
 
 // Page aliases and judging terms live here; route-facing metadata comes from
@@ -176,149 +178,27 @@ const pageEntries: SearchEntry[] = pages.map((page) => ({
   keywords: pageKeywords[page.path] ?? [],
 }));
 
-interface SectionSeed {
-  path: string;
-  title: string;
-  keywords: string[];
-}
-
-// Only sections rendered by active route components belong here. Simple
-// placeholder pages with only an h1 remain searchable through their page entry.
-const sectionSeeds: SectionSeed[] = [
-  {
-    path: "/",
-    title: "A project built around three connected questions",
-    keywords: ["our direction", "themes", "understand", "engineer", "integrate"],
-  },
-  {
-    path: "/",
-    title: "Follow the work from question to evidence",
-    keywords: [
-      "project record",
-      "pathway",
-      "description",
-      "engineering",
-      "human practices",
-      "contribution",
-    ],
-  },
-  {
-    path: "/description",
-    title: "Why this project?",
-    keywords: ["context", "why", "muscle health", "motivation"],
-  },
-  {
-    path: "/description",
-    title: "Project objectives",
-    keywords: ["definition", "objectives", "research question", "technical objective"],
-  },
-  {
-    path: "/description",
-    title: "What is—and is not—being claimed",
-    keywords: ["boundaries", "claims", "limitations", "project status"],
-  },
-  {
-    path: "/description",
-    title: "References and evidence",
-    keywords: ["citations", "references", "sources"],
-  },
-  {
-    path: "/contribution",
-    title: "Useful, documented, reusable",
-    keywords: ["future teams", "resource", "usefulness", "access"],
-  },
-  {
-    path: "/contribution",
-    title: "What we are sharing",
-    keywords: ["contribution index", "sharing", "license", "validation"],
-  },
-  {
-    path: "/contribution",
-    title: "How another team can build on it",
-    keywords: ["reproducibility", "instructions", "prerequisites", "limitations"],
-  },
-  {
-    path: "/engineering",
-    title: "Engineering design cycle",
-    keywords: ["cycle 01", "design", "build", "test", "learn"],
-  },
-  {
-    path: "/engineering",
-    title: "Decision and evidence register",
-    keywords: ["traceability", "decisions", "register", "iterations"],
-  },
-  {
-    path: "/engineering",
-    title: "What the team will change",
-    keywords: ["next iteration", "design change", "lessons learned"],
-  },
-  {
-    path: "/experiments",
-    title: "Experiments and methods",
-    keywords: [
-      "protocol index",
-      "construct preparation",
-      "system characterization",
-      "functional evaluation",
-    ],
-  },
-  {
-    path: "/experiments",
-    title: "Protocol record",
-    keywords: ["reproducibility", "materials", "controls", "register"],
-  },
-  {
-    path: "/experiments",
-    title: "What every protocol must include",
-    keywords: ["documentation", "checklist", "versioning", "risk assessment"],
-  },
-  {
-    path: "/notebook",
-    title: "Decisions over time",
-    keywords: ["season record", "project definition", "milestone", "revision"],
-  },
-  {
-    path: "/notebook",
-    title: "Notebook entry register",
-    keywords: ["index", "entries", "dates", "evidence links"],
-  },
-  {
-    path: "/team",
-    title: "Strength comes from people",
-    keywords: ["our team", "captains", "members", "introductions"],
-  },
-  {
-    path: "/team",
-    title: "Guidance pending confirmation",
-    keywords: ["instructors", "advisors", "roles", "responsibilities"],
-  },
-  {
-    path: "/team",
-    title: "Credit must be precise",
-    keywords: ["attribution", "credit", "acknowledgements"],
-  },
-];
-
-const sectionEntries: SearchEntry[] = sectionSeeds.flatMap((section) => {
-  const page = pageByPath.get(section.path);
-  if (!page) {
-    return [];
-  }
-
-  return [
-    {
-      path: section.path,
-      pageName: page.name,
-      pageTitle: page.title,
-      group: page.group,
-      kind: "section",
-      sectionTitle: section.title,
-      anchor: stringToSlug(section.title),
-      keywords: section.keywords,
-    },
-  ];
+// Markdown headings and search share their anchor IDs with the reader.
+const sectionEntries: SearchEntry[] = pages.flatMap(page => {
+  const document = documents[page.path === "/" ? "home" : page.path.slice(1)];
+  return document.sections.flatMap(section => section.headings.filter(h => h.depth <= 3).map(heading => ({
+    path: page.path, pageName: page.name, pageTitle: page.title, group: page.group,
+    kind: "section" as const, sectionTitle: heading.title, anchor: heading.id,
+    keywords: [], text: heading.depth === 2 ? section.text : "",
+  })));
 });
 
-export const searchIndex: SearchEntry[] = [...pageEntries, ...sectionEntries];
+const preservedSections = [
+  { path: "/", title: "A project built around three connected questions" },
+  { path: "/", title: "Follow the work from question to evidence" },
+  { path: "/team", title: "Strength comes from people" },
+  { path: "/team", title: "Guidance pending confirmation" },
+  { path: "/team", title: "Credit must be precise" },
+].map(({path, title}): SearchEntry => ({
+  path, pageName: pageByPath.get(path)!.name, pageTitle: pageByPath.get(path)!.title,
+  group: pageByPath.get(path)!.group, kind: "section", sectionTitle: title,
+  anchor: stringToSlug(title), keywords: [],
+}));
 
+export const searchIndex: SearchEntry[] = [...pageEntries, ...sectionEntries, ...preservedSections];
 export default searchIndex;

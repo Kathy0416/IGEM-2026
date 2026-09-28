@@ -1,11 +1,12 @@
 interface HeaderProps {
   title: string;
   lead: string;
+  compact?: boolean;
 }
 
-export function Header({ title, lead }: HeaderProps) {
+export function Header({ title, lead, compact }: HeaderProps) {
   return (
-    <header className="page-header">
+    <header className={`page-header${compact ? " page-header--reading" : ""}`}>
       <div className="page-header__grid" aria-hidden="true" />
       <div className="site-container page-header__inner">
         <p className="eyebrow">Worldshaper-Nanjing · iGEM 2026</p>

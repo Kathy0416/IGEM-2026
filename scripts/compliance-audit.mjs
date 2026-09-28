@@ -4,7 +4,7 @@ import { extname, join, relative, resolve } from "node:path";
 const root = resolve(import.meta.dirname, "..");
 const strict = process.argv.includes("--strict");
 const sourceRoot = join(root, "src");
-const textExtensions = new Set([".ts", ".tsx", ".css", ".html"]);
+const textExtensions = new Set([".ts", ".tsx", ".css", ".html", ".md"]);
 const requiredRoutes = [
   "/",
   "/description",
@@ -27,6 +27,7 @@ const allowedExternalHosts = new Set([
   "gitlab.igem.org",
   "static.igem.wiki",
   "video.igem.org",
+  "www.gutenberg.org",
 ]);
 
 function walk(directory) {
@@ -102,6 +103,11 @@ const placeholders = contents.reduce(
   0,
 );
 const env = readFileSync(join(root, ".env"), "utf8");
+const sampleFiles = contents.filter(({ file, text }) => extname(file) === ".md" && /LAYOUT_SAMPLE|sample-figure\/|\bDEMO-|The Winter[’']s Tale|\bCAMILLO\b|\bLEONTES\b/i.test(text));
+if (sampleFiles.length) {
+  warnings.push(`${sampleFiles.length} Markdown pages contain layout sample content.`);
+  if (strict) errors.push(`Strict audit forbids layout sample content: ${sampleFiles.map(({file}) => relative(root, file)).join(", ")}`);
+}
 
 if (env.includes("TEAM_ID_REQUIRED")) {
   warnings.push("VITE_TEAM_ID still requires the official iGEM team ID.");

@@ -4,6 +4,7 @@ import { NavGroups } from "./NavGroups";
 import { ReadingProgress } from "./ReadingProgress";
 import { MobileSearchRow, SearchBar } from "./SearchBar";
 import searchMascot from "../assets/search-mascot.png";
+import { ThemeToggle } from "./ThemeToggle";
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
@@ -66,6 +67,7 @@ export function Navbar() {
               aria-hidden="true"
             />
           </div>
+          <ThemeToggle />
         </div>
       </nav>
       <ReadingProgress />

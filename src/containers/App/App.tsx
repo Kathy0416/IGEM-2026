@@ -8,6 +8,10 @@ import { Navbar } from "../../components/Navbar";
 import { NotFound } from "../../components/NotFound";
 import { getPathMapping } from "../../utils";
 import "./App.css";
+import "./Theme.css";
+import { BackToTop } from "../../components/BackToTop";
+import { ArticlePage } from "../../components/ArticlePage";
+import "./Reading.css";
 
 const App = () => {
   const pathMapping = getPathMapping();
@@ -26,9 +30,15 @@ const App = () => {
     if (!location.hash) {
       return;
     }
-    const target = document.getElementById(location.hash.slice(1));
-    target?.scrollIntoView({ behavior: "instant", block: "start" });
-  }, [location.hash]);
+    const frame = requestAnimationFrame(() => {
+      let id = location.hash.slice(1);
+      try { id = decodeURIComponent(id); } catch { /* Keep malformed fragments harmless. */ }
+      const target = document.getElementById(id);
+      target?.scrollIntoView({ behavior: "instant", block: "start" });
+      target?.focus({ preventScroll: true });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [location.pathname, location.hash, location.key]);
 
   return (
     <>
@@ -38,21 +48,23 @@ const App = () => {
       <CursorFollower />
       <LegacyEffects />
       <Navbar />
-      <main id="main-content">
+      <main id="main-content" tabIndex={-1}>
         <Routes>
           {Object.values(pathMapping).map(
-            ({ path, title, lead, layout, component: Component }) => (
+            ({ path, title, lead, layout, readingLayout, component: Component }) => (
               <Route
                 key={path}
                 path={path}
                 element={
-                  layout === "immersive" ? (
+                  layout === "immersive" && Component ? (
                     <Component />
                   ) : (
                     <>
-                      <Header title={title} lead={lead} />
-                      <div className="page-shell">
-                        <Component />
+                      <Header title={title} lead={lead} compact />
+                      <div className="page-shell wiki-shell">
+                        <ArticlePage key={path} pageKey={path.slice(1)} variant={readingLayout}>
+                          {Component && <Component />}
+                        </ArticlePage>
                       </div>
                     </>
                   )
@@ -77,6 +89,7 @@ const App = () => {
         </Routes>
       </main>
       <Footer />
+      <BackToTop />
     </>
   );
 };
