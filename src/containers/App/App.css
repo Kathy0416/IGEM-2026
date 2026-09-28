@@ -407,7 +407,7 @@ a {
   z-index: 9998;
   top: 0;
   left: 0;
-  width: 58px;
+  width: 64px;
   opacity: 0;
   pointer-events: none;
   transform: translate3d(-100px, -100px, 0);
@@ -420,7 +420,11 @@ a {
   display: block;
   width: 100%;
   max-width: none;
-  transform: translate(-14%, -10%);
+  position: absolute;
+  /* Arrow tip in the 1254px source is at roughly (185, 343). */
+  left: -9.5px;
+  top: -17.5px;
+  transform-origin: 9.5px 17.5px;
   transition: transform 120ms ease;
   /* Visibility outline for the mascot silhouette: the dark halo hugs the
      artwork and the white halo wraps around it, so the red/blue mascot
@@ -437,7 +441,7 @@ a {
 }
 
 .cursor-follower.is-pressed img {
-  transform: translate(-14%, -10%) scale(0.9);
+  transform: scale(0.9);
 }
 
 .cursor-follower.is-typing {
@@ -445,50 +449,12 @@ a {
 }
 
 .cursor-follower.is-typing img {
-  transform: translate(18%, -50%);
+  left: 8px;
+  top: -21px;
 }
 
 .cursor-follower.is-typing.is-pressed img {
-  transform: translate(18%, -50%) scale(0.92);
-}
-
-/* Hotspot tip marker: pinned to the raw pointer coordinates (no easing), so
-   it always shows the true click point, independent of the eased mascot. */
-.cursor-tip {
-  position: fixed;
-  z-index: 9999;
-  top: 0;
-  left: 0;
-  width: 10px;
-  height: 10px;
-  opacity: 0;
-  pointer-events: none;
-  transform: translate3d(-100px, -100px, 0);
-  transition: opacity 150ms ease;
-  user-select: none;
-  will-change: transform;
-}
-
-.cursor-tip::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: #ffffff;
-  border: 2px solid rgba(7, 26, 53, 0.9);
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.95),
-    0 0 6px rgba(7, 26, 53, 0.4);
-  transform: translate(-50%, -50%);
-  transition: transform 120ms ease;
-}
-
-.cursor-tip.is-visible:not(.is-native-context) {
-  opacity: 1;
-}
-
-.cursor-tip.is-pressed::before {
-  transform: translate(-50%, -50%) scale(0.8);
+  transform: scale(0.92);
 }
 
 .cursor-splash-layer {
@@ -1719,8 +1685,7 @@ html.has-custom-cursor.is-native-cursor body * {
     transition-duration: 0.01ms !important;
   }
 
-  .cursor-follower,
-  .cursor-tip {
+  .cursor-follower {
     display: none;
   }
 
@@ -1731,7 +1696,6 @@ html.has-custom-cursor.is-native-cursor body * {
 
 @media (pointer: coarse) {
   .cursor-follower,
-  .cursor-tip,
   .cursor-splash-layer {
     display: none;
   }
@@ -2525,7 +2489,6 @@ h2 {
 .site-search-desktop-cluster {
   display: flex;
   flex: 0 1 286px;
-  gap: 0.4rem;
   align-items: center;
   min-width: 190px;
 }
@@ -2535,8 +2498,11 @@ h2 {
 }
 
 .site-search__mascot {
-  flex: 0 0 auto;
-  width: 48px;
+  position: absolute;
+  right: 0.3rem;
+  top: 50%;
+  width: 32px;
+  transform: translateY(-50%);
   max-width: none;
   pointer-events: none;
   user-select: none;
@@ -2548,11 +2514,12 @@ h2 {
 }
 
 .site-search__field {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 0.45rem;
   width: 100%;
-  padding: 0.32rem 0.6rem;
+  padding: 0.32rem 2.8rem 0.32rem 0.6rem;
   border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 9px;
   background: rgba(255, 255, 255, 0.07);
@@ -2725,7 +2692,7 @@ mark.search-hit {
   }
 
   .site-search-mobile-row .site-search__field {
-    padding: 0.55rem 0.75rem;
+    padding: 0.55rem 3rem 0.55rem 0.75rem;
   }
 
   .site-search-mobile-row .site-search__input {
