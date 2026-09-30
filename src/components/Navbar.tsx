@@ -3,7 +3,6 @@ import { NavLink, useLocation } from "react-router-dom";
 import { NavGroups } from "./NavGroups";
 import { ReadingProgress } from "./ReadingProgress";
 import { MobileSearchRow, SearchBar } from "./SearchBar";
-import searchMascot from "../assets/search-mascot.png";
 import { ThemeToggle } from "./ThemeToggle";
 
 export function Navbar() {
@@ -59,12 +58,6 @@ export function Navbar() {
             <SearchBar
               idPrefix="site-search-desktop"
               className="site-search--desktop"
-            />
-            <img
-              className="site-search__mascot"
-              src={searchMascot}
-              alt=""
-              aria-hidden="true"
             />
           </div>
           <ThemeToggle />
