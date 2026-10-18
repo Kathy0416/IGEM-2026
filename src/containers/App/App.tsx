@@ -24,6 +24,10 @@ const App = () => {
     window.scrollTo({ top: 0, behavior: "instant" });
   }, [currentPage, location.pathname]);
 
+  useEffect(() => {
+    window.dispatchEvent(new Event("wiki:ready"));
+  }, []);
+
   // Deep links with a hash land on the anchored section after render;
   // navigations without a hash keep the scroll-to-top behavior above.
   useEffect(() => {

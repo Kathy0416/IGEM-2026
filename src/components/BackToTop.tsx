@@ -30,18 +30,7 @@ export function BackToTop() {
       tabIndex={visible ? 0 : -1}
       onClick={goToTop}
     >
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden="true"
-      >
-        <path d="m6 12 6-6 6 6M12 6v14" />
-      </svg>
-      <span>Top</span>
+      <img src={`${import.meta.env.BASE_URL}jellyfish-top.png`} alt="" aria-hidden="true" />
     </button>
   );
 }

@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && node scripts/write-offline-manifest.mjs",
     "lint": "eslint . --max-warnings 0",
     "audit:compliance": "node scripts/compliance-audit.mjs",
     "audit:strict": "node scripts/compliance-audit.mjs --strict",
