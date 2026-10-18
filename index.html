@@ -2,6 +2,18 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      // Apply the preference before styles or React paint the page.
+      (() => {
+        let preference;
+        try { preference = localStorage.getItem("wiki-theme"); } catch { /* Storage may be unavailable. */ }
+        const theme = preference === "light" || preference === "dark"
+          ? preference
+          : matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.style.colorScheme = theme;
+      })();
+    </script>
     <link
       rel="shortcut icon"
       href="https://static.igem.wiki/common/icons/favicons/igem-2022.svg"

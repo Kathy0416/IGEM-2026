@@ -13,6 +13,21 @@ verified content is added to the wiki.
 
 ## Scientific content
 
+### Temporary reading-layout samples
+
+All 17 files in `src/content/pages/` contain original speeches from William
+Shakespeare's *The Winter's Tale*, sourced from Project Gutenberg eBook 1539
+(https://www.gutenberg.org/ebooks/1539), retrieved 2026-09-28. Whitespace is
+reflowed; speaker, act, and scene are retained. These public-domain passages are
+temporary layout samples, not scientific or team claims. Demonstration record
+dates, identifiers, tables, and visual slots are explicitly marked as samples.
+Status: **Draft — replace before publication**. Existing team biographies and
+portrait references are preserved. The strict audit rejects sample content.
+
+Layout references: Marburg 2025 Results, Aachen 2025 Results, and Freiburg 2025
+home page. Their organization informed the reading layouts; no team text,
+figures, or branding was copied. The page editing guide documents replacement.
+
 | Wiki page | Claim or dataset | Primary source or team record | Owner | Status |
 | --- | --- | --- | --- | --- |
 | Description | Project abstract and motivation | Team-approved project brief required | Team lead | Required |

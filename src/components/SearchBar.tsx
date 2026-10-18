@@ -3,6 +3,7 @@ import type { KeyboardEvent as ReactKeyboardEvent } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import pages from "../pages.ts";
 import { searchIndex, type SearchEntry } from "../search/search-index.ts";
+import searchMascot from "../assets/search-mascot.png";
 
 const MAX_RESULTS = 8;
 
@@ -45,6 +46,7 @@ function searchSite(query: string): SearchEntry[] {
       entry.sectionTitle ?? "",
       entry.anchor ?? "",
       entry.keywords.join(" "),
+      entry.text ?? "",
     ]
       .join(" ")
       .toLowerCase();
@@ -261,6 +263,12 @@ export function SearchBar({
           }}
           onFocus={() => setOpen(true)}
           onKeyDown={handleKeyDown}
+        />
+        <img
+          className="site-search__mascot"
+          src={searchMascot}
+          alt=""
+          aria-hidden="true"
         />
       </label>
 

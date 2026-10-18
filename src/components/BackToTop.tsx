@@ -1,34 +1,47 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 export function BackToTop() {
-  const [isVisible, setIsVisible] = useState(false);
-
+  const [visible, setVisible] = useState(false);
+  const { pathname } = useLocation();
   useEffect(() => {
-    const toggleVisibility = () => {
-      if (window.scrollY > 300) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
-    };
+    const update = () => setVisible(window.scrollY > 480);
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, [pathname]);
 
-    window.addEventListener("scroll", toggleVisibility);
-    return () => window.removeEventListener("scroll", toggleVisibility);
-  }, []);
-
-  const scrollToTop = () => {
+  const goToTop = () => {
+    document.getElementById("main-content")?.focus({ preventScroll: true });
     window.scrollTo({
       top: 0,
-      behavior: "smooth",
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "instant"
+        : "smooth",
     });
   };
 
-  if (!isVisible) return null;
-
-// 这里需要替换资源图片资源，而不是现在这个丑丑的按钮，29-34行
   return (
-    <button onClick={scrollToTop} className="back-to-top-btn">
-      ↑ 
+    <button
+      type="button"
+      className={`back-to-top${visible ? " is-visible" : ""}`}
+      aria-label="Back to top"
+      aria-hidden={!visible}
+      tabIndex={visible ? 0 : -1}
+      onClick={goToTop}
+    >
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        <path d="m6 12 6-6 6 6M12 6v14" />
+      </svg>
+      <span>Top</span>
     </button>
   );
 }

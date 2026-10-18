@@ -9,5 +9,10 @@ export default ({ mode }: { mode: string }) => {
   return defineConfig({
     base: `/${stringToSlug(teamName)}/`,
     plugins: [react()],
+    build: {
+      rollupOptions: {
+        output: { manualChunks: (id: string) => id.includes("node_modules") ? "vendor" : undefined },
+      },
+    },
   });
 };

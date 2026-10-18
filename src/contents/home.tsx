@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom";
+import { ArticlePage } from "../components/ArticlePage";
 import {
+<<<<<<< HEAD
+=======
   ContentNotice,
+  FigurePlaceholder,
+>>>>>>> a8e43834af0ba6f141acb9cc68db0650d262df68
   InfoCard,
   PageSection,
 } from "../components/ContentBlocks";
@@ -40,11 +45,15 @@ export function Home() {
       </section>
 
       <div className="site-container home-content" id="home-content">
-        <ContentNotice title="A transparent starting point">
-          The former static website contained illustrative data that did not
-          come from the team. This rebuild intentionally uses placeholders until
-          Worldshaper-Nanjing supplies evidence, citations, and approved media.
-        </ContentNotice>
+        <ArticlePage pageKey="home" variant="home" />
+
+        <PageSection eyebrow="Project question" title="What could help maintain muscle strength with age?" intro="This is the question guiding the team's proposed synthetic biology work; a tested intervention has not yet been demonstrated.">
+          <div className="focus-statement"><p>The wiki follows the question from biological context through design, experiments, modeling, and responsible use. Each result will be linked to its method and evidence when verified.</p></div>
+        </PageSection>
+
+        <PageSection eyebrow="System overview" title="How the proposed system fits together" tone="tint">
+          <FigurePlaceholder title="Project system overview" description="Add a team-created diagram of the proposed inputs, engineered components, and measurable outputs after the design is verified." />
+        </PageSection>
 
         <PageSection
           eyebrow="Our direction"
@@ -73,17 +82,33 @@ export function Home() {
           </div>
         </PageSection>
 
+        <PageSection eyebrow="Evidence and progress" title="What has been documented so far">
+          <div className="card-grid card-grid--three">
+            <InfoCard title="Design"><p>Review the proposed system and its boundaries in the project description.</p><Link to="/description">Read the description</Link></InfoCard>
+            <InfoCard title="Experiments"><p>Protocols and results will be connected to the engineering record after verification.</p><Link to="/experiments">See experiments</Link></InfoCard>
+            <InfoCard title="Responsibility"><p>Safety review and stakeholder input will shape project decisions.</p><Link to="/human-practices">See Human Practices</Link></InfoCard>
+          </div>
+        </PageSection>
+
         <PageSection
           eyebrow="Project record"
-          title="Follow the work from question to evidence"
+          title="Explore each part of the project"
           tone="tint"
         >
           <div className="pathway">
             {[
-              ["Problem", "Define the need and its context.", "/problem"],
-              ["Solution", "Explain the proposed design logic.", "/solution"],
+              ["Description", "Define the need and its context.", "/description"],
               ["Engineering", "Document iterative technical work.", "/engineering"],
-              ["Results", "Report evidence without overclaiming.", "/results"],
+              [
+                "Human Practices",
+                "Connect stakeholder learning to project decisions.",
+                "/human-practices",
+              ],
+              [
+                "Contribution",
+                "Share documented resources that future teams can reuse.",
+                "/contribution",
+              ],
             ].map(([title, body, path], index) => (
               <Link className="pathway__item" to={path} key={title}>
                 <span>0{index + 1}</span>

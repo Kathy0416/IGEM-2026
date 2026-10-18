@@ -1,18 +1,28 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-
-// 这里为鼠标不同的状态留了不同的图片资源和变量，有需要直接加对应的状态变量和图片即可，4-10行
-import cursorDefault from "../assets/cursor-mascot.png";
-import cursorPointer from "../assets/cursor-pointer-placeholder.png";
+import cursorMascot from "../assets/jellyfish-cursor.png";
+import typingCursor from "../assets/type-cursor.png";
 
 const cursorAssets = {
-  default: cursorDefault,
-  pointer: cursorPointer,
+  default: cursorMascot,
+  pointer: cursorMascot,
+  typing: typingCursor,
 };
 
 const interactiveSelector =
   'a, button, summary, [role="button"], [role="link"], [tabindex]:not([tabindex="-1"])';
+const textEntrySelector = [
+  "textarea",
+  '[contenteditable]:not([contenteditable="false"])',
+  "input:not([type])",
+  'input[type="email"]',
+  'input[type="password"]',
+  'input[type="search"]',
+  'input[type="tel"]',
+  'input[type="text"]',
+  'input[type="url"]',
+].join(", ");
 const nativeCursorSelector =
-  'input, textarea, select, option, [contenteditable="true"], [data-native-cursor], p, li, td, th, dd, dt, blockquote, code, pre, h1, h2, h3, h4, h5, h6';
+  'select, option, [data-native-cursor], p, li, td, th, dd, dt, blockquote, code, pre, h1, h2, h3, h4, h5, h6';
 
 type CursorSplash = {
   id: number;
@@ -29,7 +39,6 @@ function supportsCursorFollower() {
 
 export function CursorFollower() {
   const followerRef = useRef<HTMLDivElement>(null);
-  const tipRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const nextSplashIdRef = useRef(0);
   const splashTimersRef = useRef(new Map<number, number>());
@@ -63,6 +72,13 @@ export function CursorFollower() {
   );
 
   useEffect(() => {
+    Object.values(cursorAssets).forEach((src) => {
+      const image = new Image();
+      image.src = src;
+    });
+  }, []);
+
+  useEffect(() => {
     const pointerQuery = window.matchMedia("(pointer: fine)");
     const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     const updateEligibility = () => setEnabled(supportsCursorFollower());
@@ -86,68 +102,42 @@ export function CursorFollower() {
     }
 
     const follower = followerRef.current;
-    const tip = tipRef.current;
     const image = imageRef.current;
 
-    if (!follower || !tip || !image) {
+    if (!follower || !image) {
       return;
     }
 
-    let animationFrame = 0;
-    let hasPosition = false;
-    let currentX = 0;
-    let currentY = 0;
-    let targetX = 0;
-    let targetY = 0;
     let currentVariant: keyof typeof cursorAssets = "default";
-
-    const renderPosition = () => {
-      follower.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
-    };
-
-    const animate = () => {
-      const deltaX = targetX - currentX;
-      const deltaY = targetY - currentY;
-
-      currentX += deltaX * 0.24;
-      currentY += deltaY * 0.24;
-      renderPosition();
-
-      if (Math.abs(deltaX) > 0.1 || Math.abs(deltaY) > 0.1) {
-        animationFrame = window.requestAnimationFrame(animate);
-      } else {
-        currentX = targetX;
-        currentY = targetY;
-        renderPosition();
-        animationFrame = 0;
-      }
-    };
-
-    const requestAnimation = () => {
-      if (animationFrame === 0) {
-        animationFrame = window.requestAnimationFrame(animate);
-      }
-    };
 
     const getCursorContext = (target: EventTarget | null) => {
       const element = target instanceof Element ? target : null;
-      const isInteractive = Boolean(element?.closest(interactiveSelector));
+      const isTextEntry = Boolean(element?.closest(textEntrySelector));
+      const isInteractive =
+        !isTextEntry && Boolean(element?.closest(interactiveSelector));
       const useNativeCursor =
-        !isInteractive && Boolean(element?.closest(nativeCursorSelector));
+        !isTextEntry &&
+        !isInteractive &&
+        Boolean(element?.closest(nativeCursorSelector));
 
-      return { isInteractive, useNativeCursor };
+      return { isInteractive, isTextEntry, useNativeCursor };
     };
 
     const updateContext = (target: EventTarget | null) => {
-      const { isInteractive, useNativeCursor } = getCursorContext(target);
-      const nextVariant = isInteractive ? "pointer" : "default";
+      const { isInteractive, isTextEntry, useNativeCursor } =
+        getCursorContext(target);
+      const nextVariant = isTextEntry
+        ? "typing"
+        : isInteractive
+          ? "pointer"
+          : "default";
 
       document.documentElement.classList.toggle(
         "is-native-cursor",
         useNativeCursor,
       );
       follower.classList.toggle("is-native-context", useNativeCursor);
-      tip.classList.toggle("is-native-context", useNativeCursor);
+      follower.classList.toggle("is-typing", isTextEntry);
 
       if (nextVariant !== currentVariant) {
         currentVariant = nextVariant;
@@ -156,50 +146,29 @@ export function CursorFollower() {
     };
 
     const handlePointerMove = (event: PointerEvent) => {
-      targetX = event.clientX;
-      targetY = event.clientY;
-      // The tip marker follows the raw pointer coordinates with no easing, so
-      // it always marks the true hotspot even while the mascot is catching up.
-      tip.style.transform = `translate3d(${targetX}px, ${targetY}px, 0)`;
+      follower.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0)`;
       updateContext(event.target);
-
-      if (!hasPosition) {
-        currentX = targetX;
-        currentY = targetY;
-        hasPosition = true;
-        renderPosition();
-        follower.classList.add("is-visible");
-        tip.classList.add("is-visible");
-        return;
-      }
-
-      requestAnimation();
+      follower.classList.add("is-visible");
     };
 
     const handlePointerDown = (event: PointerEvent) => {
-      const { useNativeCursor } = getCursorContext(event.target);
+      const { isTextEntry, useNativeCursor } = getCursorContext(event.target);
 
-      currentX = targetX;
-      currentY = targetY;
-      renderPosition();
+      follower.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0)`;
       follower.classList.add("is-pressed");
-      tip.classList.add("is-pressed");
 
-      if (!useNativeCursor) {
+      if (!useNativeCursor && !isTextEntry) {
         createSplash(event.clientX, event.clientY);
       }
     };
 
     const handlePointerUp = () => {
       follower.classList.remove("is-pressed");
-      tip.classList.remove("is-pressed");
     };
 
     const hideFollower = () => {
       follower.classList.remove("is-visible", "is-pressed");
-      tip.classList.remove("is-visible", "is-pressed");
       document.documentElement.classList.remove("is-native-cursor");
-      hasPosition = false;
     };
 
     document.documentElement.classList.add("has-custom-cursor");
@@ -226,7 +195,6 @@ export function CursorFollower() {
         hideFollower,
       );
       window.removeEventListener("blur", hideFollower);
-      window.cancelAnimationFrame(animationFrame);
     };
   }, [createSplash, enabled]);
 
@@ -239,8 +207,6 @@ export function CursorFollower() {
       <div className="cursor-follower" ref={followerRef} aria-hidden="true">
         <img ref={imageRef} src={cursorAssets.default} alt="" />
       </div>
-      {/* Hotspot marker pinned to the raw pointer coordinates (no easing). */}
-      <div className="cursor-tip" ref={tipRef} aria-hidden="true" style={{ display: 'none' }} />
       <div className="cursor-splash-layer" aria-hidden="true">
         {splashes.map((splash) => (
           <span
