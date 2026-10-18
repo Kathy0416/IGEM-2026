@@ -30,7 +30,7 @@ export function BackToTop() {
       tabIndex={visible ? 0 : -1}
       onClick={goToTop}
     >
-      <img src={`${import.meta.env.BASE_URL}jellyfish-top.png`} alt="" aria-hidden="true" />
+      <img src={`${import.meta.env.BASE_URL}jellyfish-top-transparent.png`} alt="" aria-hidden="true" />
     </button>
   );
 }

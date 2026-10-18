@@ -237,11 +237,10 @@ h4,
   width: 88px;
   height: 98px;
   padding: 0;
-  overflow: hidden;
-  border: 1px solid rgba(7, 26, 53, 0.14);
-  border-radius: 14px;
-  background: #fff;
-  box-shadow: 0 5px 18px rgba(4, 17, 36, 0.15);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
   visibility: hidden;
   opacity: 0;
   pointer-events: none;
@@ -254,8 +253,8 @@ h4,
   object-fit: contain;
 }
 .back-to-top:hover {
-  border-color: var(--gold-400);
-  background: #fff;
+  border-color: transparent;
+  background: transparent;
 }
 .back-to-top.is-visible {
   visibility: visible;
