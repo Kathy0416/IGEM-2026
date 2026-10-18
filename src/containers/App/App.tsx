@@ -8,6 +8,7 @@ import { Navbar } from "../../components/Navbar";
 import { NotFound } from "../../components/NotFound";
 import { PageContents } from "../../components/PageContents";
 import { getPathMapping } from "../../utils";
+import { BackToTop } from "../../components/BackToTop";
 import "./App.css";
 import "./Theme.css";
 import { BackToTop } from "../../components/BackToTop";
@@ -25,8 +26,6 @@ const App = () => {
     window.scrollTo({ top: 0, behavior: "instant" });
   }, [currentPage, location.pathname]);
 
-  // Deep links with a hash land on the anchored section after render;
-  // navigations without a hash keep the scroll-to-top behavior above.
   useEffect(() => {
     if (!location.hash) {
       return;

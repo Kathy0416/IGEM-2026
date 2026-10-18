@@ -14,9 +14,8 @@ export function Footer() {
             <p className="eyebrow">Worldshaper-Nanjing · iGEM 2026</p>
             <h2>Strength is built through iteration.</h2>
             <p className="site-footer__summary">
-              This wiki is being developed as an honest, reproducible record of
-              our team&apos;s work. Draft fields are clearly marked until the
-              team provides verified content.
+              This wiki is being developed as an honest, reproducible record of our team's work. 
+              Draft fields are clearly marked until the team provides verified content.
             </p>
           </div>
           <div>
