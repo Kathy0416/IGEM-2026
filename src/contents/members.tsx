@@ -371,6 +371,7 @@ export function Members() {
 
   return (
     <>
+      <div className="focus-statement"><p>Worldshaper-Nanjing brings together student contributors across laboratory research, modeling, design, communication, and human practices. Select a member to read their self-submitted introduction.</p></div>
       <PageSection
         eyebrow="Our Team"
         title="Strength comes from people"

@@ -6,6 +6,7 @@ import { Header } from "../../components/Header";
 import { LegacyEffects } from "../../components/LegacyEffects";
 import { Navbar } from "../../components/Navbar";
 import { NotFound } from "../../components/NotFound";
+import { PageContents } from "../../components/PageContents";
 import { getPathMapping } from "../../utils";
 import "./App.css";
 import "./Theme.css";
@@ -60,11 +61,10 @@ const App = () => {
                     <Component />
                   ) : (
                     <>
-                      <Header title={title} lead={lead} compact />
-                      <div className="page-shell wiki-shell">
-                        <ArticlePage key={path} pageKey={path.slice(1)} variant={readingLayout}>
-                          {Component && <Component />}
-                        </ArticlePage>
+                      <Header title={title} lead={lead} />
+                      <div className="page-shell page-frame">
+                        <PageContents />
+                        <div className="page-frame__body"><Component /></div>
                       </div>
                     </>
                   )
