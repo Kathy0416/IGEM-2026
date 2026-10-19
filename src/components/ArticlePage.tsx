@@ -93,14 +93,16 @@ export function ArticlePage({
       <ArticleContents headings={headings} />
       <div className="reading-layout__main">
         <div className="article-meta">
-          <span>
-            {variant === "team" ? "People & purpose" : "Project documentation"}
-          </span>
+          {variant !== "home" && (
+            <span>
+              {variant === "team" ? "People & purpose" : "Project documentation"}
+            </span>
+          )}
           <span>
             {Math.max(1, Math.ceil(document.wordCount / 220))} min read
           </span>
         </div>
-        {document.sample && (
+        {document.sample && variant !== "home" && (
           <aside className="layout-sample" aria-label="Sample content">
             <strong>Layout sample — Shakespeare text</strong>
             <span>

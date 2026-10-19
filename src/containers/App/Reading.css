@@ -39,6 +39,14 @@
 .reading-layout__main {
   min-width: 0;
 }
+
+#home-content {
+  scroll-margin-top: var(--article-offset);
+}
+
+.reading-layout--home .article-meta {
+  justify-content: flex-end;
+}
 .article-contents {
   position: sticky;
   top: var(--article-offset);
