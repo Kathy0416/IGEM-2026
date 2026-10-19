@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import snapgeneLogo from "../assets/snapgene-sponsor.png";
 import { stringToSlug } from "../utils";
 
 export function Footer() {
@@ -52,6 +53,10 @@ export function Footer() {
             </ul>
           </div>
         </div>
+        <section className="site-footer__sponsors" aria-labelledby="footer-sponsors-title">
+          <h3 id="footer-sponsors-title">Sponsors</h3>
+          <img src={snapgeneLogo} alt="Dotmatics SnapGene" width={2752} height={721} loading="lazy" />
+        </section>
         <div className="site-footer__legal">
           <p>
             © {teamYear} Worldshaper-Nanjing. Content is licensed under a{" "}

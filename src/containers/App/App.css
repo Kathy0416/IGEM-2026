@@ -1465,6 +1465,21 @@ html.has-custom-cursor.is-native-cursor body * {
   font-size: 0.74rem;
 }
 
+.site-footer__sponsors {
+  padding: 0 0 2rem;
+}
+
+.site-footer__sponsors h3 {
+  margin-bottom: 1rem;
+}
+
+.site-footer__sponsors img {
+  display: block;
+  width: 280px;
+  max-width: 100%;
+  height: auto;
+}
+
 .site-footer__legal p {
   margin: 0;
 }

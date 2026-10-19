@@ -50,6 +50,11 @@ figures, or branding was copied. The page editing guide documents replacement.
 
 ## Contributions and external assistance
 
+The footer Sponsors section uses the user-supplied Dotmatics SnapGene logo
+(`ea307df4b09fd102b1f88fde2b04e70d.png`), copied unchanged to
+`src/assets/snapgene-sponsor.png`. Sponsor placement was requested by the user.
+The production `static.igem.wiki` asset URL is pending.
+
 | Contributor or tool | Work supported | How it will be attributed | Status |
 | --- | --- | --- | --- |
 | Codex / OpenAI | React architecture, placeholder page system, styling, and compliance tooling | Record in the team Attributions Form as AI-assisted development reviewed by the team | Draft |
