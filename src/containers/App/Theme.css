@@ -29,6 +29,76 @@
   --team-connector: #7d95b9;
 }
 
+/* Native scrollbars for the page and search results only. */
+@media (forced-colors: none) {
+  :root {
+    --scroll-track: #e4e9ef;
+    --scroll-thumb: #607793;
+    --scroll-thumb-hover: #405d80;
+    --scroll-size: 10px;
+  }
+
+  :root[data-theme="dark"],
+  .site-search__listbox {
+    --scroll-track: #172b47;
+    --scroll-thumb: #8097b5;
+    --scroll-thumb-hover: #a5bbd5;
+  }
+
+  .site-search__listbox { --scroll-size: 8px; }
+
+  :root,
+  .site-search__listbox {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scroll-thumb) var(--scroll-track);
+  }
+
+  /* scrollbar-color inherits; other scroll containers retain system styling. */
+  body { scrollbar-color: auto; }
+
+  @supports selector(::-webkit-scrollbar) {
+    :root,
+    .site-search__listbox {
+      scrollbar-width: auto;
+      scrollbar-color: auto;
+    }
+
+    :root::-webkit-scrollbar,
+    .site-search__listbox::-webkit-scrollbar {
+      width: var(--scroll-size);
+      height: var(--scroll-size);
+    }
+
+    :root::-webkit-scrollbar-track,
+    .site-search__listbox::-webkit-scrollbar-track {
+      background: var(--scroll-track);
+      border-radius: 999px;
+    }
+
+    :root::-webkit-scrollbar-thumb,
+    .site-search__listbox::-webkit-scrollbar-thumb {
+      background: var(--scroll-thumb);
+      border: 2px solid var(--scroll-track);
+      border-radius: 999px;
+      min-height: 32px;
+    }
+
+    :root::-webkit-scrollbar-thumb:hover,
+    .site-search__listbox::-webkit-scrollbar-thumb:hover {
+      background: var(--scroll-thumb-hover);
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .site-search__field:focus-within { border-color: Highlight; }
+  .site-search__input:focus-visible,
+  .site-search__mobile-toggle:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+}
+
 /* Preserve the existing mobile gutters and paragraph measure. */
 html[data-theme] {
   --bs-body-bg: var(--paper);
