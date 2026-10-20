@@ -15,7 +15,7 @@ export default ({ mode }: { mode: string }) => {
     },
     build: {
       rollupOptions: {
-        output: { manualChunks: (id: string) => id.includes("node_modules") ? "vendor" : undefined },
+        output: { manualChunks: (id: string) => id.includes("node_modules/3dmol/") ? "molecular-viewer" : id.includes("node_modules") ? "vendor" : undefined },
       },
     },
   });

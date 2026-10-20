@@ -1,0 +1,14 @@
+.protein-viewer { margin: 2rem 0 3rem; padding: clamp(1rem, 3vw, 2rem); border: 1px solid #91a7c24d; border-radius: 18px; background: #f5f8fc; color: #183459; }
+.protein-viewer h2 { margin-top: 0; }
+.protein-viewer__stage { height: 500px; position: relative; overflow: hidden; border-radius: 12px; }
+.protein-viewer__canvas { position: absolute; inset: 0; }
+.protein-viewer__status { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; padding: 1.5rem; background: inherit; }
+.protein-viewer__controls { display: flex; flex-wrap: wrap; gap: .65rem; align-items: center; margin: 1rem 0; }
+.protein-viewer__controls legend { font-size: 1rem; font-weight: 700; }
+.protein-viewer__controls label { display: flex; align-items: center; gap: .45rem; padding: .5rem; }
+.protein-viewer button { border: 1px solid #91a7c2; border-radius: 8px; background: transparent; color: inherit; padding: .6rem .8rem; min-height: 44px; }
+.protein-viewer button:hover { background: #91a7c226; }
+.protein-viewer :focus-visible { outline: 3px solid #6499c8; outline-offset: 3px; }
+.protein-viewer__sources { margin-bottom: 0; font-size: .9rem; }
+:root[data-theme="dark"] .protein-viewer { background: #09162e; color: #d6e5f5; }
+@media (max-width: 600px) { .protein-viewer__stage { height: 360px; } }

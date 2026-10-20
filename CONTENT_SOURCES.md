@@ -13,6 +13,13 @@ verified content is added to the wiki.
 
 ## Scientific content
 
+### Protein–ligand visualization
+
+Source: user-supplied `n23.pdb` and `ligand.pdb` from `生信资料0730`, added 2026-10-21.
+The files are copied unchanged to `public/structures/` and displayed together at
+the user's request using their original coordinates. No docking, alignment,
+binding affinity, or validation is inferred. Status: **Draft — supplied structures**.
+
 ### Temporary reading-layout samples
 
 All 17 files in `src/content/pages/` contain original speeches from William

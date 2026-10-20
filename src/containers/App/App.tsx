@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { CursorFollower } from "../../components/CursorFollower";
 import { Footer } from "../../components/Footer";
@@ -13,6 +13,8 @@ import { BackToTop } from "../../components/BackToTop";
 import { ArticlePage } from "../../components/ArticlePage";
 import "./Reading.css";
 import { PageLoading } from "../../components/PageLoading";
+
+const ProteinViewer = lazy(() => import("../../components/ProteinViewer"));
 
 const App = () => {
   const pathMapping = getPathMapping();
@@ -63,6 +65,7 @@ const App = () => {
                     <>
                       <Header title={title} lead={lead} compact />
                       <div className="page-shell wiki-shell">
+                        {path === "/model" && <Suspense fallback={<p role="status">Loading structure viewer…</p>}><ProteinViewer /></Suspense>}
                         <ArticlePage key={path} pageKey={path.slice(1)} variant={readingLayout}>
                           {Component && <Component />}
                         </ArticlePage>
