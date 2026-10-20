@@ -12,6 +12,7 @@ import "./Theme.css";
 import { BackToTop } from "../../components/BackToTop";
 import { ArticlePage } from "../../components/ArticlePage";
 import "./Reading.css";
+import { PageLoading } from "../../components/PageLoading";
 
 const App = () => {
   const pathMapping = getPathMapping();
@@ -23,10 +24,6 @@ const App = () => {
     document.title = `${title} | ${import.meta.env.VITE_TEAM_NAME} · iGEM ${import.meta.env.VITE_TEAM_YEAR}`;
     window.scrollTo({ top: 0, behavior: "instant" });
   }, [currentPage, location.pathname]);
-
-  useEffect(() => {
-    window.dispatchEvent(new Event("wiki:ready"));
-  }, []);
 
   // Deep links with a hash land on the anchored section after render;
   // navigations without a hash keep the scroll-to-top behavior above.
@@ -94,6 +91,7 @@ const App = () => {
       </main>
       <Footer />
       <BackToTop />
+      <PageLoading />
     </>
   );
 };

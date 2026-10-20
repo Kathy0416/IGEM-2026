@@ -13,15 +13,7 @@
         document.documentElement.dataset.theme = theme;
         document.documentElement.style.colorScheme = theme;
       })();
-      (() => {
-        try {
-          if (!localStorage.getItem("wiki-first-load-complete") || !navigator.onLine) {
-            document.documentElement.classList.add("wiki-loader-visible");
-          }
-        } catch {
-          document.documentElement.classList.add("wiki-loader-visible");
-        }
-      })();
+      document.documentElement.classList.add("wiki-loader-visible");
     </script>
     <style>
       #site-loader {
@@ -46,9 +38,10 @@
         opacity: 1;
         pointer-events: auto;
       }
+      #site-loader { transition: opacity 200ms ease; }
+      .wiki-loader-fading #site-loader { opacity: 0; }
       .wiki-loader-visible body { overflow: hidden; }
       #site-loader-art { display: block; width: min(92vw, 950px); max-height: 65vh; object-fit: contain; }
-      #site-loader-still { display: none; width: min(45vw, 220px); max-height: 40vh; object-fit: contain; }
       #site-loader-retry {
         min-height: 44px;
         padding: .65rem 1.4rem;
@@ -62,9 +55,8 @@
       #site-loader-retry[hidden] { display: none; }
       #site-loader-retry:focus-visible { outline: 3px solid #d12f35; outline-offset: 3px; }
       @media (prefers-reduced-motion: reduce) {
-        #site-loader-art { display: none; }
-        #site-loader-still { display: block; }
-      }
+        #site-loader { transition: none; }
+        }
     </style>
     <link
       rel="shortcut icon"
@@ -81,71 +73,11 @@
   </head>
   <body>
     <div id="site-loader" role="status" aria-live="polite" aria-label="Loading website">
-      <img id="site-loader-art" src="%BASE_URL%jellyfish-loader.gif" alt="" />
-      <img id="site-loader-still" src="%BASE_URL%jellyfish-top.png" alt="" />
-      <span id="site-loader-message">Loading website…</span>
+      <img id="site-loader-art" alt="" />
       <button id="site-loader-retry" type="button" hidden>Retry</button>
     </div>
-    <div id="root"></div>
-    <script>
-      (() => {
-        const page = document.documentElement;
-        const root = document.getElementById("root");
-        const message = document.getElementById("site-loader-message");
-        const retry = document.getElementById("site-loader-retry");
-        let visible = page.classList.contains("wiki-loader-visible");
-        let shownAt = performance.now();
-        let ready = false;
-        let offlineReady = !("serviceWorker" in navigator);
-        let finished = false;
-
-        const rememberVisit = () => {
-          if (!finished || !offlineReady) return;
-          try { localStorage.setItem("wiki-first-load-complete", "1"); } catch { /* Storage may be unavailable. */ }
-        };
-        window.addEventListener("wiki:offline-ready", () => {
-          offlineReady = true;
-          rememberVisit();
-        }, { once: true });
-
-        const show = () => {
-          if (visible) return;
-          visible = true;
-          shownAt = performance.now();
-          page.classList.add("wiki-loader-visible");
-          root.inert = true;
-        };
-        if (visible) root.inert = true;
-
-        const stalled = setTimeout(() => {
-          if (ready) return;
-          show();
-          message.textContent = "The site is taking longer than expected. Check your connection and retry.";
-          retry.hidden = false;
-          retry.focus();
-        }, 8000);
-
-        window.addEventListener("wiki:ready", () => {
-          ready = true;
-          clearTimeout(stalled);
-          const finish = () => {
-            if (finished) return;
-            finished = true;
-            root.inert = false;
-            page.classList.remove("wiki-loader-visible");
-            rememberVisit();
-          };
-          if (visible) {
-            setTimeout(finish, Math.max(0, 2000 - (performance.now() - shownAt)));
-          } else {
-            finish();
-          }
-        }, { once: true });
-
-        window.addEventListener("offline", () => { if (!ready) show(); });
-        retry.addEventListener("click", () => location.reload());
-      })();
-    </script>
+    <div id="root" inert></div>
+    <script type="module" src="/src/loader.js"></script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
