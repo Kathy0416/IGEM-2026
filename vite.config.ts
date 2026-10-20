@@ -9,6 +9,10 @@ export default ({ mode }: { mode: string }) => {
   return defineConfig({
     base: `/${stringToSlug(teamName)}/`,
     plugins: [react()],
+    server: {
+      // Browser QA profiles contain locked databases that must not be watched.
+      watch: { ignored: ["**/artifacts/**"] },
+    },
     build: {
       rollupOptions: {
         output: { manualChunks: (id: string) => id.includes("node_modules") ? "vendor" : undefined },

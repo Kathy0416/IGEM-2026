@@ -73,12 +73,11 @@
   </head>
   <body>
     <div id="site-loader" role="status" aria-live="polite" aria-label="Loading website">
-      <canvas id="site-loader-art" width="1754" height="716" aria-hidden="true"></canvas>
-      <span id="site-loader-message">Loading website…</span>
+      <img id="site-loader-art" alt="" />
       <button id="site-loader-retry" type="button" hidden>Retry</button>
     </div>
     <div id="root" inert></div>
-    <script src="%BASE_URL%loader.js"></script>
+    <script type="module" src="/src/loader.js"></script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
